@@ -1,42 +1,49 @@
 import React from 'react'
 import Link from 'gatsby-link'
 import styled from 'styled-components'
+import './TableOfContents.scss'
 
 /* eslint react/no-array-index-key: "off" */
 
-const Links = ({ entries }) => (
-  <StyledLinkList>
-    {entries.map(({ entry }, key) => (
-      <EntryListItem key={key}>
-        <Link to={entry.childMarkdownRemark.fields.slug}>
-          <EntryTitle>{entry.childMarkdownRemark.frontmatter.title}</EntryTitle>
-        </Link>
-      </EntryListItem>
-    ))}
-  </StyledLinkList>
+const TitleLink = ({title, entry}) => (
+  <ChapterListItem key={`${title}`}>
+    <ChapterTitle level={0}>
+      <Link className="titleLink" to={entry.childMarkdownRemark.fields.slug}>
+        {entry.childMarkdownRemark.frontmatter.title}
+      </Link>
+    </ChapterTitle>
+  </ChapterListItem>
 )
 
-const ChapterList = ({ chapters, entries, title, level = 0 }) => (
+const DocList = ({entry, key}) => (
   <StyledChapterList>
-    {title && (
-      <ChapterListItem key={`${title}${level}`}>
-        <ChapterTitle level={level}>{title}</ChapterTitle>
-      </ChapterListItem>
-    )}
-    <ChapterListItem>{entries && <Links entries={entries} />}</ChapterListItem>
-    <ChapterListItem>
-      {chapters &&
-        chapters.map((chapter, index) => (
-          <ChapterList {...chapter} level={level + 1} key={`${index}`} />
-        ))}
-    </ChapterListItem>
+    <EntryListItem key={key}>
+      <Link to={entry.childMarkdownRemark.fields.slug}>
+        <EntryTitle>{entry.childMarkdownRemark.frontmatter.title}</EntryTitle>
+      </Link>
+    </EntryListItem>
   </StyledChapterList>
 )
 
-const TableOfContents = ({ chapters }) => (
+const PackageEntry = ({title, entry, level = 1, otherDocs}) => (
+  <StyledChapterList>
+    {title && entry && (
+    <TitleLink title={title} entry={entry} />
+    )}
+    {
+      otherDocs && otherDocs.map((doc, index) => (
+        <DocList {...doc} level={level + 1} key={`${index}`} />
+      ))
+    }
+  </StyledChapterList>
+)
+
+const TableOfContents = ({ data: {title, packages} }) => (
   <TOCWrapper>
-    {console.log('CHAPTERS', chapters)}
-    {chapters.map((chapter, index) => <ChapterList {...chapter} key={index} />)}
+    <StyledChapterList>
+      <ChapterTitle level={0}>{title}</ChapterTitle>
+      {packages.map((pkg, index) => <PackageEntry {...pkg} key={index} />)}
+    </StyledChapterList>
   </TOCWrapper>
 )
 
@@ -50,10 +57,6 @@ const TOCWrapper = styled.div`
 const StyledChapterList = styled.ol`
   list-style: none;
   margin: 0;
-`
-
-const StyledLinkList = styled.ol`
-  list-style: none;
 `
 
 const EntryTitle = styled.h6`

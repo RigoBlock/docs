@@ -7,7 +7,10 @@ An API to simplify interaction with token Exchanges.
 ## Importing the package
 
 ```javascript
-import exchangeConnector, { supportedExchanges, NETWORKS, exchanges } from '@rigoblock/exchange-connector'
+import exchangeConnector, {
+  supportedExchanges,
+  NETWORKS,
+  exchanges } from '@rigoblock/exchange-connector'
 ```
 
 ## How to use it

@@ -48,38 +48,65 @@ title: "DApp"
 
 In the project directory, you can run:
 
-### `yarn build`
+```
+$  yarn build
+```
 Builds the app for production to the `dist` folder.
-### `yarn start`
+```
+$  yarn start
+```
 Starts an http-server serving the `dist` folder on port 8080.
-### `yarn dev`
+```
+$  yarn dev
+```
 Runs the app in the development mode.
 
 Open [http://localhost:8080](http://localhost:8080) to view it in the browser.
 
 The page will reload if you make edits.
-
-### `yarn storybook`
+```
+$  yarn storybook
+```
 Launches Storybook on port 6006
-### `yarn storybook:build`
+```
+$  yarn storybook:build
+```
 Builds Storybook as static files
-### `yarn test`
+```
+$  yarn test
+```
 Launches unit tests and feature tests sequentially.
-### `yarn test:unit`
+```
+$  yarn test:unit
+```
 Launches unit tests only and exits upon finishing.
-### `yarn test:unit:debug`
+```
+$  yarn test:unit:debug
+```
 Launches unit tests in debug mode.
-### `yarn test:unit:watch`
+```
+$  yarn test:unit:watch
+```
 Launches unit tests in interactive mode and listens for changes to the test file.
-### `yarn test:feature`
+```
+$  yarn test:feature
+```
 Launches feature tests.
-### `yarn test:feature:debug`
+```
+$  yarn test:feature:debug
+```
 Launches feature tests in debug mode.
-### `yarn ganache`
+```
+$  yarn ganache
+```
 Starts up the Ganache-cli with default port, network Id and mnemonic specified in the package.json file
-### `yarn ganache:bootstrap`
+```
+$  yarn ganache:bootstrap
+```
 Deploys all the compiled contracts on Ganache
-### `yarn ganache:seed`
+```
+$  yarn ganache:seed
+```
 Runs the seed script on Ganache
 ## Filename Conventions
 

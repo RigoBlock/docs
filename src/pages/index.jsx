@@ -21,7 +21,6 @@ class Index extends React.Component {
             <Hero>
               <img src={config.siteLogo} width="150px" alt="" />
               <h1>{config.siteTitle}</h1>
-              <h4>{config.siteDescription}</h4>
             </Hero>
           </IndexHeadContainer>
           <BodyContainer>
@@ -30,7 +29,7 @@ class Index extends React.Component {
               Made for modern documentation sites. Table of Contents
               automatically generated from markdown files.{' '}
             </p>
-            <CtaButton to={'/lesson-one'}>See Your First Post</CtaButton>
+            <CtaButton to={'/d-app'}>See Your First Post</CtaButton>
 
             <div className="contributors">
               <p>

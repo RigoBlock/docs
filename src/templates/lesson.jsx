@@ -5,7 +5,6 @@ import SEO from '../components/SEO'
 import SiteHeader from '../components/Layout/Header'
 import config from '../../data/SiteConfig'
 import TableOfContents from '../components/Layout/TableOfContents'
-import TableOfContents2 from '../components/Layout/TableOfContentsNew'
 import './Documentation.scss'
 
 export default class LessonTemplate extends React.Component {
@@ -31,7 +30,7 @@ export default class LessonTemplate extends React.Component {
             <SiteHeader location={this.props.location} />
           </HeaderContainer>
           <ToCContainer>
-            <TableOfContents2
+            <TableOfContents
               data={this.props.data.tableOfContents}
             />
           </ToCContainer>
