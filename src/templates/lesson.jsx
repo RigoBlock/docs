@@ -6,6 +6,7 @@ import SiteHeader from '../components/Layout/Header'
 import config from '../../data/SiteConfig'
 import TableOfContents from '../components/Layout/TableOfContents'
 import TableOfContents2 from '../components/Layout/TableOfContentsNew'
+import './Documentation.scss'
 
 export default class LessonTemplate extends React.Component {
   render() {

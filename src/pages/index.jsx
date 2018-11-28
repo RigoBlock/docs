@@ -9,7 +9,6 @@ import Navigation from '../components/Layout/Navigation'
 
 class Index extends React.Component {
   render() {
-    console.log('INDEX PROPS', this.props)
     const allSEOMarkdown = this.props.data.allMarkdown.edges
 
     return (

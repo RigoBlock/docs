@@ -5,18 +5,6 @@ import './TableOfContents.scss'
 
 /* eslint react/no-array-index-key: "off" */
 
-const Links = ({ entries }) => (
-  <StyledLinkList>
-    {entries.map(({ entry }, key) => (
-      <EntryListItem key={key}>
-        <Link to={entry.childMarkdownRemark.fields.slug}>
-          <EntryTitle>{entry.childMarkdownRemark.frontmatter.title}</EntryTitle>
-        </Link>
-      </EntryListItem>
-    ))}
-  </StyledLinkList>
-)
-
 const TitleLink = ({title, entry}) => (
   <ChapterListItem key={`${title}`}>
     <ChapterTitle level={0}>
@@ -27,9 +15,8 @@ const TitleLink = ({title, entry}) => (
   </ChapterListItem>
 )
 
-const DocList = ({title, entry, key, level}) => (
+const DocList = ({entry, key}) => (
   <StyledChapterList>
-    {console.log('INSIDE DOCLIST', title, entry)}
     <EntryListItem key={key}>
       <Link to={entry.childMarkdownRemark.fields.slug}>
         <EntryTitle>{entry.childMarkdownRemark.frontmatter.title}</EntryTitle>
@@ -38,9 +25,8 @@ const DocList = ({title, entry, key, level}) => (
   </StyledChapterList>
 )
 
-const PackageEntry = ({title, entry, level = 1, otherDocs = null}) => (
+const PackageEntry = ({title, entry, level = 1, otherDocs}) => (
   <StyledChapterList>
-    {otherDocs && console.log('OTHERDOCS', otherDocs)}
     {title && entry && (
     <TitleLink title={title} entry={entry} />
     )}
@@ -49,23 +35,6 @@ const PackageEntry = ({title, entry, level = 1, otherDocs = null}) => (
         <DocList {...doc} level={level + 1} key={`${index}`} />
       ))
     }
-  </StyledChapterList>
-)
-
-const ChapterList = ({ chapters, entries, title, level = 0 }) => (
-  <StyledChapterList>
-    {title && (
-      <ChapterListItem key={`${title}${level}`}>
-        <ChapterTitle level={level}>{title}</ChapterTitle>
-      </ChapterListItem>
-    )}
-    <ChapterListItem>{entries && <Links entries={entries} />}</ChapterListItem>
-    <ChapterListItem>
-      {chapters &&
-        chapters.map((chapter, index) => (
-          <ChapterList {...chapter} level={level + 1} key={`${index}`} />
-        ))}
-    </ChapterListItem>
   </StyledChapterList>
 )
 
