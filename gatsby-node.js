@@ -34,7 +34,6 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
 
   return new Promise((resolve, reject) => {
-    const postPage = path.resolve('src/templates/post.jsx')
     const lessonPage = path.resolve('src/templates/lesson.jsx')
     const categoryPage = path.resolve('src/templates/category.jsx')
     resolve(
@@ -77,23 +76,13 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
             categorySet.add(edge.node.frontmatter.category)
           }
 
-          if (edge.node.frontmatter.type === 'post') {
-            createPage({
-              path: edge.node.fields.slug,
-              component: postPage,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          } else {
-            createPage({
-              path: edge.node.fields.slug,
-              component: lessonPage,
-              context: {
-                slug: edge.node.fields.slug
-              }
-            })
-          }
+          createPage({
+            path: edge.node.fields.slug,
+            component: lessonPage,
+            context: {
+              slug: edge.node.fields.slug
+            }
+          })
         })
 
         const categoryList = Array.from(categorySet)
