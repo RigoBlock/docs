@@ -9,8 +9,43 @@
         {
           "title": "Feature Tests",
           "entry": "./feature_tests.md"
+        },
+        {
+          "title": "Migrations",
+          "entry": "./migrations.md"
+        }
+
+      ]
+    },
+    {
+      "title": "RigoBlock API",
+      "entry": "./api.md"
+    },
+    {
+      "title": "RigoBlock Contracts",
+      "entry": "./contracts.md",
+      "otherDocs": [
+        {
+          "title": "Testing",
+          "entry": "./testing.md"
         }
       ]
+    },
+    {
+      "title": "RigoBlock Data Collector",
+      "entry": "./data_collector.md"
+    },
+    {
+      "title": "RigoBlock Exchange Connector",
+      "entry": "./exchange_connector.md"
+    },
+    {
+      "title": "RigoBlock Statistics",
+      "entry": "./stats.md"
+    },
+    {
+      "title": "RigoBlock Deployer",
+      "entry": "./deployer.md"
     }
   ],
   "chapters": [

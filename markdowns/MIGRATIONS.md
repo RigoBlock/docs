@@ -1,8 +1,7 @@
----
-title: "Database Migrations"
----
+# Creating a database migration
 
-## Creating a database migration
+
+
 
 This is the folder structure of a sample counter reducer.
 

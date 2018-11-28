@@ -29,7 +29,7 @@ const TitleLink = ({title, entry}) => (
 
 const DocList = ({title, entry, key, level}) => (
   <StyledChapterList>
-    {console.log(title, entry)}
+    {console.log('INSIDE DOCLIST', title, entry)}
     <EntryListItem key={key}>
       <Link to={entry.childMarkdownRemark.fields.slug}>
         <EntryTitle>{entry.childMarkdownRemark.frontmatter.title}</EntryTitle>
@@ -40,7 +40,7 @@ const DocList = ({title, entry, key, level}) => (
 
 const PackageEntry = ({title, entry, level = 1, otherDocs = null}) => (
   <StyledChapterList>
-    {console.log(otherDocs)}
+    {otherDocs && console.log('OTHERDOCS', otherDocs)}
     {title && entry && (
     <TitleLink title={title} entry={entry} />
     )}

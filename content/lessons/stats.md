@@ -2,7 +2,7 @@
 title: "Statistics"
 ---
 
-![](./rigoblockStats.svg)
+![](./media/rigoblockStats.svg)
 
 ## Services
 
