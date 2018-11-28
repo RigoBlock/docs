@@ -5,9 +5,11 @@ import SEO from '../components/SEO'
 import SiteHeader from '../components/Layout/Header'
 import config from '../../data/SiteConfig'
 import TableOfContents from '../components/Layout/TableOfContents'
+import TableOfContents2 from '../components/Layout/TableOfContentsNew'
 
 export default class LessonTemplate extends React.Component {
   render() {
+    console.log('DATA', this.props)
     const { slug } = this.props.pathContext
     const postNode = this.props.data.postBySlug
     const post = postNode.frontmatter
@@ -28,8 +30,8 @@ export default class LessonTemplate extends React.Component {
             <SiteHeader location={this.props.location} />
           </HeaderContainer>
           <ToCContainer>
-            <TableOfContents
-              chapters={this.props.data.tableOfContents.chapters}
+            <TableOfContents2
+              data={this.props.data.tableOfContents}
             />
           </ToCContainer>
           <BodyContainer>
@@ -114,9 +116,22 @@ export const pageQuery = graphql`
       }
     }
     tableOfContents: lessonsJson {
-      chapters {
+      title
+      packages {
         title
-        entries {
+        entry {
+          id
+          childMarkdownRemark {
+            fields {
+              slug
+            }
+            frontmatter {
+              title
+            }
+          }
+        }
+        otherDocs {
+          title
           entry {
             id
             childMarkdownRemark {
@@ -129,38 +144,9 @@ export const pageQuery = graphql`
             }
           }
         }
-        chapters {
-          title
-          entries {
-            entry {
-              id
-              childMarkdownRemark {
-                fields {
-                  slug
-                }
-                frontmatter {
-                  title
-                }
-              }
-            }
-          }
-          chapters {
-            title
-            entries {
-              entry {
-                id
-                childMarkdownRemark {
-                  fields {
-                    slug
-                  }
-                  frontmatter {
-                    title
-                  }
-                }
-              }
-            }
-          }
-        }
+      }
+      chapters {
+        title
       }
     }
   }

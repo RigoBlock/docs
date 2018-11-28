@@ -1,11 +1,24 @@
 {
   "id": "table-of-contents",
+  "title": "Packages",
+  "packages": [
+    {
+      "title": "RigoBlock DApp",
+      "entry": "./dapp.md",
+      "otherDocs": [
+        {
+          "title": "Feature Tests",
+          "entry": "./FEATURE_TESTS.md"
+        }
+      ]
+    }
+  ],
   "chapters": [
     {
-      "title": "1. Main Chapter",
+      "title": "Old",
       "chapters": [
         {
-          "title": "1.1 Subchapter",
+          "title": "RigoBlock API",
           "entries": [
             {
               "entry": "./lesson_one.md"
@@ -32,27 +45,6 @@
               "entry": "./lesson_four.md"
             }
           ]
-        }
-      ]
-    },
-    {
-      "title": "2. Main Chapter",
-      "chapters": [
-        {
-          "title": "2.1 Subchapter",
-          "entries": [
-            {
-              "entry": "./lesson_five.md"
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "title": "3. Main Chapter",
-      "entries": [
-        {
-          "entry": "./lesson_six.md"
         }
       ]
     }

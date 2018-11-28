@@ -1,6 +1,7 @@
 import React from 'react'
 import Link from 'gatsby-link'
 import styled from 'styled-components'
+import './TableOfContents.scss'
 
 /* eslint react/no-array-index-key: "off" */
 
@@ -14,6 +15,24 @@ const Links = ({ entries }) => (
       </EntryListItem>
     ))}
   </StyledLinkList>
+)
+
+const TitleLink = ({title, entry}) => (
+  <ChapterListItem key={`${title}`}>
+    <ChapterTitle level={0}>
+      <Link to={entry.childMarkdownRemark.fields.slug}>
+        {entry.childMarkdownRemark.frontmatter.title}
+      </Link>
+    </ChapterTitle>
+  </ChapterListItem>
+)
+
+const PackageEntry = ({title, entry, level = 1, otherDocs = null}) => (
+  <StyledChapterList>
+    {title && entry && (
+    <TitleLink title={title} entry={entry} />
+    )}
+  </StyledChapterList>
 )
 
 const ChapterList = ({ chapters, entries, title, level = 0 }) => (
@@ -33,10 +52,12 @@ const ChapterList = ({ chapters, entries, title, level = 0 }) => (
   </StyledChapterList>
 )
 
-const TableOfContents = ({ chapters }) => (
+const TableOfContents = ({ data: {title, packages} }) => (
   <TOCWrapper>
-    {console.log('CHAPTERS', chapters)}
-    {chapters.map((chapter, index) => <ChapterList {...chapter} key={index} />)}
+    <StyledChapterList>
+      <ChapterTitle level={0}>{title}</ChapterTitle>
+      {packages.map((pkg, index) => <PackageEntry {...pkg} key={index} />)}
+    </StyledChapterList>
   </TOCWrapper>
 )
 
