@@ -1,0 +1,14 @@
+.button-container {
+  border: 1px solid #0A4186;
+  border-radius: 3px;
+  padding: 25px;
+  font-size: 2rem;
+  color: #0A4186;
+  display: inline-block;
+  transition: all 0.3s ease;
+
+  &:hover {
+    color: white;
+    background: #0A4186;
+  }
+}

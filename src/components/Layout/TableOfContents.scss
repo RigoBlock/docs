@@ -1,5 +1,47 @@
 .titleLink {
   color: black;
   font-weight: bold;
-  font-size: 0.8em;
+}
+
+.list-title {
+  font-weight: 600;
+  font-size: 2.8rem;
+  color: #0A4186;
+}
+
+.list-entry {
+  font-weight: 600;
+  font-size: 2.2rem;
+}
+
+.list-sub-entry {
+  font-weight: 400;
+  font-size: 1.8rem
+}
+
+.chapter-list-item {
+  margin: 0;
+}
+
+.entry-title {
+  display: inline-block;
+  font-weight: 200;
+  color: black;
+  margin: 0;
+  line-height: 1.5;
+  border-bottom: 1px solid transparent;
+  text-decoration: none;
+}
+
+.entry-list-item {
+  margin: 0;
+  a:hover {
+    border-bottom: 1px solid black;
+  }
+}
+
+.package-list {
+  list-style: none;
+  list-style-type: none;
+  margin: 0;
 }

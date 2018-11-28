@@ -1,0 +1,27 @@
+.nav-container  {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  background: #0A4186;
+
+  .nav-link {
+    font-size: 1.6rem;
+    color: white;
+    margin-right: 10px;
+    font-weight: 200;
+  }
+
+  @media screen and (max-width: 600px) {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    section {
+      margin-bottom: 20px;
+    }
+
+    span {
+      display: none;
+    }
+  }
+}

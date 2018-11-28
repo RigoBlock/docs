@@ -1,1 +1,31 @@
-// #0A4186
+.main-logo {
+  height: 65px;
+}
+
+.logo-header {
+  padding: 20px 100px;
+}
+
+.hero {
+  padding: 50px 0;
+  & > h1 {
+    font-weight: 600;
+  }
+  background: #0A4186;
+  color: white;
+}
+
+.index-head-container {
+  background: #0A4186;
+  padding: 25px;
+  text-align: center;
+}
+
+.body-container {
+  padding: 25px;
+  max-width: 850px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

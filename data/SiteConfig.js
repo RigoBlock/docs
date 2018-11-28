@@ -1,7 +1,7 @@
 module.exports = {
   blogPostDir: 'posts', // The name of directory that contains your posts.
   lessonsDir: 'lessons', // The name of the directory that contains lessons or docs.
-  siteTitle: 'RigoBlock Monorepo Documentation', // Site title.
+  siteTitle: 'Knowledge Base', // Site title.
   siteTitleAlt: 'Gatsby Starter Template for Creating Docs', // Alternative site title for SEO.
   siteLogo: '/logos/rigoblock-logo-full.png', // Logo used for SEO and manifest.
   siteUrl: 'https://ericwindmill.com', // Domain of your website without pathPrefix.
@@ -46,8 +46,8 @@ module.exports = {
     }
   ],
   copyright: 'Copyright © 2017. Advanced User', // Copyright string for the footer of the website and RSS feed.
-  themeColor: '#c62828', // Used for setting manifest and progress theme colors.
-  backgroundColor: '#e0e0e0', // Used for setting manifest background color.
+  themeColor: '#0A4186', // Used for setting manifest and progress theme colors.
+  backgroundColor: '#0A4186', // Used for setting manifest background color.
   // TODO: Move this literally anywhere better.
   toCChapters: ['', 'Chapter 1', 'Chapter 2'] // Used to generate the Table Of Contents. Index 0 should be blank.
 }
