@@ -9,6 +9,7 @@ import Navigation from '../components/Layout/Navigation'
 
 class Index extends React.Component {
   render() {
+    console.log('INDEX PROPS', this.props)
     const allSEOMarkdown = this.props.data.allMarkdown.edges
 
     return (
@@ -98,26 +99,28 @@ export const pageQuery = graphql`
         }
       }
     }
-    posts: allMarkdownRemark(
-      limit: 2000
-      filter: { frontmatter: { type: { eq: "post" } } }
-      sort: { fields: [frontmatter___date], order: DESC }
-    ) {
-      edges {
-        node {
-          fields {
-            slug
-          }
-          excerpt
-          timeToRead
-          frontmatter {
-            title
-            tags
-            cover
-            date
-          }
-        }
-      }
-    }
   }
 `
+
+
+// posts: allMarkdownRemark(
+//   limit: 2000
+//   filter: { frontmatter: { type: { eq: "post" } } }
+//   sort: { fields: [frontmatter___date], order: DESC }
+// ) {
+//   edges {
+//     node {
+//       fields {
+//         slug
+//       }
+//       excerpt
+//       timeToRead
+//       frontmatter {
+//         title
+//         tags
+//         cover
+//         date
+//       }
+//     }
+//   }
+// }

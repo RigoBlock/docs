@@ -1,4 +1,6 @@
-# Feature Tests
+---
+title: "Feature Tests"
+---
 
 We are using [CodeceptJS](https://codecept.io/helpers/Puppeteer/ "Puppeteer Helper Guide") for feature tests. To test the DApp we wrote a custom codecept helper that automatically injects `window.web3` into Puppeteer's page instance.
 

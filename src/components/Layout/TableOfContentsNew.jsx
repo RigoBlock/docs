@@ -27,14 +27,26 @@ const TitleLink = ({title, entry}) => (
   </ChapterListItem>
 )
 
+const DocList = ({title, entry, key, level}) => (
+  <StyledChapterList>
+    {console.log(title, entry)}
+    <EntryListItem key={key}>
+      <Link to={entry.childMarkdownRemark.fields.slug}>
+        <EntryTitle>{entry.childMarkdownRemark.frontmatter.title}</EntryTitle>
+      </Link>
+    </EntryListItem>
+  </StyledChapterList>
+)
+
 const PackageEntry = ({title, entry, level = 1, otherDocs = null}) => (
   <StyledChapterList>
+    {console.log(otherDocs)}
     {title && entry && (
     <TitleLink title={title} entry={entry} />
     )}
     {
       otherDocs && otherDocs.map((doc, index) => (
-        <ChapterList {...doc} level={level + 1} key={`${index}`} />
+        <DocList {...doc} level={level + 1} key={`${index}`} />
       ))
     }
   </StyledChapterList>

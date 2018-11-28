@@ -8,7 +8,7 @@
       "otherDocs": [
         {
           "title": "Feature Tests",
-          "entry": "./FEATURE_TESTS.md"
+          "entry": "./feature_tests.md"
         }
       ]
     }
