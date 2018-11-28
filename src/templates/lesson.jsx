@@ -145,9 +145,6 @@ export const pageQuery = graphql`
           }
         }
       }
-      chapters {
-        title
-      }
     }
   }
 `
