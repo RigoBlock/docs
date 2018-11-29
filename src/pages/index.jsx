@@ -25,7 +25,7 @@ class Index extends React.Component {
           <h2>RigoBlock Packages Documentation</h2>
           <div className="body-container">
             <CtaButton to={'/dapp'}>Go to the documentation</CtaButton>
-            <CtaButton to={'/linux-06-dokku/'}>Go to KB articles</CtaButton>
+            <CtaButton to={'/linux-06-dokku'}>Go to KB articles</CtaButton>
           </div>
         </main>
       </div>
