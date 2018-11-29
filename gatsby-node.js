@@ -4,28 +4,11 @@ const webpackLodashPlugin = require('lodash-webpack-plugin')
 
 exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
   const { createNodeField } = boundActionCreators
-  let slug
   if (node.internal.type === 'MarkdownRemark') {
     const fileNode = getNode(node.parent)
     const parsedFilePath = path.parse(fileNode.relativePath)
-    if (
-      Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
-      Object.prototype.hasOwnProperty.call(node.frontmatter, 'slug')
-    ) {
-      slug = `/${_.kebabCase(node.frontmatter.slug)}`
-    }
-    if (
-      Object.prototype.hasOwnProperty.call(node, 'frontmatter') &&
-      Object.prototype.hasOwnProperty.call(node.frontmatter, 'title')
-    ) {
-      slug = `/${_.kebabCase(node.frontmatter.title)}`
-    } else if (parsedFilePath.name !== 'index' && parsedFilePath.dir !== '') {
-      slug = `/${parsedFilePath.dir}/${parsedFilePath.name}/`
-    } else if (parsedFilePath.dir === '') {
-      slug = `/${parsedFilePath.name}/`
-    } else {
-      slug = `/${parsedFilePath.dir}/`
-    }
+    const slug = `/${parsedFilePath.dir}/${_.kebabCase(parsedFilePath.name)}/`
+    console.log('SLUG', slug)
     createNodeField({ node, name: 'slug', value: slug })
   }
 }
@@ -45,9 +28,6 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
                 node {
                   frontmatter {
                     title
-                    type
-                    category
-                    tags
                   }
                   fields {
                     slug
@@ -62,19 +42,13 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           reject(result.errors)
         }
 
-        const tagSet = new Set()
-        const categorySet = new Set()
+        // const tagSet = new Set()
+        // const categorySet = new Set()
 
         result.data.allMarkdownRemark.edges.forEach(edge => {
-          if (edge.node.frontmatter.tags) {
-            edge.node.frontmatter.tags.forEach(tag => {
-              tagSet.add(tag)
-            })
-          }
-
-          if (edge.node.frontmatter.category) {
-            categorySet.add(edge.node.frontmatter.category)
-          }
+          // if (edge.node.frontmatter.category) {
+          //   categorySet.add(edge.node.frontmatter.category)
+          // }
 
           createPage({
             path: edge.node.fields.slug,
@@ -85,16 +59,16 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           })
         })
 
-        const categoryList = Array.from(categorySet)
-        categoryList.forEach(category => {
-          createPage({
-            path: `/categories/${_.kebabCase(category)}/`,
-            component: categoryPage,
-            context: {
-              category
-            }
-          })
-        })
+        // const categoryList = Array.from(categorySet)
+        // categoryList.forEach(category => {
+        //   createPage({
+        //     path: `/categories/${_.kebabCase(category)}/`,
+        //     component: categoryPage,
+        //     context: {
+        //       category
+        //     }
+        //   })
+        // })
       })
     )
   })
