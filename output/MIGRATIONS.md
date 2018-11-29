@@ -1,5 +1,5 @@
 ---
-title: "Contracts"
+title: "MIGRATIONS"
 category: "packages"
 ---
 

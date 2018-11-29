@@ -1,5 +1,5 @@
 ---
-title: "Contracts"
+title: "PULL_REQUEST_TEMPLATE"
 category: "packages"
 ---
 

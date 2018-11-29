@@ -26,9 +26,11 @@ const getData = async () => {
   markdowns.map(async markdown => {
     const { path, sha } = markdown
     const content = await fetchContentAndWrite(sha)
-    const fileName = path.split('/').pop()
+    const fileName = getFileName(path)
     const data =
-      `---\ntitle: "Contracts"\ncategory: "packages"\n---\n\n` + content
+      `---\ntitle: "${fileName
+        .split('.')
+        .shift()}"\ncategory: "packages"\n---\n\n` + content
     return fs.writeFile(`output/${fileName}`, data, 'utf8', err =>
       err ? console.error(err) : console.log(`${fileName} saved!`)
     )
@@ -45,6 +47,16 @@ const fetchContentAndWrite = async blobSha => {
     headers
   }).then(res => res.json())
   return atob(response.content)
+}
+
+const getFileName = path => {
+  const pathArray = path.split('/')
+  let fileName = pathArray.pop()
+  if (fileName === 'README.md' && pathArray.length) {
+    const newName = pathArray.pop()
+    fileName = `${newName}.md`
+  }
+  return fileName
 }
 
 getData()

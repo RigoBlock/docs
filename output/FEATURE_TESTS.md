@@ -1,5 +1,5 @@
 ---
-title: "Contracts"
+title: "FEATURE_TESTS"
 category: "packages"
 ---
 
