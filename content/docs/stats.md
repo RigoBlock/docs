@@ -1,5 +1,6 @@
 ---
 title: "Statistics"
+category: "packages"
 ---
 
 ![](./media/rigoblockStats.svg)

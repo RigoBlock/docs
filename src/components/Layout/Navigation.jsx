@@ -10,10 +10,10 @@ class Navigation extends React.Component {
           <Link className="nav-link" to="/">
             HOME
           </Link>
-          <Link className="nav-link" to="/docs/dapp">
+          <Link className="nav-link" to="/dapp">
             DOCS
           </Link>
-          <Link className="nav-link" to="/kb/linux-06-dokku/">
+          <Link className="nav-link" to="/linux-06-dokku/">
             KB
           </Link>
         </section>

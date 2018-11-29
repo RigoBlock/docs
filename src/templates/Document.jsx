@@ -10,7 +10,8 @@ import styled from 'styled-components'
 export default class LessonTemplate extends React.Component {
   render() {
     console.log('DATA', this.props)
-    const { slug } = this.props.pathContext
+    const [packages, kb] = this.props.data.allData.contents
+    const { slug, category } = this.props.pathContext
     const postNode = this.props.data.postBySlug
     const post = postNode.frontmatter
     if (!post.id) {
@@ -30,7 +31,7 @@ export default class LessonTemplate extends React.Component {
             <SiteHeader location={this.props.location} />
           </HeaderContainer>
           <ToCContainer>
-            <TableOfContents data={this.props.data.tableOfContents} />
+            <TableOfContents data={category === 'packages' ? packages : kb} />
           </ToCContainer>
           <BodyContainer>
             <div>
@@ -109,22 +110,10 @@ export const pageQuery = graphql`
         title
       }
     }
-    tableOfContents: docsJson {
-      title
-      documents {
+    allData: docsJson {
+      contents {
         title
-        entry {
-          id
-          childMarkdownRemark {
-            fields {
-              slug
-            }
-            frontmatter {
-              title
-            }
-          }
-        }
-        otherDocs {
+        documents {
           title
           entry {
             id
@@ -134,6 +123,20 @@ export const pageQuery = graphql`
               }
               frontmatter {
                 title
+              }
+            }
+          }
+          otherDocs {
+            title
+            entry {
+              id
+              childMarkdownRemark {
+                fields {
+                  slug
+                }
+                frontmatter {
+                  title
+                }
               }
             }
           }

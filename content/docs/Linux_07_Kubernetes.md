@@ -1,5 +1,6 @@
 ---
 title: "Linux Kubernetes"
+category: "kb"
 ---
 
 # Kubernetes CentOS

@@ -1,5 +1,6 @@
 ---
 title: "Database Migrations"
+category: "packages"
 ---
 
 ## Creating a database migration

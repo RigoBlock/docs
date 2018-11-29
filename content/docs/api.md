@@ -1,5 +1,6 @@
 ---
 title: "API"
+category: "packages"
 ---
 
 ## Building the package

@@ -1,5 +1,6 @@
 ---
 title: "Linux Dokku"
+category: "kb"
 ---
 
 # Server info

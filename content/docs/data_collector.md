@@ -1,5 +1,6 @@
 ---
 title: "Data Collector"
+category: "packages"
 ---
 
 ## Services

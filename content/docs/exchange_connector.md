@@ -1,5 +1,6 @@
 ---
 title: "Exchange Connector"
+category: "packages"
 ---
 
 An API to simplify interaction with token Exchanges.

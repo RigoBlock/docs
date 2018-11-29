@@ -1,5 +1,6 @@
 ---
 title: "Smart Contract Testing"
+category: "packages"
 ---
 
 # Developing new contracts

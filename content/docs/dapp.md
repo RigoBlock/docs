@@ -1,5 +1,6 @@
 ---
 title: "DApp"
+category: "packages"
 ---
 
 ## Folder Structure

@@ -1,5 +1,6 @@
 ---
 title: "Contracts"
+category: "packages"
 ---
 
 ## Available Scripts

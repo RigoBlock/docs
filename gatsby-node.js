@@ -7,7 +7,7 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
   if (node.internal.type === 'MarkdownRemark') {
     const fileNode = getNode(node.parent)
     const parsedFilePath = path.parse(fileNode.relativePath)
-    const slug = `/${parsedFilePath.dir}/${_.kebabCase(parsedFilePath.name)}/`
+    const slug = _.kebabCase(parsedFilePath.name)
     createNodeField({ node, name: 'slug', value: slug })
   }
 }
@@ -17,7 +17,6 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
 
   return new Promise((resolve, reject) => {
     const documentPage = path.resolve('src/templates/Document.jsx')
-    const kbPage = path.resolve('src/templates/Kb.jsx')
     resolve(
       graphql(
         `
@@ -27,6 +26,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
                 node {
                   frontmatter {
                     title
+                    category
                   }
                   fields {
                     slug
@@ -42,16 +42,15 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         }
 
         result.data.allMarkdownRemark.edges.forEach(edge => {
+          console.log('EDGE', edge)
           const { slug } = edge.node.fields
-          const dir = slug
-            .split('/')
-            .filter(val => !!val)
-            .shift()
+          const { category } = edge.node.frontmatter
           createPage({
-            path: edge.node.fields.slug,
-            component: dir === 'docs' ? documentPage : kbPage,
+            path: slug,
+            component: documentPage,
             context: {
-              slug
+              slug,
+              category
             }
           })
         })
