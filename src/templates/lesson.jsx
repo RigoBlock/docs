@@ -1,11 +1,11 @@
-import React from 'react'
+import './Documentation.scss'
 import Helmet from 'react-helmet'
-import styled from 'styled-components'
+import React from 'react'
 import SEO from '../components/SEO'
 import SiteHeader from '../components/Layout/Header'
-import config from '../../data/SiteConfig'
 import TableOfContents from '../components/Layout/TableOfContents'
-import './Documentation.scss'
+import config from '../../data/SiteConfig'
+import styled from 'styled-components'
 
 export default class LessonTemplate extends React.Component {
   render() {
@@ -30,9 +30,7 @@ export default class LessonTemplate extends React.Component {
             <SiteHeader location={this.props.location} />
           </HeaderContainer>
           <ToCContainer>
-            <TableOfContents
-              data={this.props.data.tableOfContents}
-            />
+            <TableOfContents data={this.props.data.tableOfContents} />
           </ToCContainer>
           <BodyContainer>
             <div>

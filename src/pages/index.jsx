@@ -1,10 +1,10 @@
-import React from 'react'
+import './index.scss'
+import CtaButton from '../components/CtaButton'
 import Helmet from 'react-helmet'
-import styled from 'styled-components'
+import React from 'react'
 import SEO from '../components/SEO'
 import config from '../../data/SiteConfig'
-import CtaButton from '../components/CtaButton'
-import './index.scss'
+import styled from 'styled-components'
 
 class Index extends React.Component {
   render() {
@@ -26,7 +26,6 @@ class Index extends React.Component {
           <div className="body-container">
             <h2>RigoBlock Packages Documentation</h2>
             <CtaButton to={'/d-app'}>Go to the documentation</CtaButton>
-
           </div>
         </main>
       </div>
@@ -72,7 +71,6 @@ export const pageQuery = graphql`
     }
   }
 `
-
 
 // posts: allMarkdownRemark(
 //   limit: 2000

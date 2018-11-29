@@ -1,6 +1,6 @@
+import Navigation from './Navigation'
 import React from 'react'
 import styled from 'styled-components'
-import Navigation from './Navigation'
 
 class MainHeader extends React.Component {
   render() {
@@ -16,7 +16,7 @@ const SiteContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #0A4186;
+  background: #0a4186;
   padding: 25px;
 `
 

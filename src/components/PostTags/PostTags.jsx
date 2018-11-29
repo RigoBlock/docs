@@ -1,6 +1,6 @@
+import Link from 'gatsby-link'
 import React, { Component } from 'react'
 import _ from 'lodash'
-import Link from 'gatsby-link'
 
 class PostTags extends Component {
   render() {

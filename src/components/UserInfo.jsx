@@ -1,5 +1,5 @@
-import React, { Component } from 'react'
 import { Follow } from 'react-twitter-widgets'
+import React, { Component } from 'react'
 
 class UserInfo extends Component {
   render() {

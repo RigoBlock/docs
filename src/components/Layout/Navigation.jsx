@@ -1,6 +1,6 @@
-import React from 'react'
-import Link from 'gatsby-link'
 import './Navigation.scss'
+import Link from 'gatsby-link'
+import React from 'react'
 
 class Navigation extends React.Component {
   render() {

@@ -1,6 +1,6 @@
-import React from 'react'
 import Helmet from 'react-helmet'
 import PostListing from '../components/PostListing/PostListing'
+import React from 'react'
 import config from '../../data/SiteConfig'
 
 export default class CategoryTemplate extends React.Component {

@@ -1,6 +1,6 @@
-import React, { Component } from 'react'
-import Link from 'gatsby-link'
 import './CtaButton.scss'
+import Link from 'gatsby-link'
+import React, { Component } from 'react'
 
 class ctaButton extends Component {
   render() {
@@ -14,4 +14,3 @@ class ctaButton extends Component {
 }
 
 export default ctaButton
-

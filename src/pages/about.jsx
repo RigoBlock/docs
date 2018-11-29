@@ -1,9 +1,9 @@
-import React from 'react'
-import Helmet from 'react-helmet'
-import styled from 'styled-components'
-import config from '../../data/SiteConfig'
-import MainHeader from '../components/Layout/Header'
 import About from '../components/About/About'
+import Helmet from 'react-helmet'
+import MainHeader from '../components/Layout/Header'
+import React from 'react'
+import config from '../../data/SiteConfig'
+import styled from 'styled-components'
 
 const BodyContainer = styled.div`
   padding: ${props => props.theme.sitePadding};
