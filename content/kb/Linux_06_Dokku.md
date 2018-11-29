@@ -1,6 +1,5 @@
 ---
 title: "Linux Dokku"
-path: "/kb/linux-dokku"
 ---
 
 # Server info

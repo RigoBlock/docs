@@ -8,7 +8,6 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
     const fileNode = getNode(node.parent)
     const parsedFilePath = path.parse(fileNode.relativePath)
     const slug = `/${parsedFilePath.dir}/${_.kebabCase(parsedFilePath.name)}/`
-    console.log('SLUG', slug)
     createNodeField({ node, name: 'slug', value: slug })
   }
 }
@@ -17,8 +16,8 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
 
   return new Promise((resolve, reject) => {
-    const lessonPage = path.resolve('src/templates/lesson.jsx')
-    const categoryPage = path.resolve('src/templates/category.jsx')
+    const documentPage = path.resolve('src/templates/Document.jsx')
+    const kbPage = path.resolve('src/templates/Kb.jsx')
     resolve(
       graphql(
         `
@@ -42,33 +41,20 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           reject(result.errors)
         }
 
-        // const tagSet = new Set()
-        // const categorySet = new Set()
-
         result.data.allMarkdownRemark.edges.forEach(edge => {
-          // if (edge.node.frontmatter.category) {
-          //   categorySet.add(edge.node.frontmatter.category)
-          // }
-
+          const { slug } = edge.node.fields
+          const dir = slug
+            .split('/')
+            .filter(val => !!val)
+            .shift()
           createPage({
             path: edge.node.fields.slug,
-            component: lessonPage,
+            component: dir === 'docs' ? documentPage : kbPage,
             context: {
-              slug: edge.node.fields.slug
+              slug
             }
           })
         })
-
-        // const categoryList = Array.from(categorySet)
-        // categoryList.forEach(category => {
-        //   createPage({
-        //     path: `/categories/${_.kebabCase(category)}/`,
-        //     component: categoryPage,
-        //     context: {
-        //       category
-        //     }
-        //   })
-        // })
       })
     )
   })

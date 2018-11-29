@@ -98,9 +98,9 @@ const ToCContainer = styled.div`
   }
 `
 
-/* eslint no-undef: "off" */
+// /* eslint no-undef: "off" */
 export const pageQuery = graphql`
-  query LessonBySlug($slug: String!) {
+  query DocumentBySlug($slug: String!) {
     postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
       html
       timeToRead
@@ -109,9 +109,9 @@ export const pageQuery = graphql`
         title
       }
     }
-    tableOfContents: docsJson {
+    tableOfContents: kbJson {
       title
-      packages {
+      documents {
         title
         entry {
           id

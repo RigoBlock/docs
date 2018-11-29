@@ -7,7 +7,7 @@ import styled from 'styled-components'
 
 const TitleLink = ({ title, entry }) => (
   <div className="chapter-list-item" key={`${title}`}>
-    <h5 className="list-entry" level={0}>
+    <h5 className="list-entry">
       <Link className="titleLink" to={entry.childMarkdownRemark.fields.slug}>
         {entry.childMarkdownRemark.frontmatter.title}
       </Link>
@@ -15,9 +15,9 @@ const TitleLink = ({ title, entry }) => (
   </div>
 )
 
-const DocList = ({ entry, key }) => (
+const DocList = ({ entry }) => (
   <div>
-    <li className="entry-list-item" key={key}>
+    <li className="entry-list-item">
       <Link to={entry.childMarkdownRemark.fields.slug}>
         <div className="entry-title">
           {entry.childMarkdownRemark.frontmatter.title}
@@ -37,11 +37,11 @@ const PackageEntry = ({ title, entry, level = 1, otherDocs }) => (
   </div>
 )
 
-const TableOfContents = ({ data: { title, packages } }) => (
+const TableOfContents = ({ data: { title, documents } }) => (
   <TOCWrapper>
     <ul className="package-list">
       <h5 className="list-title">{title}</h5>
-      {packages.map((pkg, index) => (
+      {documents.map((pkg, index) => (
         <PackageEntry {...pkg} key={index} />
       ))}
     </ul>
