@@ -8,8 +8,13 @@ class Navigation extends React.Component {
       <div className="nav-container">
         <section>
           <Link className="nav-link" to="/">
-            {' '}
-            HOME{' '}
+            HOME
+          </Link>
+          <Link className="nav-link" to="/docs/dapp">
+            DOCS
+          </Link>
+          <Link className="nav-link" to="/kb/linux-06-dokku/">
+            KB
           </Link>
         </section>
       </div>

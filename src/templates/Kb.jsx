@@ -10,8 +10,7 @@ import styled from 'styled-components'
 export default class LessonTemplate extends React.Component {
   render() {
     console.log('DATA', this.props)
-    const { slug, dir } = this.props.pathContext
-    console.log(dir)
+    const { slug } = this.props.pathContext
     const postNode = this.props.data.postBySlug
     const post = postNode.frontmatter
     if (!post.id) {
@@ -122,6 +121,20 @@ export const pageQuery = graphql`
             }
             frontmatter {
               title
+            }
+          }
+        }
+        otherDocs {
+          title
+          entry {
+            id
+            childMarkdownRemark {
+              fields {
+                slug
+              }
+              frontmatter {
+                title
+              }
             }
           }
         }

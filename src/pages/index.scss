@@ -2,6 +2,10 @@
   height: 65px;
 }
 
+main {
+  text-align: center;
+}
+
 .logo-header {
   padding: 20px 100px;
 }
@@ -23,9 +27,8 @@
 
 .body-container {
   padding: 25px;
-  max-width: 850px;
+  max-width: 650px;
   margin: 0 auto;
   display: flex;
-  align-items: center;
-  flex-direction: column;
+  justify-content: space-between;
 }

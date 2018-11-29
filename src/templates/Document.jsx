@@ -109,7 +109,7 @@ export const pageQuery = graphql`
         title
       }
     }
-    tableOfContents: kbJson {
+    tableOfContents: docsJson {
       title
       documents {
         title

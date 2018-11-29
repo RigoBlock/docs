@@ -22,9 +22,10 @@ class Index extends React.Component {
               <h1>{config.siteTitle}</h1>
             </div>
           </div>
+          <h2>RigoBlock Packages Documentation</h2>
           <div className="body-container">
-            <h2>RigoBlock Packages Documentation</h2>
             <CtaButton to={'/docs/dapp'}>Go to the documentation</CtaButton>
+            <CtaButton to={'/kb/linux-06-dokku/'}>Go to KB articles</CtaButton>
           </div>
         </main>
       </div>
