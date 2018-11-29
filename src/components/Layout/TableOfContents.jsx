@@ -39,7 +39,6 @@ const PackageEntry = ({ title, entry, level = 1, otherDocs }) => (
 
 const TableOfContents = ({ data: { title, documents } }) => (
   <TOCWrapper>
-    {console.log('TITLE', title, 'documents', documents)}
     <ul className="package-list">
       <h5 className="list-title">{title}</h5>
       {documents.map((pkg, index) => (

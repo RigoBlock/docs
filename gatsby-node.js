@@ -42,7 +42,6 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
         }
 
         result.data.allMarkdownRemark.edges.forEach(edge => {
-          console.log('EDGE', edge)
           const { slug } = edge.node.fields
           const { category } = edge.node.frontmatter
           createPage({

@@ -9,7 +9,6 @@ import styled from 'styled-components'
 
 export default class LessonTemplate extends React.Component {
   render() {
-    console.log('DATA', this.props)
     const [packages, kb] = this.props.data.allData.contents
     const { slug, category } = this.props.pathContext
     const postNode = this.props.data.postBySlug
