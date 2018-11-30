@@ -7,7 +7,10 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
   if (node.internal.type === 'MarkdownRemark') {
     const fileNode = getNode(node.parent)
     const parsedFilePath = path.parse(fileNode.relativePath)
-    const slug = _.kebabCase(parsedFilePath.name)
+    const { name } = parsedFilePath
+    const dir = parsedFilePath.dir.split('/').pop()
+    const slug = name === 'README' ? dir : _.kebabCase(parsedFilePath.name)
+    console.log('SLUG', slug)
     createNodeField({ node, name: 'slug', value: slug })
   }
 }
