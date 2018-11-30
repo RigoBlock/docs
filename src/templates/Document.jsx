@@ -27,7 +27,10 @@ export default class LessonTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
           <HeaderContainer>
-            <SiteHeader location={this.props.location} />
+            <SiteHeader
+              location={this.props.location}
+              searchIndex={this.props.data.siteSearchIndex}
+            />
           </HeaderContainer>
           <ToCContainer>
             <TableOfContents data={category === 'packages' ? packages : kb} />
@@ -108,6 +111,9 @@ export const pageQuery = graphql`
       frontmatter {
         title
       }
+    }
+    siteSearchIndex {
+      index
     }
     allData: docsJson {
       contents {

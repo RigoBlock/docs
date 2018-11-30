@@ -1,12 +1,14 @@
 import Navigation from './Navigation'
 import React from 'react'
+import Search from './Search'
 import styled from 'styled-components'
 
-class MainHeader extends React.Component {
+class Header extends React.Component {
   render() {
     return (
       <SiteContainer>
         <Navigation />
+        <Search searchIndex={this.props.searchIndex} />
       </SiteContainer>
     )
   }
@@ -20,4 +22,4 @@ const SiteContainer = styled.div`
   padding: 25px;
 `
 
-export default MainHeader
+export default Header
