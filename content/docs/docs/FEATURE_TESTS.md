@@ -1,11 +1,13 @@
 ---
-title: "Feature Tests"
+title: "FEATURE_TESTS"
 category: "packages"
 ---
 
+# Feature Tests
+
 We are using [CodeceptJS](https://codecept.io/helpers/Puppeteer/ "Puppeteer Helper Guide") for feature tests. To test the DApp we wrote a custom codecept helper that automatically injects `window.web3` into Puppeteer's page instance.
 
-The Rigoblock API gets instantiated by the `global.init` action, and since we need to wait for web3 to be injected we modified our code so that it checks for a *REACT\_APP\_TEST* environment variable.
+The Rigoblock API gets instantiated by the `global.init` action, and since we need to wait for web3 to be injected we modified our code so that it checks for a `REACT_APP_TEST` environment variable.
 
 ```javascript
 const init = () => store.dispatch(globalActions.init())

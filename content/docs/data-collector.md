@@ -1,7 +1,9 @@
 ---
-title: "Data Collector"
+title: "data-collector"
 category: "packages"
 ---
+
+# Rigoblock Data Collector
 
 ## Services
 

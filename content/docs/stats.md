@@ -1,9 +1,10 @@
 ---
-title: "Statistics"
+title: "stats"
 category: "packages"
 ---
 
-![](./media/rigoblockStats.svg)
+# Rigoblock Stats
+![](./rigoblockStats.svg)
 
 ## Services
 

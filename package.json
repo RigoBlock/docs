@@ -42,6 +42,7 @@
   "devDependencies": {
     "atob": "^2.1.2",
     "babel-eslint": "^10.0.1",
+    "chalk": "^2.4.1",
     "cli-glob": "^0.1.0",
     "eslint": "^5.9.0",
     "eslint-config-prettier": "^3.3.0",
@@ -50,8 +51,10 @@
     "eslint-plugin-prettier": "^3.0.0",
     "eslint-plugin-react": "^7.11.1",
     "eslint-plugin-sort-imports-es6-autofix": "^0.3.0",
+    "fs-extra": "^7.0.1",
     "gatsby-plugin-sass": "1.0.26",
     "gh-pages": "^1.0.0",
+    "multispinner": "^0.2.1",
     "node-fetch": "^2.3.0",
     "node-sass": "^4.10.0",
     "prettier": "^1.15.2",

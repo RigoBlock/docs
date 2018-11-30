@@ -1,8 +1,9 @@
 ---
-title: "API"
+title: "api"
 category: "packages"
 ---
 
+# API
 ## Building the package
 
 Start Ganache

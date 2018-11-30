@@ -1,3 +1,8 @@
+---
+title: "TESTING"
+category: "packages"
+---
+
 # Developing new contracts
 
 Create a new directory into `solidity-contracts` and name it accordinly.
