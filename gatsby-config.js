@@ -138,8 +138,7 @@ module.exports = {
             query: `
             {
               allMarkdownRemark(
-                limit: 1000,
-                sort: { order: DESC, fields: [frontmatter___date] },
+                limit: 1000
               ) {
                 edges {
                   node {
@@ -149,10 +148,7 @@ module.exports = {
                     fields { slug }
                     frontmatter {
                       title
-                      cover
-                      date
                       category
-                      tags
                     }
                   }
                 }

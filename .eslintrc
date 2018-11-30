@@ -29,7 +29,8 @@
         "ignoreMemberSort": false,
         "memberSyntaxSortOrder": ["none", "all", "multiple", "single"]
       }],
-      "react/require-default-props": 2,
+      "react/require-default-props": 0,
+      "react/prop-types": 0,
       "prettier/prettier": [
         "error", {
           "singleQuote": true,
