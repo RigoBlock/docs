@@ -1,28 +1,41 @@
-// const { GITHUB_ACCESS_TOKEN } = require('./constants')
+const fetch = require('node-fetch')
 const fs = require('fs')
-const axios = require('axios')
+const { fetchJSON, postJSON } = require('./utils')
 
-const graphQLQuery = async () => {
-  const axiosGraphQL = axios.create({
-    baseURL: 'https://api.github.com/graphql',
-    headers: {
-      Authorization: `bearer f001853260be2447e36917a7ce4c7512c63f8562`
-    }
-  })
-  const query = `{
-    repository(owner: "RigoBlock", name: "rigoblock-monorepo") {
-      object(expression:"master:packages/dapp/README.md") {
-        ... on Blob {
-          text
-        }
-      }
-    }
-  }`
-  const { data } = await axiosGraphQL.post('', { query }).then(res => res.data)
+// /branches/master
+const fetchREADMEs = async () => {
+  const GRAPQL_URL = 'https://api.github.com/graphql'
+  const REST_URL = 'https://api.github.com/repos/RigoBlock/rigoblock-monorepo'
 
-  return fs.writeFileSync('prova.md', data.repository.object.text, (err, res) =>
-    err ? console.error(err) : console.log(res)
+  const treeUrl = await fetchJSON(`${REST_URL}/branches/master`).then(
+    res => res.commit.commit.tree.url
   )
+  const res = await fetchJSON(
+    'https://api.github.com/repos/RigoBlock/rigoblock-monorepo/git/trees/09f15fb23a9275cd50954cfcd6aa80d22f8dd648'
+  )
+
+  console.log(res)
+  // const linkRegexp = /(?<=\().*\.md(?=\))/g
+  // const linkRegexp = /\]\((.+\.md)\)/i // not working, only getting one link per file cause of no global
+  // const packages = ['dapp', 'api', 'exchange-connector', 'contracts']
+  // packages.map(async pkg => {
+  //   const query = `{
+  //     repository(owner: "RigoBlock", name: "rigoblock-monorepo") {
+  //       object(expression:"master:packages/${pkg}/README.md") {
+  //         ... on Blob {
+  //           text
+  //         }
+  //       }
+  //     }
+  //   }`
+  //   const response = await postJSON(baseURL, { query })
+  //   // fs.
+  //   const data = response.data.repository.object.text
+  //   const links = data.match(linkRegexp)
+  //   if (links) {
+  //     links.map()
+  //   }
+  // })
 }
 
-graphQLQuery()
+fetchREADMEs()
