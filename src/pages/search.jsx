@@ -1,4 +1,4 @@
-import './Documentation.scss'
+import '../templates/Documentation.scss'
 import Helmet from 'react-helmet'
 import React from 'react'
 import SEO from '../components/SEO'
@@ -7,24 +7,15 @@ import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
 import styled from 'styled-components'
 
-export default class DocumentTemplate extends React.Component {
+export default class LessonTemplate extends React.Component {
   render() {
     const [packages, kb] = this.props.data.allData.contents
-    const { slug, category } = this.props.pathContext
-    const postNode = this.props.data.postBySlug
-    const post = postNode.frontmatter
-    if (!post.id) {
-      post.id = slug
-    }
-    if (!post.id) {
-      post.category_id = config.postDefaultCategoryID
-    }
+    const { category } = this.props.pathContext
     return (
       <div>
         <Helmet>
-          <title>{`${post.title} | ${config.siteTitle}`}</title>
+          <title>{`${config.siteTitle}`}</title>
         </Helmet>
-        <SEO postPath={slug} postNode={postNode} postSEO />
         <BodyGrid>
           <HeaderContainer>
             <SiteHeader
@@ -35,12 +26,7 @@ export default class DocumentTemplate extends React.Component {
           <ToCContainer>
             <TableOfContents data={category === 'packages' ? packages : kb} />
           </ToCContainer>
-          <BodyContainer>
-            <div>
-              <h1>{post.title}</h1>
-              <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
-            </div>
-          </BodyContainer>
+          <BodyContainer>tmp content</BodyContainer>
         </BodyGrid>
       </div>
     )
@@ -103,15 +89,7 @@ const ToCContainer = styled.div`
 
 // /* eslint no-undef: "off" */
 export const pageQuery = graphql`
-  query DocumentBySlug($slug: String!) {
-    postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
-      html
-      timeToRead
-      excerpt
-      frontmatter {
-        title
-      }
-    }
+  query SearchQuery {
     siteSearchIndex {
       index
     }

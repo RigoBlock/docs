@@ -14,7 +14,7 @@ export default class Search extends Component {
   render() {
     return (
       <div>
-        <input type="text" value={this.state.query} onChange={this.search} />
+        <input type="text" value={this.state.query} onChange={this.onSearch} />
         <ul>
           {this.state.results.map(page => (
             <li key={page.title}>{page.title}</li>
@@ -31,7 +31,7 @@ export default class Search extends Component {
         Index.load(this.props.searchIndex.index)
   }
 
-  search = evt => {
+  onSearch = evt => {
     const query = evt.target.value
     const newState = {
       query
