@@ -9,43 +9,43 @@ category: "packages"
 
 ```
 .
-├── README.md
-├── coverage
-├── node_modules
-├── output
-├── dist            // Dist folder will contain the built files for
-│                      production use (populated with yarn build)
-├── public
-│   └── index.html  // Page template
-├── src
-│   ├── actions
-│   ├── components
-│   │   ├── _settings
-│   │   ├── atoms
-│   │   │   └── Link
-│   │   │       ├── __snapshots__
-│   │   │       ├── index.js
-│   │   │       ├── Link.jsx
-│   │   │       ├── Link.scss
-│   │   │       ├── Link.stories.js
-│   │   │       └── Link.test.js
-│   │   ├── molecules
-│   │   ├── organisms
-│   │   └── templates
-│   ├── constants
-│   ├── epics
-│   ├── images
-│   ├── pages
-│   ├── reducers
-│   ├── store
-│   ├── api.js    // API instance
-│   ├── index.js    // JavaScript entry point
-│   ├── registerServiceWorker.js
-│   └── setupTests.js // Jest tests setup file
-├── test            // Feature tests are located inside this folder
-│   └── pages       // Folder for codecept page objects
-├── package.json
-└── yarn.lock
+âââ README.md
+âââ coverage
+âââ node_modules
+âââ output
+âââ dist            // Dist folder will contain the built files for
+â                      production use (populated with yarn build)
+âââ public
+âÂ Â  âââ index.html  // Page template
+âââ src
+âÂ Â  âââ actions
+âÂ Â  âââ components
+âÂ Â  âÂ Â  âââ _settings
+âÂ Â  âÂ Â  âââ atoms
+â   âÂ Â  âÂ Â  âââ Link
+â   âÂ Â  âÂ Â      âââ __snapshots__
+â   âÂ Â  âÂ Â      âââ index.js
+â   âÂ Â  âÂ Â      âââ Link.jsx
+â   âÂ Â  âÂ Â      âââ Link.scss
+â   âÂ Â  âÂ Â      âââ Link.stories.js
+â   âÂ Â  âÂ Â      âââ Link.test.js
+âÂ Â  âÂ Â  âââ molecules
+âÂ Â  âÂ Â  âââ organisms
+âÂ Â  âÂ Â  âââ templates
+âÂ Â  âââ constants
+âÂ Â  âââ epics
+âÂ Â  âââ images
+âÂ Â  âââ pages
+âÂ Â  âââ reducers
+âÂ Â  âââ store
+âÂ Â  âââ api.js    // API instance
+âÂ Â  âââ index.js    // JavaScript entry point
+âÂ Â  âââ registerServiceWorker.js
+âÂ Â  âââ setupTests.js // Jest tests setup file
+âââ test            // Feature tests are located inside this folder
+âÂ Â  âââ pages       // Folder for codecept page objects
+âââ package.json
+âââ yarn.lock
 ```
 ## Available Scripts
 
@@ -118,14 +118,14 @@ it('sums numbers', () => {
 ```
 
 All `expect()` matchers supported by Jest are [extensively documented here](https://facebook.github.io/jest/docs/en/expect.html#content).
-You can also use [`jest.fn()` and `expect(fn).toBeCalled()`](https://facebook.github.io/jest/docs/en/expect.html#tohavebeencalled) to create “spies” or mock functions.
+You can also use [`jest.fn()` and `expect(fn).toBeCalled()`](https://facebook.github.io/jest/docs/en/expect.html#tohavebeencalled) to create âspiesâ or mock functions.
 
 ## Offline Cache
 
 We are using [redux-persist](https://github.com/rt2zz/redux-persist) and [localforage](https://github.com/localForage/localForage) libraries to manage redux store persistence on IndexedDB.
 
-[Info on migrations](docs/MIGRATIONS)
+[Info on migrations](docs/MIGRATIONS.md)
 
 ## Feature Tests
 
-Please read the [documentation](docs/FEATURE_TESTS) for testing the DApp with CodeceptJS.
+Please read the [documentation](docs/FEATURE_TESTS.md) for testing the DApp with CodeceptJS.
