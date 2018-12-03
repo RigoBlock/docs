@@ -76,11 +76,11 @@ docker-compose -f ./packages/stats/docker-compose.prod.yml up
 
 ## Tasks
 
-- [calculateBalance](src/tasks/calculateBalance/README.md)
-- [calculateEthBalance](src/tasks/calculateEthBalance/README.md)
-- [fetchDragos](src/tasks/fetchDragos/README.md)
-- [getSharePrice](src/tasks/getSharePrice/README.md)
-- [getTotalSupply](src/tasks/getTotalSupply/README.md)
+- [calculateBalance](src/tasks/calculateBalance/README)
+- [calculateEthBalance](src/tasks/calculateEthBalance/README)
+- [fetchDragos](src/tasks/fetchDragos/README)
+- [getSharePrice](src/tasks/getSharePrice/README)
+- [getTotalSupply](src/tasks/getTotalSupply/README)
 
 ## Data currently being fetched
 

@@ -33,5 +33,5 @@ docker-compose -f ./packages/stats/docker-compose.prod.yml up
 
 ## Tasks
 
-- [fetchInfo](src/tasks/fetchInfo/README.md)
-- [fetchNews](src/tasks/fetchNews/README.md)
+- [fetchInfo](src/tasks/fetchInfo/README)
+- [fetchNews](src/tasks/fetchNews/README)

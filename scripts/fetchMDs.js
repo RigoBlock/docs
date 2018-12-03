@@ -62,9 +62,10 @@ const writeMarkdowns = markdownArray => {
   const writeMarkdown = (markdown, category) => {
     const mdFolder = __dirname + '/../content/docs/'
     const path = mdFolder + markdown.path
+    const content = markdown.content.replace(/\.md(?=\))/gi, '')
     const data =
       `---\ntitle: "${markdown.title}"\ncategory: "${category}"\n---\n\n` +
-      markdown.content
+      content
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
