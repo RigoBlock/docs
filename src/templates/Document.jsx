@@ -37,7 +37,6 @@ export default class DocumentTemplate extends React.Component {
           </ToCContainer>
           <BodyContainer>
             <div>
-              <h1>{post.title}</h1>
               <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </div>
           </BodyContainer>

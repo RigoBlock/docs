@@ -1,13 +1,17 @@
+const { createFilePath } = require('gatsby-source-filesystem')
 const path = require('path')
-const _ = require('lodash')
 const webpackLodashPlugin = require('lodash-webpack-plugin')
 
 exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
   const { createNodeField } = boundActionCreators
   if (node.internal.type === 'MarkdownRemark') {
-    const fileNode = getNode(node.parent)
-    const parsedFilePath = path.parse(fileNode.relativePath)
-    const slug = _.kebabCase(parsedFilePath.name)
+    const slug = createFilePath({
+      node,
+      getNode,
+      basePath: 'docs',
+      trailingSlash: false
+    })
+    console.log('SLUG', slug)
     createNodeField({ node, name: 'slug', value: slug })
   }
 }
@@ -48,7 +52,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
             path: slug,
             component: documentPage,
             context: {
-              slug,
+              slug: slug,
               category
             }
           })
