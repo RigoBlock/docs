@@ -1,5 +1,5 @@
 const config = require('./data/SiteConfig')
-const remark = require('remark')
+const removeMd = require('remove-markdown')
 
 const pathPrefix = config.pathPrefix === '/' ? '' : config.pathPrefix
 
@@ -170,7 +170,7 @@ module.exports = {
           // For any node of type MarkdownRemark, list how to resolve the fields' values
           MarkdownRemark: {
             title: node => node.frontmatter.title,
-            content: node => node.internal.content
+            content: node => removeMd(node.internal.content)
           }
         }
       }

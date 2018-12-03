@@ -11,7 +11,6 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
       basePath: 'docs',
       trailingSlash: false
     })
-    console.log('SLUG', slug)
     createNodeField({ node, name: 'slug', value: slug })
   }
 }
