@@ -61,6 +61,7 @@
     "prettier": "^1.15.2",
     "remark-cli": "^4.0.0",
     "remark-preset-lint-recommended": "^3.0.1",
+    "remove-markdown": "^0.3.0",
     "stylefmt": "^6.0.0",
     "write-good": "^0.11.3"
   },
