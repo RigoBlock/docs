@@ -1,15 +1,14 @@
 import './TableOfContents.scss'
 import Link from 'gatsby-link'
 import React from 'react'
-import styled from 'styled-components'
+import capitalize from 'lodash/capitalize'
 
 /* eslint react/no-array-index-key: "off" */
-
 const TitleLink = ({ title, entry }) => (
   <div className="chapter-list-item" key={`${title}`}>
     <h5 className="list-entry">
       <Link className="titleLink" to={entry.childMarkdownRemark.fields.slug}>
-        {entry.childMarkdownRemark.frontmatter.title}
+        {capitalize(entry.childMarkdownRemark.frontmatter.title)}
       </Link>
     </h5>
   </div>
@@ -38,19 +37,14 @@ const PackageEntry = ({ title, entry, level = 1, otherDocs }) => (
 )
 
 const TableOfContents = ({ data: { title, documents } }) => (
-  <TOCWrapper>
+  <div className="toc-wrapper">
     <ul className="package-list">
       <h5 className="list-title">{title}</h5>
       {documents.map((pkg, index) => (
         <PackageEntry {...pkg} key={index} />
       ))}
     </ul>
-  </TOCWrapper>
+  </div>
 )
 
 export default TableOfContents
-
-const TOCWrapper = styled.div`
-  padding: ${props => props.theme.sitePadding};
-  margin: 0;
-`

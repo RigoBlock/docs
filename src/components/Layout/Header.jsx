@@ -1,29 +1,20 @@
+import './Header.scss'
 import Navigation from './Navigation'
 import React from 'react'
 import Search from './Search'
-import styled from 'styled-components'
 
 class Header extends React.Component {
   render() {
     return (
-      <SiteContainer>
+      <div className="site-container">
         <Navigation />
         <Search
           searchIndex={this.props.searchIndex}
           onSearch={this.props.onSearch}
         />
-      </SiteContainer>
+      </div>
     )
   }
 }
-
-const SiteContainer = styled.div`
-  display: flex;
-  position: relative;
-  align-items: center;
-  justify-content: space-between;
-  background: #0a4186;
-  padding: 25px;
-`
 
 export default Header

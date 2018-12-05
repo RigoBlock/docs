@@ -23,15 +23,12 @@ export default class DocumentTemplate extends React.Component {
       results: []
     }
     if (query.length >= 3) {
-      const first = index.search(query, {
-        title: { boost: 2 },
-        content: { boost: 1 }
-      }) // Map over each ID and return the full document
-      console.log('FIRST', first)
-      const queryResults = first.map(({ ref }) =>
-        index.documentStore.getDoc(ref)
-      )
-      console.log('QUERY RESULTS', queryResults)
+      const queryResults = index
+        .search(query, {
+          title: { boost: 2 },
+          content: { boost: 1 }
+        }) // Map over each ID and return the full document
+        .map(({ ref }) => index.documentStore.getDoc(ref))
       if (queryResults.length) {
         newState.results = queryResults.map(page => {
           const { id, title } = page
@@ -72,14 +69,14 @@ export default class DocumentTemplate extends React.Component {
               onSearch={this.onSearch}
             />
           </div>
-          {this.state.results.length && (
-            <SearchResults searchResults={this.state.results} />
-          )}
           <div className="toc-container">
             <TableOfContents data={category === 'packages' ? packages : kb} />
           </div>
           <div className="document-body-container">
             <div>
+              {this.state.results.length !== 0 && (
+                <SearchResults searchResults={this.state.results} />
+              )}
               <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </div>
           </div>

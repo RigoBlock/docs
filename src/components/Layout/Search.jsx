@@ -1,18 +1,17 @@
 import './Search.scss'
 import { Index } from 'elasticlunr'
-import Link from 'gatsby-link'
 import React, { Component } from 'react'
 
 // Search component
 export default class Search extends Component {
   render() {
     return (
-      <div>
-        <input
-          type="text"
-          onChange={this.props.onSearch(this.getOrCreateIndex())}
-        />
-      </div>
+      <input
+        type="text"
+        className="search"
+        placeholder="Search"
+        onChange={this.props.onSearch(this.getOrCreateIndex())}
+      />
     )
   }
 
