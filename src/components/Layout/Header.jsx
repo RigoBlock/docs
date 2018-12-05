@@ -8,7 +8,10 @@ class Header extends React.Component {
     return (
       <SiteContainer>
         <Navigation />
-        <Search searchIndex={this.props.searchIndex} />
+        <Search
+          searchIndex={this.props.searchIndex}
+          onSearch={this.props.onSearch}
+        />
       </SiteContainer>
     )
   }
@@ -16,6 +19,7 @@ class Header extends React.Component {
 
 const SiteContainer = styled.div`
   display: flex;
+  position: relative;
   align-items: center;
   justify-content: space-between;
   background: #0a4186;

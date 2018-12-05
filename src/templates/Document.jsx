@@ -1,14 +1,53 @@
-import './Documentation.scss'
+import './Document.scss'
 import Helmet from 'react-helmet'
 import React from 'react'
 import SEO from '../components/SEO'
+import SearchResults from '../components/Layout/SearchResults'
 import SiteHeader from '../components/Layout/Header'
 import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
-import styled from 'styled-components'
 
 export default class DocumentTemplate extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {
+      results: []
+    }
+  }
+
+  onSearch = index => evt => {
+    const markdowns = this.props.data.markdownList.edges
+    const query = evt.target.value
+    const newState = {
+      query,
+      results: []
+    }
+    if (query.length >= 3) {
+      const first = index.search(query, {
+        title: { boost: 2 },
+        content: { boost: 1 }
+      }) // Map over each ID and return the full document
+      console.log('FIRST', first)
+      const queryResults = first.map(({ ref }) =>
+        index.documentStore.getDoc(ref)
+      )
+      console.log('QUERY RESULTS', queryResults)
+      if (queryResults.length) {
+        newState.results = queryResults.map(page => {
+          const { id, title } = page
+          const doc = markdowns.filter(md => id.match(md.node.id)).pop()
+          return {
+            title,
+            to: doc.node.fields.slug
+          }
+        })
+      }
+    }
+    this.setState(newState)
+  }
+
   render() {
+    console.log('STATE', this.state)
     const [packages, kb] = this.props.data.allData.contents
     const { slug, category } = this.props.pathContext
     const postNode = this.props.data.postBySlug
@@ -25,80 +64,30 @@ export default class DocumentTemplate extends React.Component {
           <title>{`${post.title} | ${config.siteTitle}`}</title>
         </Helmet>
         <SEO postPath={slug} postNode={postNode} postSEO />
-        <BodyGrid>
-          <HeaderContainer>
+        <div className="body-grid">
+          <div className="header-container">
             <SiteHeader
               location={this.props.location}
               searchIndex={this.props.data.siteSearchIndex}
+              onSearch={this.onSearch}
             />
-          </HeaderContainer>
-          <ToCContainer>
+          </div>
+          {this.state.results.length && (
+            <SearchResults searchResults={this.state.results} />
+          )}
+          <div className="toc-container">
             <TableOfContents data={category === 'packages' ? packages : kb} />
-          </ToCContainer>
-          <BodyContainer>
+          </div>
+          <div className="document-body-container">
             <div>
               <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </div>
-          </BodyContainer>
-        </BodyGrid>
+          </div>
+        </div>
       </div>
     )
   }
 }
-
-const BodyGrid = styled.div`
-  height: 100vh;
-  display: grid;
-  grid-template-rows: 75px 1fr;
-  grid-template-columns: 300px 1fr;
-
-  @media screen and (max-width: 600px) {
-    display: flex;
-    flex-direction: column;
-    height: inherit;
-  }
-`
-
-const BodyContainer = styled.div`
-  grid-column: 2 / 3;
-  grid-row: 2 / 3;
-  overflow: scroll;
-  justify-self: center;
-  width: 100%;
-  padding: ${props => props.theme.sitePadding};
-  @media screen and (max-width: 600px) {
-    order: 2;
-  }
-
-  & > div {
-    max-width: ${props => props.theme.contentWidthLaptop};
-    margin: auto;
-  }
-
-  & > h1 {
-    color: ${props => props.theme.accentDark};
-  }
-`
-
-const HeaderContainer = styled.div`
-  grid-column: 1 / 3;
-  grid-row: 1 / 2;
-  z-index: 2;
-  @media screen and (max-width: 600px) {
-    order: 1;
-  }
-`
-
-const ToCContainer = styled.div`
-  grid-column: 1 / 2;
-  grid-row: 2 / 3;
-  background: ${props => props.theme.lightGrey};
-  overflow: scroll;
-  @media screen and (max-width: 600px) {
-    order: 3;
-    overflow: inherit;
-  }
-`
 
 // /* eslint no-undef: "off" */
 export const pageQuery = graphql`
@@ -113,6 +102,16 @@ export const pageQuery = graphql`
     }
     siteSearchIndex {
       index
+    }
+    markdownList: allMarkdownRemark {
+      edges {
+        node {
+          id
+          fields {
+            slug
+          }
+        }
+      }
     }
     allData: docsJson {
       contents {

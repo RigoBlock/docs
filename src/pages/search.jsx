@@ -1,7 +1,6 @@
-import '../templates/Documentation.scss'
+import '../templates/Document.scss'
 import Helmet from 'react-helmet'
 import React from 'react'
-import SEO from '../components/SEO'
 import SiteHeader from '../components/Layout/Header'
 import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
@@ -24,7 +23,7 @@ export default class LessonTemplate extends React.Component {
             />
           </HeaderContainer>
           <ToCContainer>
-            <TableOfContents data={category === 'packages' ? packages : kb} />
+            {/* <TableOfContents data={category === 'packages' ? packages : kb} /> */}
           </ToCContainer>
           <BodyContainer>tmp content</BodyContainer>
         </BodyGrid>

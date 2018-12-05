@@ -17,6 +17,12 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
 
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
+  const searchPage = path.resolve('src/pages/search.jsx')
+
+  createPage({
+    path: 'search',
+    component: searchPage
+  })
 
   return new Promise((resolve, reject) => {
     const documentPage = path.resolve('src/templates/Document.jsx')

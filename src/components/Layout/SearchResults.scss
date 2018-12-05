@@ -1,0 +1,13 @@
+.result-list {
+  position: absolute;
+  width: 300px;
+  right: 25px;
+  background: white;
+  top: 50px;
+  border: 1px solid rgba($color: #000000, $alpha: 0.3);
+  padding: 25px;
+  z-index: 2;
+  ul {
+    list-style-type: none;
+  }
+}

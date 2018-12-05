@@ -1,34 +1,27 @@
+import './Search.scss'
 import { Index } from 'elasticlunr'
+import Link from 'gatsby-link'
 import React, { Component } from 'react'
 
 // Search component
 export default class Search extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      query: ``,
-      results: []
-    }
-  }
-
   render() {
     return (
       <div>
-        <input type="text" value={this.state.query} onChange={this.onSearch} />
-        <ul>
-          {this.state.results.map(page => (
-            <li key={page.title}>{page.title}</li>
-          ))}
-        </ul>
+        <input
+          type="text"
+          onChange={this.props.onSearch(this.getOrCreateIndex())}
+        />
       </div>
     )
   }
 
   getOrCreateIndex = () => {
+    if (!this.index) {
+      // Create an elastic lunr index and hydrate with graphql query results
+      this.index = Index.load(this.props.searchIndex.index)
+    }
     return this.index
-      ? this.index
-      : // Create an elastic lunr index and hydrate with graphql query results
-        Index.load(this.props.searchIndex.index)
   }
 
   onSearch = evt => {
@@ -45,6 +38,7 @@ export default class Search extends Component {
         })
         // Map over each ID and return the full document
         .map(({ ref }) => this.index.documentStore.getDoc(ref))
+      this.props.stateFunc(newState.results)
     }
 
     this.setState(newState)
