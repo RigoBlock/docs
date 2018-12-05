@@ -1,15 +1,10 @@
 .result-list {
-  position: absolute;
-  background: white;
-  border: 1px solid rgba($color: #000000, $alpha: 0.3);
   display: flex;
   flex-direction: column;
   right: 25px;
   width: 300px;
   top: 70px;
   padding: 25px;
-  z-index: 2;
-  margin: 0 auto;
 
   span {
     font-size: 2rem;

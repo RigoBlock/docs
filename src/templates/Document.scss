@@ -31,6 +31,17 @@
   }
 }
 
+.toc-container {
+  grid-column: 1 / 2;
+  grid-row: 2 / 3;
+  background: #F6F6F6;
+  overflow: scroll;
+  @media screen and (max-width: 600px) {
+    order: 3;
+    overflow: inherit;
+  }
+}
+
 .body-grid {
   height: 100vh;
   display: grid;
@@ -41,20 +52,6 @@
     display: flex;
     flex-direction: column;
     height: inherit;
-  }
-
-
-
-
-  .toc-container {
-    grid-column: 1 / 2;
-    grid-row: 2 / 3;
-    background: #F6F6F6;
-    overflow: scroll;
-    @media screen and (max-width: 600px) {
-      order: 3;
-      overflow: inherit;
-    }
   }
 }
 

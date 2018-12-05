@@ -2,7 +2,6 @@ import './Document.scss'
 import Helmet from 'react-helmet'
 import React from 'react'
 import SEO from '../components/SEO'
-import SearchResults from '../components/Layout/SearchResults'
 import SiteHeader from '../components/Layout/Header'
 import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
@@ -44,7 +43,6 @@ export default class DocumentTemplate extends React.Component {
   }
 
   render() {
-    console.log('STATE', this.state)
     const [packages, kb] = this.props.data.allData.contents
     const { slug, category } = this.props.pathContext
     const postNode = this.props.data.postBySlug
@@ -74,9 +72,6 @@ export default class DocumentTemplate extends React.Component {
           </div>
           <div className="document-body-container">
             <div>
-              {this.state.results.length !== 0 && (
-                <SearchResults searchResults={this.state.results} />
-              )}
               <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
             </div>
           </div>

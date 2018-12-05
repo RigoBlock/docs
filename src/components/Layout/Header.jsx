@@ -11,6 +11,7 @@ class Header extends React.Component {
         <Search
           searchIndex={this.props.searchIndex}
           onSearch={this.props.onSearch}
+          location={this.props.location}
         />
       </div>
     )
