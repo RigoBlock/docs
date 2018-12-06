@@ -38,7 +38,7 @@ const Search = props => {
       className="search"
       ref={searchEl}
       placeholder="Search"
-      value={query.value || searchValue}
+      value={query.value}
       onChange={query.onChange}
       // onClick={onClick}
     />
@@ -69,7 +69,8 @@ const useQuery = () => {
 
   return {
     value: query,
-    onChange: handleChange
+    onChange: handleChange,
+    set: setQuery
   }
 }
 
