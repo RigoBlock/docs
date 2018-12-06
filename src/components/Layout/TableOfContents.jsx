@@ -40,9 +40,8 @@ const TableOfContents = ({ data: { title, documents } }) => (
   <div className="toc-wrapper">
     <ul className="package-list">
       <h5 className="list-title">{title}</h5>
-      {documents.map((pkg, index) => (
-        <PackageEntry {...pkg} key={index} />
-      ))}
+      {documents &&
+        documents.map((pkg, index) => <PackageEntry {...pkg} key={index} />)}
     </ul>
   </div>
 )

@@ -1,16 +1,10 @@
-import '../templates/Document.scss'
-import './search.scss'
-import Helmet from 'react-helmet'
-import React, { useState } from 'react'
-import Search from '../components/Layout/Search'
+import React from 'react'
 import SearchResults from '../components/Layout/SearchResults'
-import SiteHeader from '../components/Layout/Header'
-import config from '../../data/SiteConfig'
-// import TableOfContents from '../components/Layout/TableOfContents'
+import TableOfContents from '../components/Layout/TableOfContents'
 
 const SearchTemplate = props => {
-  const [results, setResults] = useState([])
-  const markdowns = props.data.markdownList.edges
+  const { results, data } = props
+  const markdowns = data.allMarkdowns.edges
   let resultList = []
   if (results.length) {
     resultList = results.map(page => {
@@ -25,82 +19,15 @@ const SearchTemplate = props => {
   }
 
   return (
-    <div>
-      <Helmet>
-        <title>{`${config.siteTitle}`}</title>
-      </Helmet>
-      <div className="body-grid">
-        <div className="header-container">
-          <SiteHeader>
-            <Search
-              searchIndex={props.data.siteSearchIndex}
-              hook={setResults}
-              location={window.location.search}
-            />
-          </SiteHeader>
-        </div>
-        <div className="toc-container">
-          {/* <TableOfContents data={packages} /> */}
-        </div>
-        <div className="search-body">
-          <h1>Search results</h1>
-          {results.length !== 0 && <SearchResults data={resultList} />}
-        </div>
+    <div className="body-grid">
+      <div className="toc-container">
+        <TableOfContents data={{ title: 'Search Results' }} />
+      </div>
+      <div className="document-body-container">
+        {results.length !== 0 && <SearchResults data={resultList} />}
       </div>
     </div>
   )
 }
 
 export default SearchTemplate
-// /* eslint no-undef: "off" */
-export const pageQuery = graphql`
-  query SearchQuery {
-    siteSearchIndex {
-      index
-    }
-    markdownList: allMarkdownRemark {
-      edges {
-        node {
-          id
-          excerpt
-          fields {
-            slug
-          }
-        }
-      }
-    }
-    allData: docsJson {
-      contents {
-        title
-        documents {
-          title
-          entry {
-            id
-            childMarkdownRemark {
-              fields {
-                slug
-              }
-              frontmatter {
-                title
-              }
-            }
-          }
-          otherDocs {
-            title
-            entry {
-              id
-              childMarkdownRemark {
-                fields {
-                  slug
-                }
-                frontmatter {
-                  title
-                }
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-`

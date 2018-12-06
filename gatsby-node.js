@@ -17,15 +17,17 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
 
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
-  const searchPage = path.resolve('src/pages/search.jsx')
+  const baseTemplate = path.resolve('src/templates/BaseTemplate.jsx')
 
   createPage({
     path: 'search',
-    component: searchPage
+    component: baseTemplate,
+    context: {
+      slug: '/search'
+    }
   })
 
   return new Promise((resolve, reject) => {
-    const documentPage = path.resolve('src/templates/Document.jsx')
     resolve(
       graphql(
         `
@@ -55,7 +57,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           const { category } = edge.node.frontmatter
           createPage({
             path: slug,
-            component: documentPage,
+            component: baseTemplate,
             context: {
               slug: slug,
               category
