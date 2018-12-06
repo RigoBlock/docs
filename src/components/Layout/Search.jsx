@@ -1,66 +1,81 @@
 import './Search.scss'
 import { Index } from 'elasticlunr'
 import { navigateTo } from 'gatsby-link'
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 
-export default class Search extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      query: ''
-    }
-  }
+let index
 
-  componentDidMount() {
-    // if (this.props.location.pathname === '/search') {
-    //   this.nameInput.focus()
-    // }
-  }
-  render() {
-    const { pathname } = this.props.location
-    // const query = path
-    return (
-      <input
-        type="text"
-        className="search"
-        ref={input => {
-          this.nameInput = input
-        }}
-        placeholder="Search"
-        value={this.props.location.pathname}
-        // onClick={() => navigateTo('/search')}
-        onChange={this.props.onSearch(this.getOrCreateIndex())}
-      />
-    )
-  }
+const Search = props => {
+  const index = getOrCreateIndex(props)
+  const query = useQuery(props.hook, index)
 
-  getOrCreateIndex = () => {
-    if (!this.index) {
-      // Create an elastic lunr index and hydrate with graphql query results
-      this.index = Index.load(this.props.searchIndex.index)
-    }
-    return this.index
-  }
+  // useEffect(() => {
+  //   window.location.search = query.value
+  // })
 
-  // onSearch = evt => {
-  //   const query = evt.target.value
-  //   console.log('QUERY', query)
-  //   const newState = {
-  //     query
-  //   }
-  //   navigateTo('/search?q=' + query)
-
-  //   if (query.length >= 3) {
-  //     this.index = this.getOrCreateIndex()
-  //     newState.results = this.index
-  //       .search(query, {
-  //         title: { boost: 2 },
-  //         content: { boost: 1 }
-  //       })
-  //       // Map over each ID and return the full document
-  //       .map(({ ref }) => this.index.documentStore.getDoc(ref))
-  //   }
-
-  //   this.setState(newState)
-  // }
+  return (
+    <input
+      type="text"
+      className="search"
+      placeholder="Search"
+      value={query.value}
+      onChange={query.onChange}
+    />
+  )
 }
+
+const getOrCreateIndex = props => {
+  if (!index) {
+    // Create an elastic lunr index and hydrate with graphql query results
+    index = Index.load(props.searchIndex.index)
+  }
+  return index
+}
+
+const useQuery = (updateFunc, index) => {
+  const [query, setQuery] = useState('')
+
+  const handleChange = e => {
+    const query = e.target.value
+    setQuery(query)
+    if (query.length >= 3) {
+      const results = index
+        .search(query, {
+          title: { boost: 2 },
+          content: { boost: 1 }
+        })
+        .map(({ ref }) => index.documentStore.getDoc(ref))
+      updateFunc(results)
+      navigateTo('/search?q=' + query)
+    }
+  }
+
+  return {
+    value: query,
+    onChange: handleChange
+  }
+}
+
+export default Search
+
+// onSearch = evt => {
+//   const query = evt.target.value
+//   console.log('QUERY', query)
+//   const newState = {
+//     query
+//   }
+//   navigateTo('/search?q=' + query)
+
+//   if (query.length >= 3) {
+//     this.index = this.getOrCreateIndex()
+//     newState.results = this.index
+//       .search(query, {
+//         title: { boost: 2 },
+//         content: { boost: 1 }
+//       })
+//       // Map over each ID and return the full document
+//       .map(({ ref }) => this.index.documentStore.getDoc(ref))
+//   }
+
+//   this.setState(newState)
+// }
