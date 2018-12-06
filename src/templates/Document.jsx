@@ -2,46 +2,12 @@ import './Document.scss'
 import Helmet from 'react-helmet'
 import React from 'react'
 import SEO from '../components/SEO'
+import Search from '../components/Layout/Search'
 import SiteHeader from '../components/Layout/Header'
 import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
 
 export default class DocumentTemplate extends React.Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      results: []
-    }
-  }
-
-  onSearch = index => evt => {
-    const markdowns = this.props.data.markdownList.edges
-    const query = evt.target.value
-    const newState = {
-      query,
-      results: []
-    }
-    if (query.length >= 3) {
-      const queryResults = index
-        .search(query, {
-          title: { boost: 2 },
-          content: { boost: 1 }
-        }) // Map over each ID and return the full document
-        .map(({ ref }) => index.documentStore.getDoc(ref))
-      if (queryResults.length) {
-        newState.results = queryResults.map(page => {
-          const { id, title } = page
-          const doc = markdowns.filter(md => id.match(md.node.id)).pop()
-          return {
-            title,
-            to: doc.node.fields.slug
-          }
-        })
-      }
-    }
-    this.setState(newState)
-  }
-
   render() {
     const [packages, kb] = this.props.data.allData.contents
     const { slug, category } = this.props.pathContext
@@ -61,11 +27,13 @@ export default class DocumentTemplate extends React.Component {
         <SEO postPath={slug} postNode={postNode} postSEO />
         <div className="body-grid">
           <div className="header-container">
-            <SiteHeader
-              location={this.props.location}
-              searchIndex={this.props.data.siteSearchIndex}
-              onSearch={this.onSearch}
-            />
+            <SiteHeader>
+              <Search
+                searchIndex={this.props.data.siteSearchIndex}
+                hook={() => {}}
+                location={window.location.search}
+              />
+            </SiteHeader>
           </div>
           <div className="toc-container">
             <TableOfContents data={category === 'packages' ? packages : kb} />
@@ -94,16 +62,6 @@ export const pageQuery = graphql`
     }
     siteSearchIndex {
       index
-    }
-    markdownList: allMarkdownRemark {
-      edges {
-        node {
-          id
-          fields {
-            slug
-          }
-        }
-      }
     }
     allData: docsJson {
       contents {

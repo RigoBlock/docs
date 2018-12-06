@@ -7,7 +7,7 @@ const SearchResults = ({ data }) => (
     <ul>
       {data.map((res, index) => (
         <li key={index}>
-          <Link to={res.to}>{res.title}</Link>
+          <Link to={res.to}>{res.title.toUpperCase()}</Link>
           <p>{res.excerpt}</p>
         </li>
       ))}

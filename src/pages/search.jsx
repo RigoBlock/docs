@@ -1,6 +1,5 @@
 import '../templates/Document.scss'
 import './search.scss'
-import { navigateTo } from 'gatsby-link'
 import Helmet from 'react-helmet'
 import React, { useState } from 'react'
 import Search from '../components/Layout/Search'
@@ -10,34 +9,21 @@ import config from '../../data/SiteConfig'
 // import TableOfContents from '../components/Layout/TableOfContents'
 
 const SearchTemplate = props => {
-  const results = useResults()
-  const markdowns = props.data.markdownList
-  let displayedResults = []
-
-  if (results.value.length !== 0) {
-    console.log('VAL', results.value)
-    const mapped = results.value.map(page => {
+  const [results, setResults] = useState([])
+  const markdowns = props.data.markdownList.edges
+  let resultList = []
+  if (results.length) {
+    resultList = results.map(page => {
       const { id, title } = page
-      const doc = markdowns.filter(md => {
-        console.log('HERE')
-        console.log(md)
-        // id.match(md.node.id)
-      })
-      // .pop()
-      console.log(doc)
+      const doc = markdowns.filter(md => id.match(md.node.id)).pop()
+      return {
+        title,
+        to: doc.node.fields.slug,
+        excerpt: doc.node.excerpt
+      }
     })
-    // displayedResults = results.value.map(page => {
-    //   console.log(page)
-    //   const { id, title } = page
-    //   const doc = markdowns.filter(md => id.match(md.node.id)).pop()
-    //   return {
-    //     title,
-    //     to: doc.node.fields.slug
-    //   }
-    // })
-
-    // console.log(displayedResults)
   }
+
   return (
     <div>
       <Helmet>
@@ -48,8 +34,8 @@ const SearchTemplate = props => {
           <SiteHeader>
             <Search
               searchIndex={props.data.siteSearchIndex}
-              hook={results.update}
-              location={props.location}
+              hook={setResults}
+              location={window.location.search}
             />
           </SiteHeader>
         </div>
@@ -58,21 +44,11 @@ const SearchTemplate = props => {
         </div>
         <div className="search-body">
           <h1>Search results</h1>
-          {/* {displayedResults.length !== 0 && (
-            <SearchResults data={state.results} />
-          )} */}
+          {results.length !== 0 && <SearchResults data={resultList} />}
         </div>
       </div>
     </div>
   )
-}
-
-const useResults = () => {
-  const [results, setResults] = useState([])
-  return {
-    value: results,
-    update: setResults
-  }
 }
 
 export default SearchTemplate

@@ -13,9 +13,9 @@ class Navigation extends React.Component {
           <Link className="nav-link" to="/dapp">
             DOCS
           </Link>
-          <Link className="nav-link" to="/linux-06-dokku">
+          {/* <Link className="nav-link" to="/linux-06-dokku">
             KB
-          </Link>
+          </Link> */}
           <Link className="nav-link" to="/search">
             SEARCH TMP
           </Link>
