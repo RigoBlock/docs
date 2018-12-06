@@ -1,39 +1,43 @@
 import './BaseTemplate.scss'
 import DocumentPage from '../components/Layout/Document'
 import Helmet from 'react-helmet'
-import React from 'react'
+import React, { useState } from 'react'
 import SearchBar from '../components/Layout/SearchBar'
 import SearchPage from '../components/Layout/SearchResults'
 import SiteHeader from '../components/Layout/Header'
 
-export default class BaseTemplate extends React.Component {
-  render() {
-    const { pathname } = window.location
-    let results = []
-    const bodyComponent = pathname.match('/search') ? (
-      <SearchPage results={results} {...this.props} />
-    ) : (
-      <DocumentPage {...this.props} />
-    )
-    return (
-      <div>
-        <Helmet>
-          <title>RigoBlock Documentation</title>
-        </Helmet>
-        <div className="header-container">
-          <SiteHeader>
-            <SearchBar
-              searchIndex={this.props.data.siteSearchIndex}
-              hook={() => {}}
-              location={window.location.search}
-            />
-          </SiteHeader>
-        </div>
-        {bodyComponent}
+const BaseTemplate = props => {
+  const [results, setResults] = useState([])
+  const [query, setQuery] = useState('')
+  const { pathname } = window.location
+  const bodyComponent = pathname.match('/search') ? (
+    <SearchPage results={results} {...props} />
+  ) : (
+    <DocumentPage {...props} />
+  )
+
+  return (
+    <div>
+      <Helmet>
+        <title>RigoBlock Documentation</title>
+      </Helmet>
+      <div className="header-container">
+        <SiteHeader>
+          <SearchBar
+            searchIndex={props.data.siteSearchIndex}
+            setResults={setResults}
+            setQuery={setQuery}
+            query={query}
+            location={window.location.search}
+          />
+        </SiteHeader>
       </div>
-    )
-  }
+      {bodyComponent}
+    </div>
+  )
 }
+
+export default BaseTemplate
 
 // /* eslint no-undef: "off" */
 export const pageQuery = graphql`

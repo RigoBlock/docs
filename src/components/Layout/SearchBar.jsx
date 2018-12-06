@@ -7,7 +7,6 @@ let index
 
 const SearchBar = props => {
   const index = getOrCreateIndex(props)
-  const query = useQuery(props.hook, index)
   const searchEl = useRef(null)
   const searchValue =
     window.location.search && window.location.search.split('q=').pop()
@@ -17,6 +16,7 @@ const SearchBar = props => {
       searchEl.current.focus()
     }
   })
+
   useEffect(
     () => {
       if (searchValue && searchValue.length >= 3) {
@@ -26,10 +26,10 @@ const SearchBar = props => {
             content: { boost: 1 }
           })
           .map(({ ref }) => index.documentStore.getDoc(ref))
-        props.hook(results)
+        props.setResults(results)
       }
     },
-    [query.value]
+    [props.query]
   )
 
   return (
@@ -38,9 +38,8 @@ const SearchBar = props => {
       className="search"
       ref={searchEl}
       placeholder="Search"
-      value={query.value}
-      onChange={query.onChange}
-      // onClick={onClick}
+      value={props.query}
+      onChange={handleChange(props)}
     />
   )
 }
@@ -53,21 +52,11 @@ const getOrCreateIndex = props => {
   return index
 }
 
-const useQuery = () => {
-  const [query, setQuery] = useState('')
-
-  const handleChange = e => {
-    const query = e.target.value
-    setQuery(query)
-    if (query.length >= 3) {
-      navigateTo('/search?q=' + query)
-    }
-  }
-
-  return {
-    value: query,
-    onChange: handleChange,
-    set: setQuery
+const handleChange = props => e => {
+  const query = e.target.value
+  props.setQuery(query)
+  if (query.length >= 3) {
+    navigateTo('/search?q=' + query)
   }
 }
 
