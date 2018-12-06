@@ -1,9 +1,9 @@
 import './BaseTemplate.scss'
-import DocumentPage from './Document'
+import DocumentPage from '../components/Layout/Document'
 import Helmet from 'react-helmet'
 import React from 'react'
-import Search from '../components/Layout/Search'
-import SearchPage from './search'
+import SearchBar from '../components/Layout/SearchBar'
+import SearchPage from '../components/Layout/SearchResults'
 import SiteHeader from '../components/Layout/Header'
 
 export default class BaseTemplate extends React.Component {
@@ -22,7 +22,7 @@ export default class BaseTemplate extends React.Component {
         </Helmet>
         <div className="header-container">
           <SiteHeader>
-            <Search
+            <SearchBar
               searchIndex={this.props.data.siteSearchIndex}
               hook={() => {}}
               location={window.location.search}

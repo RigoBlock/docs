@@ -1,6 +1,6 @@
 import React from 'react'
-import TableOfContents from '../components/Layout/TableOfContents'
-import config from '../../data/SiteConfig'
+import TableOfContents from './TableOfContents'
+import config from '../../../data/SiteConfig'
 
 export default class Document extends React.Component {
   render() {

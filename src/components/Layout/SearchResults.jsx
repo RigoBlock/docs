@@ -1,8 +1,8 @@
-import List from '../components/Layout/List'
+import List from './List'
 import React from 'react'
-import TableOfContents from '../components/Layout/TableOfContents'
+import TableOfContents from './TableOfContents'
 
-const SearchTemplate = props => {
+const SearchResults = props => {
   const { results, data } = props
   const markdowns = data.allMarkdowns.edges
   let resultList = []
@@ -30,4 +30,4 @@ const SearchTemplate = props => {
   )
 }
 
-export default SearchTemplate
+export default SearchResults
