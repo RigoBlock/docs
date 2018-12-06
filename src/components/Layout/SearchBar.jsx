@@ -1,11 +1,11 @@
-import './Search.scss'
+import './SearchBar.scss'
 import { Index } from 'elasticlunr'
 import { navigateTo } from 'gatsby-link'
 import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
 
 let index
 
-const Search = props => {
+const SearchBar = props => {
   const index = getOrCreateIndex(props)
   const query = useQuery(props.hook, index)
   const searchEl = useRef(null)
@@ -45,9 +45,6 @@ const Search = props => {
   )
 }
 
-const onClick = () =>
-  window.location.pathname.match('/search') ? null : navigateTo('/search')
-
 const getOrCreateIndex = props => {
   if (!index) {
     // Create an elastic lunr index and hydrate with graphql query results
@@ -74,4 +71,4 @@ const useQuery = () => {
   }
 }
 
-export default Search
+export default SearchBar

@@ -1,5 +1,5 @@
+import List from '../components/Layout/List'
 import React from 'react'
-import SearchResults from '../components/Layout/SearchResults'
 import TableOfContents from '../components/Layout/TableOfContents'
 
 const SearchTemplate = props => {
@@ -24,7 +24,7 @@ const SearchTemplate = props => {
         <TableOfContents data={{ title: 'Search Results' }} />
       </div>
       <div className="document-body-container">
-        {results.length !== 0 && <SearchResults data={resultList} />}
+        {results.length !== 0 && <List data={resultList} />}
       </div>
     </div>
   )

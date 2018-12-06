@@ -1,8 +1,8 @@
-import './SearchResults.scss'
+import './List.scss'
 import Link from 'gatsby-link'
 import React from 'react'
 
-const SearchResults = ({ data }) => (
+const List = ({ data }) => (
   <div className="result-list">
     <ul>
       {data.map((res, index) => (
@@ -15,4 +15,4 @@ const SearchResults = ({ data }) => (
   </div>
 )
 
-export default SearchResults
+export default List
