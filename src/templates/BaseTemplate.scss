@@ -1,3 +1,5 @@
+@import "../components/_settings/variables.scss";
+
 .gatsby-highlight {
   font-size: large;
 }
@@ -10,12 +12,18 @@
   }
 }
 
+.search-body-container {
+  grid-column: 2 / 3;
+  overflow: scroll;
+  padding: $site-padding;
+}
+
 .document-body-container {
   grid-column: 2 / 3;
   overflow: scroll;
   justify-self: center;
   width: 100%;
-  padding: 25px;
+  padding: $site-padding;
   @media screen and (max-width: 600px) {
     order: 2;
   }
@@ -26,13 +34,13 @@
   }
 
   & > h1 {
-    color: #35495E;
+    color: $base-color;
   }
 }
 
 .toc-container {
   grid-column: 1 / 2;
-  background: #F6F6F6;
+  background: $white;
   overflow: scroll;
   @media screen and (max-width: 600px) {
     order: 3;

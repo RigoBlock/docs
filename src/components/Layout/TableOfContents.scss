@@ -1,5 +1,7 @@
+@import "../_settings/variables.scss";
+
 .toc-wrapper {
-  padding: 25px;
+  padding: $site-padding;
   margin: 0
 }
 
@@ -11,7 +13,7 @@
 .list-title {
   font-weight: 600;
   font-size: 2.8rem;
-  color: #0A4186;
+  color: $base-color;
 }
 
 .list-entry {

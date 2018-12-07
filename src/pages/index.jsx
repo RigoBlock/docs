@@ -1,8 +1,8 @@
 import './index.scss'
-import CtaButton from '../components/CtaButton'
+import CtaButton from '../components/Layout/CtaButton'
 import Helmet from 'react-helmet'
 import React from 'react'
-import SEO from '../components/SEO'
+import SEO from '../components/Layout/SEO'
 import config from '../../data/SiteConfig'
 
 class Index extends React.Component {

@@ -23,7 +23,7 @@ const SearchResults = props => {
       <div className="toc-container">
         <TableOfContents data={{ title: 'Search Results' }} />
       </div>
-      <div className="document-body-container">
+      <div className="search-body-container">
         {results.length !== 0 && <List data={resultList} />}
       </div>
     </div>

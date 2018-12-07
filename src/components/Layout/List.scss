@@ -1,11 +1,6 @@
-.result-list {
-  // display: flex;
-  // flex-direction: column;
-  // right: 25px;
-  // width: 300px;
-  // top: 70px;
-  // padding: 25px;
+@import "../_settings/variables.scss";
 
+.result-list {
   span {
     font-size: 2rem;
     padding-bottom: 15px;
@@ -14,14 +9,14 @@
   ul {
     margin: 0;
     list-style: none;
-    color: #0A4186;
+    color: $base-color;
     li {
       border-bottom: 1px solid rgba(0, 0, 0, 0.3);
       p {
         color: black;
       }
       a {
-        color: #0A4186;
+        color: $base-color;
         &:hover {
           border:  none;
         }

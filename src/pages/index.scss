@@ -1,3 +1,5 @@
+@import "../components/_settings/variables";
+
 .main-logo {
   height: 65px;
 }
@@ -11,22 +13,22 @@ main {
 }
 
 .hero {
-  padding: 50px 0;
+  padding: (2 * $base-color) 0;
   & > h1 {
     font-weight: 600;
   }
-  background: #0A4186;
-  color: white;
+  background: $base-color;
+  color: $white;
 }
 
 .index-head-container {
-  background: #0A4186;
-  padding: 25px;
+  background: $base-color;
+  padding: $site-padding;
   text-align: center;
 }
 
 .body-container {
-  padding: 25px;
+  padding: $site-padding;
   max-width: 650px;
   margin: 0 auto;
   display: flex;
