@@ -1,7 +1,7 @@
 import './SearchBar.scss'
 import { Index } from 'elasticlunr'
 import { navigateTo } from 'gatsby-link'
-import React, { useEffect, useLayoutEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 
 let index
 
@@ -11,11 +11,14 @@ const SearchBar = props => {
   const searchValue =
     window.location.search && window.location.search.split('q=').pop()
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (window.location.pathname.match('/search')) {
       searchEl.current.focus()
+      if (searchValue && !props.query) {
+        props.setQuery(searchValue)
+      }
     }
-  })
+  }, [])
 
   useEffect(
     () => {
