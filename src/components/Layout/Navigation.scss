@@ -1,9 +1,14 @@
 .nav-container  {
   display: flex;
-  justify-content: space-between;
+  // justify-content: space-between;
   width: 100%;
-  background: #0A4186;
 
+  a {
+    &:hover {
+      text-decoration: none;
+      border: none;
+    }
+  }
   .nav-link {
     font-size: 1.8rem;
     color: white;
@@ -16,8 +21,16 @@
     flex-direction: column;
     align-items: center;
 
-    section {
-      margin-bottom: 20px;
+    :nth-child(2n) {
+      background: white;
+      color: black
+    }
+
+    a.nav-link {
+      text-align: center;
+      margin-right: 0;
+      padding: 15px;
+      width: 100%;
     }
 
     span {

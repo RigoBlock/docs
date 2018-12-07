@@ -20,14 +20,12 @@ const BaseTemplate = props => {
       <Helmet>
         <title>RigoBlock Documentation</title>
       </Helmet>
-      <div className="header-container">
-        <SiteHeader>
-          <SearchBar
-            searchIndex={props.data.siteSearchIndex}
-            setResults={setResults}
-          />
-        </SiteHeader>
-      </div>
+      <SiteHeader>
+        <SearchBar
+          searchIndex={props.data.siteSearchIndex}
+          setResults={setResults}
+        />
+      </SiteHeader>
       {bodyComponent}
     </div>
   )

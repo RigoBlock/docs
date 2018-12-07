@@ -15,7 +15,7 @@
 .search-body-container {
   grid-column: 2 / 3;
   overflow: scroll;
-  padding: $site-padding;
+  padding: $dist-m;
 }
 
 .document-body-container {
@@ -23,7 +23,7 @@
   overflow: scroll;
   justify-self: center;
   width: 100%;
-  padding: $site-padding;
+  padding: $dist-m;
   @media screen and (max-width: 600px) {
     order: 2;
   }

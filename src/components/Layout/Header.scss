@@ -5,5 +5,20 @@
   align-items: center;
   justify-content: space-between;
   background: $base-color;
-  padding: $site-padding;
+  padding: $dist-m;
+
+  @media screen and (max-width: 600px) {
+    flex-direction: column;
+    padding: 0;
+
+    .search-bar {
+      width: 100%;
+      border-radius: 0;
+      border: none;
+      padding: 5px 15px;
+      font-size: 1.8rem;
+      font-weight: 200;
+      border-bottom: 1px solid $base-color;
+    }
+  }
 }

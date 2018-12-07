@@ -1,5 +1,5 @@
 import List from './List'
-import React from 'react'
+import React, { Fragment } from 'react'
 import TableOfContents from './TableOfContents'
 
 const SearchResults = props => {
@@ -24,7 +24,12 @@ const SearchResults = props => {
         <TableOfContents data={{ title: 'Search Results' }} />
       </div>
       <div className="search-body-container">
-        {results.length !== 0 && <List data={resultList} />}
+        {results.length !== 0 && (
+          <Fragment>
+            <h4>Found {results.length} page(s) matching your search:</h4>
+            <List data={resultList} />
+          </Fragment>
+        )}
       </div>
     </div>
   )
