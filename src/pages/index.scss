@@ -13,12 +13,17 @@ main {
 }
 
 .hero {
-  padding: (2 * $base-color) 0;
+  padding: 50px 0;
   & > h1 {
     font-weight: 600;
+    margin-bottom: 50px;
   }
   background: $base-color;
   color: $white;
+
+  .search-bar {
+    width: 600px;
+  }
 }
 
 .index-head-container {
@@ -30,7 +35,7 @@ main {
 .body-container {
   padding: $site-padding;
   max-width: 650px;
-  margin: 0 auto;
+  margin: 50px auto;
   display: flex;
   justify-content: space-between;
 }

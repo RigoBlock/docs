@@ -39,7 +39,7 @@ const SearchBar = props => {
   return (
     <input
       type="text"
-      className="search"
+      className="search-bar"
       ref={searchEl}
       placeholder="Search"
       value={query}
