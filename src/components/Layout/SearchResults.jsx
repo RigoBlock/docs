@@ -1,8 +1,7 @@
 import './SearchResults.scss'
 import Link from 'gatsby-link'
 import List from './List'
-import React, { Fragment, useState } from 'react'
-import TableOfContents from './TableOfContents'
+import React, { Fragment } from 'react'
 
 const SearchPage = props => {
   const { results, data, prevUrl } = props
