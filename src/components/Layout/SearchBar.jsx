@@ -12,9 +12,12 @@ const SearchBar = props => {
   const index = getOrCreateIndex(props)
   const searchEl = useRef(null)
   const [query, setQuery, handleChange] = useQuery()
-  const { q: queryParam, from } = qs.parse(window.location.search, {
-    ignoreQueryPrefix: true
-  })
+  const { q: queryParam, from } = qs.parse(
+    typeof window !== 'undefined' && window.location.search,
+    {
+      ignoreQueryPrefix: true
+    }
+  )
 
   // only on first mount, check if we are on search page, place focus on search bar
   // and add url query value to address bar if there is one
@@ -32,7 +35,7 @@ const SearchBar = props => {
 
   useEffect(
     () => {
-      if (queryParam.length >= MINIMUM_QUERY_LENGTH) {
+      if (queryParam && queryParam.length >= MINIMUM_QUERY_LENGTH) {
         const results = index
           .search(queryParam, {
             title: { boost: 2 },
