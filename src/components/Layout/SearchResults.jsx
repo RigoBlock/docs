@@ -1,9 +1,11 @@
+import './SearchResults.scss'
+import Link from 'gatsby-link'
 import List from './List'
-import React, { Fragment } from 'react'
+import React, { Fragment, useState } from 'react'
 import TableOfContents from './TableOfContents'
 
-const SearchResults = props => {
-  const { results, data } = props
+const SearchPage = props => {
+  const { results, data, prevUrl } = props
   const markdowns = data.allMarkdowns.edges
   let resultList = []
   if (results.length) {
@@ -21,7 +23,14 @@ const SearchResults = props => {
   return (
     <div className="body-grid">
       <div className="toc-container">
-        <TableOfContents data={{ title: 'Search Results' }} />
+        <div className="toc-search-wrapper">
+          <h3>Search Results</h3>
+          {prevUrl && (
+            <h4>
+              <Link to={prevUrl}>Back</Link>
+            </h4>
+          )}
+        </div>
       </div>
       <div className="search-body-container">
         {results.length !== 0 && (
@@ -35,4 +44,4 @@ const SearchResults = props => {
   )
 }
 
-export default SearchResults
+export default SearchPage

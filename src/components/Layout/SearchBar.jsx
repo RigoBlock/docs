@@ -2,30 +2,39 @@ import './SearchBar.scss'
 import { Index } from 'elasticlunr'
 import { navigateTo } from 'gatsby-link'
 import React, { useEffect, useRef, useState } from 'react'
+import queryString from 'query-string-es5'
 
+export const SEARCH_URL = '/search'
+export const MINIMUM_QUERY_LENGTH = 3
 let index
 
 const SearchBar = props => {
   const index = getOrCreateIndex(props)
   const searchEl = useRef(null)
   const [query, setQuery, handleChange] = useQuery()
-  const searchValue =
-    window.location.search && window.location.search.split('q=').pop()
+  const { q: queryParam, from } = queryString.parse(
+    typeof window !== 'undefined' && window.location.search
+  )
 
+  // only on first mount, check if we are on search page, place focus on search bar
+  // and add url query value to address bar if there is one
   useEffect(() => {
-    if (window.location.pathname.match('/search')) {
+    if (isSearchPage()) {
       searchEl.current.focus()
-      if (searchValue && !query) {
-        setQuery(searchValue)
+      if (from) {
+        props.setPrevUrl(from)
+      }
+      if (queryParam && !query) {
+        setQuery(queryParam)
       }
     }
   }, [])
 
   useEffect(
     () => {
-      if (searchValue && searchValue.length >= 3) {
+      if (queryParam >= MINIMUM_QUERY_LENGTH) {
         const results = index
-          .search(searchValue, {
+          .search(queryParam, {
             title: { boost: 2 },
             content: { boost: 1 }
           })
@@ -48,14 +57,21 @@ const SearchBar = props => {
   )
 }
 
+const isSearchPage = () =>
+  typeof window !== 'undefined' && window.location.pathname.match(SEARCH_URL)
+
 const useQuery = () => {
   const [query, setQuery] = useState('')
 
   const handleChange = e => {
     const query = e.target.value
     setQuery(query)
-    if (query.length >= 3) {
-      navigateTo('/search?q=' + query)
+    if (query.length >= MINIMUM_QUERY_LENGTH) {
+      const from = isSearchPage()
+        ? ''
+        : typeof window !== 'undefined' && window.location.pathname
+      const params = queryString.stringify({ q: query, from })
+      navigateTo(`${SEARCH_URL}?${params}`)
     }
   }
 
