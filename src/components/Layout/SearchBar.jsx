@@ -1,21 +1,22 @@
 import './SearchBar.scss'
 import { Index } from 'elasticlunr'
 import { navigateTo } from 'gatsby-link'
-import React, { useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
 let index
 
 const SearchBar = props => {
   const index = getOrCreateIndex(props)
   const searchEl = useRef(null)
+  const [query, setQuery, handleChange] = useQuery()
   const searchValue =
     window.location.search && window.location.search.split('q=').pop()
 
   useEffect(() => {
     if (window.location.pathname.match('/search')) {
       searchEl.current.focus()
-      if (searchValue && !props.query) {
-        props.setQuery(searchValue)
+      if (searchValue && !query) {
+        setQuery(searchValue)
       }
     }
   }, [])
@@ -32,7 +33,7 @@ const SearchBar = props => {
         props.setResults(results)
       }
     },
-    [props.query]
+    [query]
   )
 
   return (
@@ -41,10 +42,24 @@ const SearchBar = props => {
       className="search"
       ref={searchEl}
       placeholder="Search"
-      value={props.query}
-      onChange={handleChange(props)}
+      value={query}
+      onChange={handleChange}
     />
   )
+}
+
+const useQuery = () => {
+  const [query, setQuery] = useState('')
+
+  const handleChange = e => {
+    const query = e.target.value
+    setQuery(query)
+    if (query.length >= 3) {
+      navigateTo('/search?q=' + query)
+    }
+  }
+
+  return [query, setQuery, handleChange]
 }
 
 const getOrCreateIndex = props => {
@@ -53,14 +68,6 @@ const getOrCreateIndex = props => {
     index = Index.load(props.searchIndex.index)
   }
   return index
-}
-
-const handleChange = props => e => {
-  const query = e.target.value
-  props.setQuery(query)
-  if (query.length >= 3) {
-    navigateTo('/search?q=' + query)
-  }
 }
 
 export default SearchBar
