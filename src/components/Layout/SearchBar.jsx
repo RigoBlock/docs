@@ -11,13 +11,13 @@ let index
 const SearchBar = props => {
   const index = getOrCreateIndex(props)
   const searchEl = useRef(null)
-  const [query, setQuery, handleChange] = useQuery()
   const { q: queryParam, from } = qs.parse(
     typeof window !== 'undefined' && window.location.search,
     {
       ignoreQueryPrefix: true
     }
   )
+  const [query, setQuery, handleChange] = useQuery(from)
 
   // only on first mount, check if we are on search page, place focus on search bar
   // and add url query value to address bar if there is one
@@ -63,16 +63,21 @@ const SearchBar = props => {
 const isSearchPage = () =>
   typeof window !== 'undefined' && window.location.pathname.match(SEARCH_URL)
 
-const useQuery = () => {
+const useQuery = prevUrl => {
   const [query, setQuery] = useState('')
 
   const handleChange = e => {
     const query = e.target.value
     setQuery(query)
     if (query.length >= MINIMUM_QUERY_LENGTH) {
-      const from = isSearchPage()
-        ? ''
-        : typeof window !== 'undefined' && window.location.pathname
+      let from
+      if (prevUrl) {
+        from = prevUrl
+      } else if (isSearchPage() && !prevUrl) {
+        from = ''
+      } else {
+        from = typeof window !== 'undefined' && window.location.pathname
+      }
       const params = qs.stringify({ q: query, from })
       navigateTo(`${SEARCH_URL}?${params}`)
     }
