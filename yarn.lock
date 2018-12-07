@@ -9229,17 +9229,14 @@ qs@6.4.0, qs@~6.4.0:
   version "6.4.0"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.4.0.tgz#13e26d28ad6b0ffaa91312cd3bf708ed351e7233"
 
+qs@^6.6.0:
+  version "6.6.0"
+  resolved "https://registry.yarnpkg.com/qs/-/qs-6.6.0.tgz#a99c0f69a8d26bf7ef012f871cdabb0aee4424c2"
+  integrity sha512-KIJqT9jQJDQx5h5uAVPimw6yVg2SekOKu959OCtktD3FjzbpvaPr8i4zzg07DOMz+igA4W/aNM7OV8H37pFYfA==
+
 qs@~6.5.2:
   version "6.5.2"
   resolved "https://registry.yarnpkg.com/qs/-/qs-6.5.2.tgz#cb3ae806e8740444584ef154ce8ee98d403f3e36"
-
-query-string-es5@^6.1.4:
-  version "6.1.4"
-  resolved "https://registry.yarnpkg.com/query-string-es5/-/query-string-es5-6.1.4.tgz#bcea5d880889f03cec6af9a55fbdfd5aa5f4367a"
-  integrity sha512-pMdQETPqMQO+OUd2t3hUxBV8REa6w+iyD+o87M1qc1Vj3jBkQIIw3aZc+6rxlRTDxZ5ac+w0rGE/p4JIt2Xupg==
-  dependencies:
-    decode-uri-component "^0.2.0"
-    strict-uri-encode "^2.0.0"
 
 query-string@^4.1.0:
   version "4.3.4"
