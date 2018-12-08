@@ -1,5 +1,5 @@
 ---
-title: "fetchInfo"
+title: "Fetch Info"
 category: "packages"
 ---
 

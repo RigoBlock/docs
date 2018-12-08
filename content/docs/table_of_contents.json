@@ -2,86 +2,94 @@
   "id": "table-of-contents",
   "contents": [
     {
-          "title": "Packages",
-          "documents": [{
-                  "title": "api",
-                  "entry": "./api.md"
-              },
-              {
-                  "title": "contracts",
-                  "entry": "./contracts.md",
-                  "otherDocs": [{
-                      "title": "TESTING",
-                      "entry": "./docs/TESTING.md"
-                  }]
-              },
-              {
-                  "title": "dapp",
-                  "entry": "./dapp.md",
-                  "otherDocs": [{
-                          "title": "MIGRATIONS",
-                          "entry": "./docs/MIGRATIONS.md"
-                      },
-                      {
-                          "title": "FEATURE_TESTS",
-                          "entry": "./docs/FEATURE_TESTS.md"
-                      }
-                  ]
-              },
-              {
-                  "title": "data-collector",
-                  "entry": "./data-collector.md",
-                  "otherDocs": [{
-                          "title": "fetchInfo",
-                          "entry": "./src/tasks/fetchInfo/README.md"
-                      },
-                      {
-                          "title": "fetchNews",
-                          "entry": "./src/tasks/fetchNews/README.md"
-                      }
-                  ]
-              },
-              {
-                  "title": "deployer",
-                  "entry": "./deployer.md"
-              },
-              {
-                  "title": "exchange-connector",
-                  "entry": "./exchange-connector.md"
-              },
-              {
-                  "title": "stats",
-                  "entry": "./stats.md",
-                  "otherDocs": [{
-                          "title": "calculateBalance",
-                          "entry": "./src/tasks/calculateBalance/README.md"
-                      },
-                      {
-                          "title": "calculateEthBalance",
-                          "entry": "./src/tasks/calculateEthBalance/README.md"
-                      },
-                      {
-                          "title": "fetchDragos",
-                          "entry": "./src/tasks/fetchDragos/README.md"
-                      },
-                      {
-                          "title": "getSharePrice",
-                          "entry": "./src/tasks/getSharePrice/README.md"
-                      },
-                      {
-                          "title": "getTotalSupply",
-                          "entry": "./src/tasks/getTotalSupply/README.md"
-                      }
-                  ]
-              }
+      "title": "Packages",
+      "documents": [
+        {
+          "title": "api",
+          "entry": "./api.md"
+        },
+        {
+          "title": "contracts",
+          "entry": "./contracts.md",
+          "otherDocs": [
+            {
+              "title": "TESTING",
+              "entry": "./docs/TESTING.md"
+            }
           ]
-      },
-      {
-          "title": "Knowledge Base",
-          "documents": [{
-              "title": "Linux Dokku",
-              "entry": "./Linux_06_Dokku.MD"
-          }]
-      }
+        },
+        {
+          "title": "dapp",
+          "entry": "./dapp.md",
+          "otherDocs": [
+            {
+              "title": "MIGRATIONS",
+              "entry": "./docs/MIGRATIONS.md"
+            },
+            {
+              "title": "FEATURE_TESTS",
+              "entry": "./docs/FEATURE_TESTS.md"
+            }
+          ]
+        },
+        {
+          "title": "data-collector",
+          "entry": "./data-collector.md",
+          "otherDocs": [
+            {
+              "title": "fetchInfo",
+              "entry": "./src/tasks/fetchInfo/README.md"
+            },
+            {
+              "title": "fetchNews",
+              "entry": "./src/tasks/fetchNews/README.md"
+            }
+          ]
+        },
+        {
+          "title": "deployer",
+          "entry": "./deployer.md"
+        },
+        {
+          "title": "exchange-connector",
+          "entry": "./exchange-connector.md"
+        },
+        {
+          "title": "stats",
+          "entry": "./stats.md",
+          "otherDocs": [
+            {
+              "title": "calculateBalance",
+              "entry": "./src/tasks/calculateBalance/README.md"
+            },
+            {
+              "title": "calculateEthBalance",
+              "entry": "./src/tasks/calculateEthBalance/README.md"
+            },
+            {
+              "title": "fetchDragos",
+              "entry": "./src/tasks/fetchDragos/README.md"
+            },
+            {
+              "title": "getSharePrice",
+              "entry": "./src/tasks/getSharePrice/README.md"
+            },
+            {
+              "title": "getTotalSupply",
+              "entry": "./src/tasks/getTotalSupply/README.md"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "title": "KB",
+      "documents": [
+        {
+          "title": "Dokku",
+          "entry": "./Dokku.md"
+        }
+      ]
+    }
   ]
 }

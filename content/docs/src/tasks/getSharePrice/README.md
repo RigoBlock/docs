@@ -1,5 +1,5 @@
 ---
-title: "getSharePrice"
+title: "Get Share Price"
 category: "packages"
 ---
 
