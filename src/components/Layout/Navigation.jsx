@@ -6,7 +6,6 @@ class Navigation extends React.Component {
   render() {
     return (
       <div className="nav-container">
-        {/* <section> */}
         <Link className="nav-link" to="/">
           HOME
         </Link>
@@ -16,7 +15,6 @@ class Navigation extends React.Component {
         <Link className="nav-link" to="/linux-06-dokku">
           KB
         </Link>
-        {/* </section> */}
       </div>
     )
   }

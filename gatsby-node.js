@@ -59,7 +59,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
             path: slug,
             component: baseTemplate,
             context: {
-              slug: slug,
+              slug,
               category
             }
           })

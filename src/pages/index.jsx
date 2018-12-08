@@ -20,7 +20,6 @@ class Index extends React.Component {
               <SearchBar searchIndex={this.props.data.siteSearchIndex} />
             </div>
           </div>
-          {/* <h2>RigoBlock Packages Documentation</h2> */}
           <div className="body-container">
             <CtaButton to={'/dapp'}>Go to the documentation</CtaButton>
             <CtaButton to={'/linux-06-dokku'}>Go to KB articles</CtaButton>
