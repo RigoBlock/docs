@@ -36,10 +36,14 @@ const SearchBar = props => {
   useEffect(
     () => {
       if (queryParam && queryParam.length >= MINIMUM_QUERY_LENGTH) {
+        console.log(index.search)
         const results = index
           .search(queryParam, {
-            title: { boost: 2 },
-            content: { boost: 1 }
+            fields: {
+              title: { boost: 2 },
+              content: { boost: 1 }
+            },
+            expand: true
           })
           .map(({ ref }) => index.documentStore.getDoc(ref))
         props.setResults(results)
