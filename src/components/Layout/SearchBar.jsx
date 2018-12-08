@@ -36,7 +36,6 @@ const SearchBar = props => {
   useEffect(
     () => {
       if (queryParam && queryParam.length >= MINIMUM_QUERY_LENGTH) {
-        console.log(index.search)
         const results = index
           .search(queryParam, {
             fields: {
