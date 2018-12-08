@@ -1,5 +1,5 @@
 ---
-title: "calculateBalance"
+title: "Calculate Balance"
 category: "packages"
 ---
 

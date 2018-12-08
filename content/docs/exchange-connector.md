@@ -1,5 +1,5 @@
 ---
-title: "exchange-connector"
+title: "Exchange Connector"
 category: "packages"
 ---
 

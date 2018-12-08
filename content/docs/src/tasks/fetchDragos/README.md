@@ -1,5 +1,5 @@
 ---
-title: "fetchDragos"
+title: "Fetch Dragos"
 category: "packages"
 ---
 

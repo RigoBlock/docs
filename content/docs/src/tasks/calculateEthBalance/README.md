@@ -1,5 +1,5 @@
 ---
-title: "calculateEthBalance"
+title: "Calculate Eth Balance"
 category: "packages"
 ---
 
