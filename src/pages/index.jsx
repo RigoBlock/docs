@@ -22,7 +22,7 @@ class Index extends React.Component {
           </div>
           <div className="body-container">
             <CtaButton to={'/dapp'}>Go to the documentation</CtaButton>
-            <CtaButton to={'/linux-06-dokku'}>Go to KB articles</CtaButton>
+            <CtaButton to={'/reference'}>Go to KB articles</CtaButton>
           </div>
         </main>
       </div>

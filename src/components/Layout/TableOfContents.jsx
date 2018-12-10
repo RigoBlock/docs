@@ -26,11 +26,11 @@ const DocList = ({ entry }) => (
   </div>
 )
 
-const PackageEntry = ({ title, entry, level = 1, otherDocs }) => (
+const PackageEntry = ({ title, entry, level = 1, children }) => (
   <div>
     {title && entry && <TitleLink title={title} entry={entry} />}
-    {otherDocs &&
-      otherDocs.map((doc, index) => (
+    {children &&
+      children.map((doc, index) => (
         <DocList {...doc} level={level + 1} key={`${index}`} />
       ))}
   </div>

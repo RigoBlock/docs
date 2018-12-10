@@ -86,8 +86,8 @@
       "title": "Knowledge Base",
       "documents": [
         {
-          "title": "Index",
-          "entry": "./Index.md",
+          "title": "reference",
+          "entry": "./reference.md",
           "children": [
             {
               "title": "dokku",

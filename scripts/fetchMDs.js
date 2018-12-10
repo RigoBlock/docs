@@ -50,7 +50,7 @@ const getMarkdownsContent = async packagesArray => {
     return parseMarkdown(pkg, repo, response, basePath)
   })
   const kbResponse = await fetchGraphQL('kb', 'README.md')
-  markdownPromises.push(parseMarkdown('Index', 'kb', kbResponse))
+  markdownPromises.push(parseMarkdown('reference', 'kb', kbResponse))
   const results = await Promise.all(markdownPromises)
   return results.filter(val => !!val)
 }
@@ -105,6 +105,7 @@ const writeMarkdowns = markdownArray => {
 
   const markdownPromises = markdownArray.map(markdown => {
     const promiseArray = []
+    promiseArray.push(writeMarkdown(markdown))
     if (markdown.children.length) {
       markdown.children.map(markdown =>
         promiseArray.push(writeMarkdown(markdown))

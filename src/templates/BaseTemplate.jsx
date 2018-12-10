@@ -79,7 +79,7 @@ export const pageQuery = graphql`
               }
             }
           }
-          otherDocs {
+          children {
             title
             entry {
               id
