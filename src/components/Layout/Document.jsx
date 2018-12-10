@@ -9,7 +9,9 @@ export default class Document extends React.Component {
     return (
       <div className="body-grid">
         <div className="toc-container">
-          <TableOfContents data={category === 'packages' ? packages : kb} />
+          <TableOfContents
+            data={category === 'rigoblock-monorepo' ? packages : kb}
+          />
         </div>
         <div className="document-body-container">
           <div>
