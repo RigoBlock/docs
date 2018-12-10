@@ -63,7 +63,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    allDocuments: docsJson {
+    allDocuments: contentJson {
       contents {
         title
         documents {

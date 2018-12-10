@@ -93,7 +93,7 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
 
 const writeMarkdowns = markdownArray => {
   const writeMarkdown = markdown => {
-    const mdFolder = __dirname + '/../content/docs/'
+    const mdFolder = __dirname + '/../content/'
     const path = mdFolder + markdown.path
     const content = markdown.content.replace(/\.md(?=\))/gi, '')
     const data =
@@ -120,7 +120,7 @@ const writeMarkdowns = markdownArray => {
 const writeTOC = async markdowns => {
   const monorepoMd = markdowns.filter(md => md.repo === 'rigoblock-monorepo')
   const kbMd = markdowns.filter(md => md.repo === 'kb')
-  const jsonPath = __dirname + '/../content/docs/table_of_contents.json'
+  const jsonPath = __dirname + '/../content/table_of_contents.json'
   fs.ensureFileSync(jsonPath)
   const mapMarkdowns = markdownArr => {
     const getMarkdownObj = markdown => ({
