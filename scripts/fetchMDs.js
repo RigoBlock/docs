@@ -39,22 +39,6 @@ const fetchGraphQL = async (repo, path) => {
   return postJSON(GRAPHQL_URL, { query })
 }
 
-const getMarkdownsContent = async packagesArray => {
-  const markdownPromises = packagesArray.map(async pkg => {
-    const repo = 'rigoblock-monorepo'
-    const basePath = `packages/${pkg}/`
-    const response = await fetchGraphQL(
-      'rigoblock-monorepo',
-      `${basePath}README.md`
-    )
-    return parseMarkdown(pkg, repo, response, basePath)
-  })
-  const kbResponse = await fetchGraphQL('kb', 'README.md')
-  markdownPromises.push(parseMarkdown('reference', 'kb', kbResponse))
-  const results = await Promise.all(markdownPromises)
-  return results.filter(val => !!val)
-}
-
 const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
   if (!responseObj.data.repository.object) {
     return null
@@ -89,6 +73,22 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
     repo,
     children
   }
+}
+
+const getMarkdownsContent = async packagesArray => {
+  const markdownPromises = packagesArray.map(async pkg => {
+    const repo = 'rigoblock-monorepo'
+    const basePath = `packages/${pkg}/`
+    const response = await fetchGraphQL(
+      'rigoblock-monorepo',
+      `${basePath}README.md`
+    )
+    return parseMarkdown(pkg, repo, response, basePath)
+  })
+  const kbResponse = await fetchGraphQL('kb', 'README.md')
+  markdownPromises.push(parseMarkdown('reference', 'kb', kbResponse))
+  const results = await Promise.all(markdownPromises)
+  return results.filter(val => !!val)
 }
 
 const writeMarkdowns = markdownArray => {
