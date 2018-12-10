@@ -1,3 +1,8 @@
+---
+title: "Linux Dokku"
+category: "Knowledge Base"
+---
+
 # Server info
 
     IP:         185.31.65.127
@@ -14,8 +19,8 @@ Contact sysadmin for password.
 
 # Connecting to Dokku Server
 
-Contact sysadmin and ask for a pair of public and private keys.  
-Configure your SSH client accodingly to connect to Dokku server.  
+Contact sysadmin and ask for a pair of public and private keys.
+Configure your SSH client accodingly to connect to Dokku server.
 
 Example:
 

@@ -1,5 +1,5 @@
 ---
-title: "data-collector"
+title: "Data Collector"
 category: "packages"
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "contracts"
+title: "Contracts"
 category: "packages"
 ---
 

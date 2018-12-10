@@ -1,6 +1,7 @@
 const get = require('lodash/get')
 const { fetchJSON, postJSON, withSpinner } = require('./utils')
 const fs = require('fs-extra')
+const changeCase = require('change-case')
 
 const fetchREADMEs = async () => {
   const packages = await withSpinner(
@@ -64,8 +65,9 @@ const writeMarkdowns = markdownArray => {
     const path = mdFolder + markdown.path
     const content = markdown.content.replace(/\.md(?=\))/gi, '')
     const data =
-      `---\ntitle: "${markdown.title}"\ncategory: "${category}"\n---\n\n` +
-      content
+      `---\ntitle: "${changeCase.title(
+        markdown.title
+      )}"\ncategory: "${category}"\n---\n\n` + content
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 

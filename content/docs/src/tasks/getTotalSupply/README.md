@@ -1,5 +1,5 @@
 ---
-title: "getTotalSupply"
+title: "Get Total Supply"
 category: "packages"
 ---
 

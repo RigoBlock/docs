@@ -60,3 +60,7 @@ bundle-stats.json
 
 .idea/*
 .idea
+
+# Misc
+
+.env

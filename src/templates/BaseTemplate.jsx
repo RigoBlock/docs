@@ -8,12 +8,16 @@ import SiteHeader from '../components/Layout/Header'
 
 const BaseTemplate = props => {
   const [results, setResults] = useState([])
-  const { pathname } = window.location
-  const bodyComponent = pathname.match('/search') ? (
-    <SearchPage results={results} {...props} />
-  ) : (
-    <DocumentPage {...props} />
-  )
+  const [prevUrl, setPrevUrl] = useState('')
+  let bodyComponent = <DocumentPage {...props} />
+  if (typeof window !== 'undefined') {
+    const { pathname } = window.location
+    bodyComponent = pathname.match('/search') ? (
+      <SearchPage results={results} prevUrl={prevUrl} {...props} />
+    ) : (
+      <DocumentPage {...props} />
+    )
+  }
 
   return (
     <div>
@@ -24,6 +28,7 @@ const BaseTemplate = props => {
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
           setResults={setResults}
+          setPrevUrl={setPrevUrl}
         />
       </SiteHeader>
       {bodyComponent}

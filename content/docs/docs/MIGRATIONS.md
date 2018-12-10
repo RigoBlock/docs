@@ -1,5 +1,5 @@
 ---
-title: "MIGRATIONS"
+title: "Migrations"
 category: "packages"
 ---
 

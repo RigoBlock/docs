@@ -1,5 +1,5 @@
 ---
-title: "deployer"
+title: "Deployer"
 category: "packages"
 ---
 

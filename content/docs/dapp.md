@@ -1,5 +1,5 @@
 ---
-title: "dapp"
+title: "Dapp"
 category: "packages"
 ---
 

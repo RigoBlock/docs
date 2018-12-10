@@ -1,5 +1,5 @@
 ---
-title: "fetchNews"
+title: "Fetch News"
 category: "packages"
 ---
 

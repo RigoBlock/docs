@@ -1,5 +1,5 @@
 ---
-title: "stats"
+title: "Stats"
 category: "packages"
 ---
 

@@ -1,5 +1,5 @@
 ---
-title: "FEATURE_TESTS"
+title: "Feature Tests"
 category: "packages"
 ---
 

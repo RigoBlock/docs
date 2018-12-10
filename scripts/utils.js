@@ -2,11 +2,13 @@ const fetch = require('node-fetch')
 const c = require('chalk')
 const Multispinner = require('multispinner')
 
+require('dotenv').config()
+
 const postJSON = (url, body) =>
   fetch(url, {
     method: 'POST',
     headers: {
-      Authorization: `bearer f001853260be2447e36917a7ce4c7512c63f8562`,
+      Authorization: `bearer ${process.env.GITHUB_ACCESS_TOKEN}`,
       'Content-Type': 'application/json'
     },
     body: JSON.stringify(body)
@@ -15,7 +17,7 @@ const postJSON = (url, body) =>
 const fetchJSON = url =>
   fetch(url, {
     headers: {
-      Authorization: `bearer f001853260be2447e36917a7ce4c7512c63f8562`
+      Authorization: `bearer ${process.env.GITHUB_ACCESS_TOKEN}`
     }
   }).then(r => r.json())
 
