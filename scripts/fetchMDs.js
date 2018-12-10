@@ -48,22 +48,20 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
   const readmeLinks = data.match(linkRegexp)
   let children = []
   if (readmeLinks) {
-    childrenPromises = readmeLinks
-      .map(async link => {
-        const fileName = getFileName(link)
-        const response = await fetchGraphQL(repo, basePath + link)
-        if (!response.data.repository.object) {
-          return null
-        }
-        const { text } = response.data.repository.object
-        return {
-          title: fileName,
-          content: text,
-          path: link,
-          repo
-        }
-      })
-      .filter(val => !!val)
+    childrenPromises = readmeLinks.map(async link => {
+      const fileName = getFileName(link)
+      const response = await fetchGraphQL(repo, basePath + link)
+      if (!response.data.repository.object) {
+        return null
+      }
+      const { text } = response.data.repository.object
+      return {
+        title: fileName,
+        content: text,
+        path: link,
+        repo
+      }
+    })
     children = await Promise.all(childrenPromises)
   }
   return {
@@ -71,7 +69,7 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
     content: data,
     path: `${name}.md`,
     repo,
-    children
+    children: children.filter(val => !!val)
   }
 }
 
