@@ -4,7 +4,7 @@ category: "rigoblock-monorepo"
 ---
 
 # Rigoblock Stats
-![](./rigoblockStats.svg)
+![](rigoblockStats.svg)
 
 ## Services
 

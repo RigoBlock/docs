@@ -23,8 +23,8 @@ category: "kb"
 
 Available IPs:
 
-    185.31.66.104
-    185.31.66.105
+    185.31.66.104 - k8s-01-master.endpoint.network - k8s master node
+    185.31.66.105 - k8s-01-node01.endpoint.network - k8s node
     185.31.66.106
     185.31.66.107
     185.31.66.108
@@ -56,12 +56,10 @@ Installing some useful packages
     yum install e4fsprogs -y
     ln -s /sbin/resize2fs /sbin/resize4fs
 
-
 Disable selinux
 
     setenforce 0
     sed -i --follow-symlinks 's/^SELINUX=.*/SELINUX=disabled/g' /etc/sysconfig/selinux
-
 
 Configuring FTP:
 
@@ -121,7 +119,7 @@ Check the following files and add/modify as necessary:
 
 Documentation:
 
-http://linux.dell.com/repo/hardware/latest/
+http://linux.dell.com/repo/hardware/latest/  
 https://linux.dell.com/repo/hardware/dsu/
 
     wget -q -O - http://linux.dell.com/repo/hardware/latest/bootstrap.cgi | bash
@@ -145,7 +143,7 @@ https://linux.dell.com/repo/hardware/dsu/
 ### Installation
 
 Documentation:
-https://wiki.archlinux.org/index.php/Bcache#Setting_up_a_bcache_device_on_an_existing_system  https://fedoraproject.org/wiki/QA:Testcase_bcache-tools_home_on_bcache_(LVM)
+https://wiki.archlinux.org/index.php/Bcache#Setting_up_a_bcache_device_on_an_existing_system https://fedoraproject.org/wiki/QA:Testcase_bcache-tools_home_on_bcache_(LVM)
 
 Add a LVM partition in /dev/sda4 with fdisk
 
@@ -183,7 +181,7 @@ Creating backing and caching device:
     make-bcache -C /dev/sdb --wipe-bcache
 
 After your cache device and backing device are registered, the backing device
-must be attached to your cache set to enable caching.
+must be attached to your cache set to enable caching.  
 Attaching a backing
 device to a cache set is done thusly, with the UUID of the cache set in
 /sys/fs/bcache:
@@ -193,7 +191,7 @@ device to a cache set is done thusly, with the UUID of the cache set in
     echo writeback > /sys/block/bcache0/bcache/cache_mode
     cat /sys/block/bcache0/bcache/state
 
- ### Removing bcache
+### Removing bcache
 
     cd /sys/fs/bcache/<UUID>
     echo 1 > stop
@@ -219,7 +217,6 @@ Installation:
     systemctl disable firewalld
     systemctl stop firewalld
 
-
 Now we'll bridge your primary network interface. This bridge will also be used for our virtual machines. In this example we'll create a bridge named "bridge0". We'll then bridge interface "eth0" to "bridge0" followed by a server reboot.
 
 Copy ifcfg-eth0 to ifcfg-bridge0:
@@ -227,8 +224,8 @@ Copy ifcfg-eth0 to ifcfg-bridge0:
     cp /etc/sysconfig/network-scripts/ifcfg-eth0 /etc/sysconfig/network-scripts/ifcfg-bridge0
 
 Edit /etc/sysconfig/network/network-scripts/ifcfg-bridge0.
-
-Change DEVICE=eth0 to DEVICE=bridge0
+  
+Change DEVICE=eth0 to DEVICE=bridge0  
 Change TYPE=Ethernet to TYPE="Bridge"
 
       DEVICE=bridge0
@@ -315,16 +312,3 @@ Add:
 Finally:
 
 Go to https://YOUR_KVM_SERVER_DOMAIN_NAME:8001 in your web browswer and login using kimchi or root credentials.
-
-
-
-
-
-
-
-
-
-
-
-
-
