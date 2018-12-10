@@ -2,6 +2,7 @@ const get = require('lodash/get')
 const { fetchJSON, postJSON, withSpinner } = require('./utils')
 const fs = require('fs-extra')
 const changeCase = require('change-case')
+const path = require('path')
 
 const getMonorepoPackageNames = async () => {
   const REST_URL = 'https://api.github.com/repos/RigoBlock/rigoblock-monorepo'
@@ -25,6 +26,8 @@ const getFileName = path => {
   return fileName
 }
 
+const isMarkdown = pathStr => path.extname(pathStr) === '.md'
+
 const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
@@ -44,11 +47,13 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
     return null
   }
   const linkRegexp = /(?<=\().*\.md(?=\))/g
+  const svgRegexp = /(?<=\().*\.svg(?=\))/g
   const data = get(responseObj, 'data.repository.object.text', '')
   const readmeLinks = data.match(linkRegexp)
-  let children = []
-  if (readmeLinks) {
-    childrenPromises = readmeLinks.map(async link => {
+  const svgLinks = data.match(svgRegexp)
+  let children = [].concat(readmeLinks, svgLinks).filter(val => !!val)
+  if (children.length) {
+    childrenPromises = children.map(async link => {
       const fileName = getFileName(link)
       const response = await fetchGraphQL(repo, basePath + link)
       if (!response.data.repository.object) {
@@ -90,9 +95,9 @@ const getMarkdownsContent = async packagesArray => {
 }
 
 const writeMarkdowns = markdownArray => {
+  const contentFolder = __dirname + '/../content/'
   const writeMarkdown = markdown => {
-    const mdFolder = __dirname + '/../content/'
-    const path = mdFolder + markdown.path
+    const path = contentFolder + markdown.path
     const content = markdown.content.replace(/\.md(?=\))/gi, '')
     const data =
       `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
@@ -101,12 +106,19 @@ const writeMarkdowns = markdownArray => {
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
+  const writeSVG = svg => {
+    const path = contentFolder + svg.path
+    fs.outputFile(path, svg.content, err => (err ? console.error(err) : null))
+  }
+
   const markdownPromises = markdownArray.map(markdown => {
     const promiseArray = []
     promiseArray.push(writeMarkdown(markdown))
     if (markdown.children.length) {
-      markdown.children.map(markdown =>
-        promiseArray.push(writeMarkdown(markdown))
+      markdown.children.map(child =>
+        isMarkdown(child.path)
+          ? promiseArray.push(writeMarkdown(child))
+          : promiseArray.push(writeSVG(child))
       )
     }
     return Promise.all(promiseArray)
@@ -130,7 +142,9 @@ const writeTOC = async markdowns => {
         return getMarkdownObj(md)
       }
       const obj = getMarkdownObj(md)
-      const children = md.children.map(md => getMarkdownObj(md))
+      const children = md.children
+        .map(child => (isMarkdown(child.path) ? getMarkdownObj(child) : null))
+        .filter(val => !!val)
       return { ...obj, children }
     })
   }
