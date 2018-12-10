@@ -81,15 +81,6 @@
           ]
         }
       ]
-    },
-    {
-      "title": "KB",
-      "documents": [
-        {
-          "title": "Dokku",
-          "entry": "./Dokku.md"
-        }
-      ]
     }
   ]
 }
