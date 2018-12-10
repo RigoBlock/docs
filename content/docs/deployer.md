@@ -1,6 +1,6 @@
 ---
 title: "Deployer"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 ## Smart Contracts Deployer

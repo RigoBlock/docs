@@ -1,6 +1,6 @@
 ---
 title: "Feature Tests"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # Feature Tests

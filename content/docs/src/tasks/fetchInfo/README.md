@@ -1,6 +1,6 @@
 ---
 title: "Fetch Info"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # fetchInfo

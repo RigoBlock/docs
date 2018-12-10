@@ -1,6 +1,6 @@
 ---
 title: "Get Share Price"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # getSharePrice

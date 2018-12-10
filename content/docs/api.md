@@ -1,6 +1,6 @@
 ---
 title: "Api"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # API

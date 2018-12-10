@@ -1,6 +1,6 @@
 ---
 title: "Get Total Supply"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # getTotalSupply

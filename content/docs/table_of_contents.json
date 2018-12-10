@@ -79,6 +79,96 @@
               "entry": "./src/tasks/getTotalSupply/README.md"
             }
           ]
+        },
+        {
+          "title": "Index",
+          "entry": "./Index.md",
+          "otherDocs": [
+            {
+              "title": "dokku",
+              "entry": "./docs/services/dokku.md"
+            },
+            {
+              "title": "flynn",
+              "entry": "./docs/services/flynn.md"
+            },
+            {
+              "title": "glusterfs",
+              "entry": "./docs/services/glusterfs.md"
+            },
+            {
+              "title": "kubernetes",
+              "entry": "./docs/services/kubernetes.md"
+            },
+            {
+              "title": "kvm_server",
+              "entry": "./docs/services/kvm_server.md"
+            },
+            {
+              "title": "parity",
+              "entry": "./docs/services/parity.md"
+            },
+            {
+              "title": "rancher",
+              "entry": "./docs/services/rancher.md"
+            },
+            {
+              "title": "blockchain_endpoints",
+              "entry": "./docs/services/blockchain_endpoints.md"
+            },
+            {
+              "title": "staging_node_configuration",
+              "entry": "./docs/services/staging_node_configuration.md"
+            },
+            {
+              "title": "mainnet-0-4-25-migration",
+              "entry": "./docs/protocol/mainnet-0-4-25-migration.md"
+            },
+            {
+              "title": "ropsten-0-4-25-migration",
+              "entry": "./docs/protocol/ropsten-0-4-25-migration.md"
+            },
+            {
+              "title": "data_flow",
+              "entry": "./docs/dapp/data_flow.md"
+            },
+            {
+              "title": "testing_steps",
+              "entry": "./docs/dapp/testing_steps.md"
+            },
+            {
+              "title": "events",
+              "entry": "./docs/solidity/events.md"
+            },
+            {
+              "title": "bytes_calls",
+              "entry": "./docs/solidity/bytes_calls.md"
+            },
+            {
+              "title": "study_notes",
+              "entry": "./docs/solidity/study_notes.md"
+            },
+            {
+              "title": "create_react_app",
+              "entry": "./docs/libraries/create_react_app.md"
+            },
+            {
+              "title": "web3js",
+              "entry": "./docs/libraries/web3js.md"
+            },
+            {
+              "title": "visual_studio_code",
+              "entry": "./docs/misc/visual_studio_code.md"
+            },
+            {
+              "title": "consensys_academy",
+              "entry": "./docs/misc/consensys_academy.md"
+            },
+            {
+              "title": "js_development_environment",
+              "entry": "./docs/misc/js_development_environment.md"
+            }
+          ]
         }
       ]
     }

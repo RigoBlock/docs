@@ -1,6 +1,6 @@
 ---
 title: "Calculate Eth Balance"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # calculateEthBalance

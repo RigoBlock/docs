@@ -1,6 +1,6 @@
 ---
 title: "Stats"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # Rigoblock Stats

@@ -1,6 +1,6 @@
 ---
 title: "Contracts"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # RigoBlock Contracts

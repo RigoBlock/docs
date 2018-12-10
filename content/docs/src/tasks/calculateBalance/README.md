@@ -1,6 +1,6 @@
 ---
 title: "Calculate Balance"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # calculateBalance

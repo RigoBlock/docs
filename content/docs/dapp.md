@@ -1,6 +1,6 @@
 ---
 title: "Dapp"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # RigoBlock DApp

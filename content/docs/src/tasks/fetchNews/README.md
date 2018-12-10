@@ -1,6 +1,6 @@
 ---
 title: "Fetch News"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # fetchNews

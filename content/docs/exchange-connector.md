@@ -1,6 +1,6 @@
 ---
 title: "Exchange Connector"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # Exchange connector

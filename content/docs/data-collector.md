@@ -1,6 +1,6 @@
 ---
 title: "Data Collector"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # Rigoblock Data Collector

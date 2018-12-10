@@ -1,6 +1,6 @@
 ---
 title: "Migrations"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # Creating a database migration

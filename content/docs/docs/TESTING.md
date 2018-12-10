@@ -1,6 +1,6 @@
 ---
 title: "Testing"
-category: "packages"
+category: "rigoblock-monorepo"
 ---
 
 # Developing new contracts
