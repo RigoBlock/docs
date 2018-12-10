@@ -21,8 +21,8 @@ RigoBlock project dev documentation.
 
 ## Protocol
 
-- [Mainnet 0.4.25 Migration](docs/protocol/mainnet-0-4-25-migration)
-- [Ropsten 0.4.25 Migration](docs/protocol/ropsten-0-4-25-migration)
+- [Mainnet 0.4.25 Migration](docs/protocol/mainnet-0-4-25_migration)
+- [Ropsten 0.4.25 Migration](docs/protocol/ropsten-0-4-25_migration)
 
 ## DApp related documentation
 

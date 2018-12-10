@@ -13,8 +13,8 @@
           "entry": "./contracts.md",
           "children": [
             {
-              "title": "TESTING",
-              "entry": "./docs/TESTING.md"
+              "title": "testing",
+              "entry": "./docs/testing.md"
             }
           ]
         },
@@ -23,12 +23,12 @@
           "entry": "./dapp.md",
           "children": [
             {
-              "title": "MIGRATIONS",
-              "entry": "./docs/MIGRATIONS.md"
+              "title": "migrations",
+              "entry": "./docs/migrations.md"
             },
             {
-              "title": "FEATURE_TESTS",
-              "entry": "./docs/FEATURE_TESTS.md"
+              "title": "feature_tests",
+              "entry": "./docs/feature_tests.md"
             }
           ]
         },
@@ -126,12 +126,12 @@
               "entry": "./docs/services/staging_node_configuration.md"
             },
             {
-              "title": "mainnet-0-4-25-migration",
-              "entry": "./docs/protocol/mainnet-0-4-25-migration.md"
+              "title": "mainnet-0-4-25_migration",
+              "entry": "./docs/protocol/mainnet-0-4-25_migration.md"
             },
             {
-              "title": "ropsten-0-4-25-migration",
-              "entry": "./docs/protocol/ropsten-0-4-25-migration.md"
+              "title": "ropsten-0-4-25_migration",
+              "entry": "./docs/protocol/ropsten-0-4-25_migration.md"
             },
             {
               "title": "data_flow",

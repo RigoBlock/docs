@@ -28,7 +28,6 @@ As root:
     apt-get update
     apt-get install docker-ce=17.03.2~ce-0~ubuntu-xenial -y
 
-
 ## To Install Rancher Using a Let’s Encrypt Certificate:
 
 Crete a directory for persistent data:
@@ -36,7 +35,7 @@ Crete a directory for persistent data:
     mkdir -p /mnt/rancher-node
     mkdir -p /mnt/rancher-agent
 
-### Install node    
+### Install node
 
 Run the following commands from your Linux host:
 
@@ -45,7 +44,7 @@ Run the following commands from your Linux host:
       -p 80:80 -p 443:443 \
       -v /mnt/rancher-node:/var/lib/rancher \
       rancher/rancher:latest \
-      --acme-domain rb-rancher.endpoint.network 
+      --acme-domain rb-rancher.endpoint.network
 
 ### Install agent
 
@@ -66,4 +65,47 @@ To change the host ports mapping, replace the following part `-p 80:80 -p 443:44
 # Set-up
 
 Browse to `https://rb-rancher.endpoint.network/`
-      
+
+# Upgrade
+
+https://rancher.com/docs/rancher/v2.x/en/upgrades/upgrades/single-node-upgrade/
+
+Stop the container:
+
+    docker stop <RANCHER_CONTAINER_NAME>
+
+eg:
+docker stop docker stop peaceful_thompson
+
+Create a backup volume:
+
+    docker create --volumes-from <RANCHER_CONTAINER_NAME> --name rancher-data rancher/rancher:<RANCHER_CONTAINER_TAG>
+    docker run  --volumes-from rancher-data -v $PWD:/backup alpine tar zcvf /backup/rancher-data-backup-<RANCHER_VERSION>-<DATE>.tar.gz /var/lib/rancher
+
+eg:
+
+    docker create --volumes-from peaceful_thompson --name rancher-data rancher/rancher:v2.0.6
+    mkdir /backup
+    docker run  --volumes-from rancher-data -v /backup:/backup alpine tar zcvf /backup/rancher-data-backup-v2.0.6-5-11-18.tar.gz /var/lib/rancher
+
+Pull the lastes image:
+
+    docker pull rancher/rancher:latest
+
+Run the image:
+
+    docker run -d --name rancher-<RANCHER_VERSION> --volumes-from rancher-data --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:latest --acme-domain rb-rancher.endpoint.network
+
+eg:
+
+    docker run -d --name rancher-2.1.1 --volumes-from rancher-data --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:latest --acme-domain rb-rancher.endpoint.network
+
+## Roll-back
+
+    docker run --volumes-from rancher-data -v /backup:/backup alpine sh -c "rm /var/lib/rancher/\* -rf && tar zxvf /backup/rancher-data-backup-v2.0.6-5-11-18.tar.gz"
+
+    docker run -d --volumes-from rancher-data --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:<PRIOR_RANCHER_VERSION>
+
+eg:
+
+    docker run -d --volumes-from rancher-data --restart=unless-stopped -p 80:80 -p 443:443 rancher/rancher:v2.0.6 --acme-domain rb-rancher.endpoint.network
