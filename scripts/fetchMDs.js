@@ -93,7 +93,6 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
 
 const writeMarkdowns = markdownArray => {
   const writeMarkdown = markdown => {
-    console.log(markdown)
     const mdFolder = __dirname + '/../content/docs/'
     const path = mdFolder + markdown.path
     const content = markdown.content.replace(/\.md(?=\))/gi, '')
@@ -106,9 +105,7 @@ const writeMarkdowns = markdownArray => {
 
   const markdownPromises = markdownArray.map(markdown => {
     const promiseArray = []
-    promiseArray.push(writeMarkdown(markdown))
     if (markdown.children.length) {
-      console.log('FATHER:', markdown)
       markdown.children.map(markdown =>
         promiseArray.push(writeMarkdown(markdown))
       )
@@ -120,27 +117,35 @@ const writeMarkdowns = markdownArray => {
 }
 
 const writeTOC = async markdowns => {
+  const monorepoMd = markdowns.filter(md => md.repo === 'rigoblock-monorepo')
+  const kbMd = markdowns.filter(md => md.repo === 'kb')
   const jsonPath = __dirname + '/../content/docs/table_of_contents.json'
   fs.ensureFileSync(jsonPath)
-  const getMarkdownObj = markdown => ({
-    title: markdown.title,
-    entry: `./${markdown.path}`
-  })
-  const documents = markdowns.map(md => {
-    if (!md.children.length) {
-      return getMarkdownObj(md)
-    }
-    const obj = getMarkdownObj(md)
-    const children = md.children.map(md => getMarkdownObj(md))
-    return { ...obj, children }
-  })
+  const mapMarkdowns = markdownArr => {
+    const getMarkdownObj = markdown => ({
+      title: markdown.title,
+      entry: `./${markdown.path}`
+    })
+    return markdownArr.map(md => {
+      if (!md.children.length) {
+        return getMarkdownObj(md)
+      }
+      const obj = getMarkdownObj(md)
+      const children = md.children.map(md => getMarkdownObj(md))
+      return { ...obj, children }
+    })
+  }
 
   const JSON = {
     id: 'table-of-contents',
     contents: [
       {
         title: 'Packages',
-        documents
+        documents: mapMarkdowns(monorepoMd)
+      },
+      {
+        title: 'Knowledge Base',
+        documents: mapMarkdowns(kbMd)
       }
     ]
   }

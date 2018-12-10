@@ -11,7 +11,7 @@
         {
           "title": "contracts",
           "entry": "./contracts.md",
-          "otherDocs": [
+          "children": [
             {
               "title": "TESTING",
               "entry": "./docs/TESTING.md"
@@ -21,7 +21,7 @@
         {
           "title": "dapp",
           "entry": "./dapp.md",
-          "otherDocs": [
+          "children": [
             {
               "title": "MIGRATIONS",
               "entry": "./docs/MIGRATIONS.md"
@@ -35,7 +35,7 @@
         {
           "title": "data-collector",
           "entry": "./data-collector.md",
-          "otherDocs": [
+          "children": [
             {
               "title": "fetchInfo",
               "entry": "./src/tasks/fetchInfo/README.md"
@@ -57,7 +57,7 @@
         {
           "title": "stats",
           "entry": "./stats.md",
-          "otherDocs": [
+          "children": [
             {
               "title": "calculateBalance",
               "entry": "./src/tasks/calculateBalance/README.md"
@@ -79,11 +79,16 @@
               "entry": "./src/tasks/getTotalSupply/README.md"
             }
           ]
-        },
+        }
+      ]
+    },
+    {
+      "title": "Knowledge Base",
+      "documents": [
         {
           "title": "Index",
           "entry": "./Index.md",
-          "otherDocs": [
+          "children": [
             {
               "title": "dokku",
               "entry": "./docs/services/dokku.md"
