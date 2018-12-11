@@ -11,7 +11,5 @@ module.exports = {
   userTwitter: 'RigoBlock', // Optionally renders "Follow Me" in the UserInfo segment.
   copyright: 'Copyright © 2018. Rigoblock', // Copyright string for the footer of the website and RSS feed.
   themeColor: '#0A4186', // Used for setting manifest and progress theme colors.
-  backgroundColor: '#0A4186', // Used for setting manifest background color.
-  // TODO: Move this literally anywhere better.
-  toCChapters: ['', 'Chapter 1', 'Chapter 2'] // Used to generate the Table Of Contents. Index 0 should be blank.
+  backgroundColor: '#0A4186' // Used for setting manifest background color.
 }

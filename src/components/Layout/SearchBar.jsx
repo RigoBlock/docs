@@ -6,6 +6,7 @@ import qs from 'qs'
 
 export const SEARCH_URL = '/search'
 export const MINIMUM_QUERY_LENGTH = 3
+
 let index
 
 const SearchBar = props => {
