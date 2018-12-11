@@ -2,7 +2,7 @@ import './index.scss'
 import CtaButton from '../components/Layout/CtaButton'
 import Helmet from 'react-helmet'
 import React from 'react'
-import SearchBar from '../components/Layout/SearchBar'
+import SearchWithButton from '../components/Layout/SearchWithButton'
 import config from '../../data/SiteConfig'
 
 class Index extends React.Component {
@@ -17,7 +17,7 @@ class Index extends React.Component {
           <div className="index-head-container">
             <div className="hero">
               <h1>{config.siteTitle}</h1>
-              <SearchBar searchIndex={this.props.data.siteSearchIndex} />
+              <SearchWithButton searchIndex={this.props.data.siteSearchIndex} />
             </div>
           </div>
           <div className="body-container">

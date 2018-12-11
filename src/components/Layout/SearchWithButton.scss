@@ -1,0 +1,33 @@
+@import "../_settings/variables.scss";
+.search-bar-button {
+  width: 300px;
+  border: 3px solid white;
+  padding: 5px;
+  border-radius: 5px 0 0 5px;
+  outline: none;
+  font-size: 1.8rem;
+}
+
+.search-button {
+  color: $base-color;
+  height: 100%;
+  outline: none;
+  text-align: center;
+  padding: 5px 10px 5px 10px;
+  font-size: 1.8rem;
+  text-decoration: none;
+  border: 3px solid white;
+  border-left: 1px solid $base-color;
+  border-radius: 0 5px 5px 0;
+  cursor: pointer;
+  &:active {
+    outline: none;
+  }
+}
+
+.search-bar-container {
+  // height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
