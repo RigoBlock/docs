@@ -63,7 +63,7 @@ bundle-stats.json
 
 # Markdown folders
 
-content/
+content/*
 
 # Misc
 
