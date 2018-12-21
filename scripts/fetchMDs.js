@@ -3,6 +3,7 @@ const { fetchJSON, postJSON, withSpinner } = require('./utils')
 const fs = require('fs-extra')
 const changeCase = require('change-case')
 const path = require('path')
+const inquirer = require('inquirer')
 
 const getMonorepoPackageNames = async () => {
   const REST_URL = 'https://api.github.com/repos/RigoBlock/rigoblock-monorepo'
@@ -52,6 +53,7 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
   const readmeLinks = data.match(linkRegexp)
   const svgLinks = data.match(svgRegexp)
   let children = [].concat(readmeLinks, svgLinks).filter(val => !!val)
+  console.log('CHILDREN', children)
   if (children.length) {
     childrenPromises = children.map(async link => {
       const fileName = getFileName(link)
@@ -166,18 +168,70 @@ const writeTOC = async markdowns => {
     err ? console.error('ERROR 2', err) : null
   )
 }
+const normalize = str => str.trim().toLowerCase()
 
 const fetchREADMEs = async () => {
-  const packageNames = await withSpinner(
-    getMonorepoPackageNames(),
-    'Fetching monorepo package names',
-    'Done!'
-  )
-  const markdowns = await withSpinner(
-    getMarkdownsContent(packageNames),
-    'Fetching markdown contents',
-    'Done!'
-  )
+  const fetchSingle = 'Fetch a single Markdown.'
+  const { task } = await inquirer.prompt([
+    {
+      type: 'list',
+      name: 'task',
+      message: 'What would you like to do?',
+      choices: ['Fetch Monorepo and KB docs.', fetchSingle]
+    }
+  ])
+  let markdowns = []
+  if (task === fetchSingle) {
+    const { repository, filePath } = await inquirer.prompt([
+      {
+        type: 'input',
+        name: 'repository',
+        message: 'Insert the repository name.',
+        filter: input => normalize(input)
+      },
+      {
+        type: 'input',
+        name: 'filePath',
+        message: 'Insert the file path (case sensitive).',
+        filter: input => input.trim()
+      }
+    ])
+    if (!repository) {
+      throw new Error('Repository must be specified.')
+    }
+    if (!filePath) {
+      throw new Error('File path must be specified.')
+    }
+    const response = await fetchGraphQL(repository, filePath)
+    let basePath = ''
+    if (filePath.indexOf('/') !== -1) {
+      const pathArr = filePath.split('/')
+      basePath = pathArr.slice(0, pathArr.length - 1).join('/') + '/'
+    }
+    const markdownContent = await parseMarkdown(
+      'api',
+      'rigoblock-monorepo',
+      response,
+      basePath
+    )
+    if (!markdownContent) {
+      throw new Error(
+        'File not found. Make sure the file path was spelled correctly.'
+      )
+    }
+    markdowns.push(markdownContent)
+  } else {
+    const packageNames = await withSpinner(
+      getMonorepoPackageNames(),
+      'Fetching monorepo package names',
+      'Done!'
+    )
+    markdowns = await withSpinner(
+      getMarkdownsContent(packageNames),
+      'Fetching markdown contents',
+      'Done!'
+    )
+  }
 
   await withSpinner(
     writeMarkdowns(markdowns),
