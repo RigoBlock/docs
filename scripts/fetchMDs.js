@@ -53,7 +53,6 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
   const readmeLinks = data.match(linkRegexp)
   const svgLinks = data.match(svgRegexp)
   let children = [].concat(readmeLinks, svgLinks).filter(val => !!val)
-  console.log('CHILDREN', children)
   if (children.length) {
     childrenPromises = children.map(async link => {
       const fileName = getFileName(link)
@@ -96,15 +95,15 @@ const getMarkdownsContent = async packagesArray => {
   return results.filter(val => !!val)
 }
 
-const writeMarkdowns = markdownArray => {
+const writeMarkdowns = (markdownArray, category = '') => {
   const contentFolder = __dirname + '/../content/'
   const writeMarkdown = markdown => {
     const path = contentFolder + markdown.path
     const content = markdown.content.replace(/\.md(?=\))/gi, '')
     const data =
-      `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
-        markdown.repo
-      }"\n---\n\n` + content
+      `---\ntitle: "${changeCase.title(
+        markdown.title
+      )}"\ncategory: "${category || markdown.repo}"\n---\n\n` + content
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
@@ -220,6 +219,12 @@ const fetchREADMEs = async () => {
       )
     }
     markdowns.push(markdownContent)
+
+    await withSpinner(
+      writeMarkdowns(markdowns, 'API DOCS'),
+      'Writing markdown files',
+      'Done!'
+    )
   } else {
     const packageNames = await withSpinner(
       getMonorepoPackageNames(),
@@ -231,13 +236,12 @@ const fetchREADMEs = async () => {
       'Fetching markdown contents',
       'Done!'
     )
+    await withSpinner(
+      writeMarkdowns(markdowns),
+      'Writing markdown files',
+      'Done!'
+    )
   }
-
-  await withSpinner(
-    writeMarkdowns(markdowns),
-    'Writing markdown files',
-    'Done!'
-  )
 
   await withSpinner(
     writeTOC(markdowns),

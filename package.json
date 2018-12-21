@@ -76,7 +76,7 @@
     "build": "npm run clean && node --max_old_space_size=4096 ./node_modules/.bin/gatsby build",
     "build:pp": "npm run build --prefix-paths",
     "develop": "gatsby develop",
-    "dev": "rm -rf .cache && npm run develop",
+    "dev": "rm -rf .cache && npm run clean && npm run develop",
     "serve": "gatsby serve",
     "fetch-docs": "rm -rf content && node scripts/fetchMDs",
     "build:gh": "npm run clean && npm run build:pp && gh-pages -d public",
