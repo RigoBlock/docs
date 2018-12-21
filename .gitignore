@@ -61,6 +61,10 @@ bundle-stats.json
 .idea/*
 .idea
 
+# Markdown folders
+
+content/
+
 # Misc
 
 .env
