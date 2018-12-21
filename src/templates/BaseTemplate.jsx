@@ -63,7 +63,7 @@ export const pageQuery = graphql`
         }
       }
     }
-    allDocuments: docsJson {
+    allDocuments: contentJson {
       contents {
         title
         documents {
@@ -79,7 +79,7 @@ export const pageQuery = graphql`
               }
             }
           }
-          otherDocs {
+          children {
             title
             entry {
               id

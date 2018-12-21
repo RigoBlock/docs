@@ -45,6 +45,12 @@ module.exports = {
             }
           },
           {
+            resolve: 'gatsby-remark-copy-linked-files',
+            options: {
+              ignoreFileExtensions: ['md']
+            }
+          },
+          {
             resolve: 'gatsby-remark-responsive-iframe'
           },
           'gatsby-remark-prismjs',
