@@ -1,4 +1,5 @@
 const get = require('lodash/get')
+const groupBy = require('lodash/groupBy')
 const { fetchJSON, postJSON, withSpinner } = require('./utils')
 const fs = require('fs-extra')
 const changeCase = require('change-case')
@@ -42,7 +43,13 @@ const fetchGraphQL = async (repo, path) => {
   return postJSON(GRAPHQL_URL, { query })
 }
 
-const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
+const parseMarkdown = async (
+  name,
+  repo,
+  responseObj,
+  category,
+  basePath = ''
+) => {
   if (!responseObj.data.repository.object) {
     return null
   }
@@ -73,28 +80,33 @@ const parseMarkdown = async (name, repo, responseObj, basePath = '') => {
     title: name,
     content: data,
     path: `${name}.md`,
+    category: category || repo,
     repo,
     children: children.filter(val => !!val)
   }
 }
 
 const getMarkdownsContent = async packagesArray => {
-  const markdownPromises = packagesArray.map(async pkg => {
-    const repo = 'rigoblock-monorepo'
-    const basePath = `packages/${pkg}/`
-    const response = await fetchGraphQL(
-      'rigoblock-monorepo',
-      `${basePath}README.md`
-    )
-    return parseMarkdown(pkg, repo, response, basePath)
-  })
+  const markdownPromises = await Promise.all(
+    packagesArray.map(async pkg => {
+      const repo = 'rigoblock-monorepo'
+      const basePath = `packages/${pkg}/`
+      const response = await fetchGraphQL(
+        'rigoblock-monorepo',
+        `${basePath}README.md`
+      )
+      return parseMarkdown(pkg, repo, response, 'Packages', basePath)
+    })
+  )
   const kbResponse = await fetchGraphQL('kb', 'README.md')
-  markdownPromises.push(parseMarkdown('reference', 'kb', kbResponse))
+  markdownPromises.push(
+    parseMarkdown('reference', 'kb', kbResponse, 'Knowledge Base')
+  )
   const results = await Promise.all(markdownPromises)
   return results.filter(val => !!val)
 }
 
-const writeMarkdowns = (markdownArray, category = '') => {
+const writeMarkdowns = markdownArray => {
   const contentFolder = __dirname + '/../content/'
   const writeMarkdown = markdown => {
     const path = contentFolder + markdown.path
@@ -102,7 +114,7 @@ const writeMarkdowns = (markdownArray, category = '') => {
     const data =
       `---\ntitle: "${changeCase.title(
         markdown.title
-      )}"\ncategory: "${category || markdown.repo}"\n---\n\n` + content
+      )}"\ncategory: "${markdown.category || markdown.repo}"\n---\n\n` + content
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
@@ -128,10 +140,6 @@ const writeMarkdowns = (markdownArray, category = '') => {
 }
 
 const writeTOC = async markdowns => {
-  const monorepoMd = markdowns.filter(md => md.repo === 'rigoblock-monorepo')
-  const kbMd = markdowns.filter(md => md.repo === 'kb')
-  const jsonPath = __dirname + '/../content/table_of_contents.json'
-  fs.ensureFileSync(jsonPath)
   const mapMarkdowns = markdownArr => {
     const getMarkdownObj = markdown => ({
       title: markdown.title,
@@ -148,19 +156,18 @@ const writeTOC = async markdowns => {
       return { ...obj, children }
     })
   }
+  const jsonPath = __dirname + '/../content/table_of_contents.json'
+  fs.ensureFileSync(jsonPath)
+
+  const grouped = groupBy(markdowns, 'category')
+  const contents = Object.entries(grouped).map(([key, value]) => ({
+    title: key,
+    documents: mapMarkdowns(value)
+  }))
 
   const JSON = {
     id: 'table-of-contents',
-    contents: [
-      {
-        title: 'Packages',
-        documents: mapMarkdowns(monorepoMd)
-      },
-      {
-        title: 'Knowledge Base',
-        documents: mapMarkdowns(kbMd)
-      }
-    ]
+    contents
   }
   return fs.writeJson(jsonPath, JSON, { spaces: 2 }, err =>
     err ? console.error('ERROR 2', err) : null
@@ -182,6 +189,7 @@ const fetchREADMEs = async () => {
       'api',
       'rigoblock-monorepo',
       response,
+      'API DOCS',
       basePath
     )
     if (!markdownContent) {
@@ -192,7 +200,7 @@ const fetchREADMEs = async () => {
     markdowns.push(markdownContent)
 
     await withSpinner(
-      writeMarkdowns(markdowns, 'API DOCS'),
+      writeMarkdowns(markdowns),
       'Writing markdown files',
       'Done!'
     )
