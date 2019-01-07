@@ -9,6 +9,8 @@ import SiteHeader from '../components/Layout/Header'
 const BaseTemplate = props => {
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
+  const { contents } = props.data.allDocuments
+  console.log(contents)
   let bodyComponent = <DocumentPage {...props} />
   if (typeof window !== 'undefined') {
     const { pathname } = window.location
@@ -24,7 +26,7 @@ const BaseTemplate = props => {
       <Helmet>
         <title>RigoBlock Documentation</title>
       </Helmet>
-      <SiteHeader>
+      <SiteHeader contents={contents}>
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
           setResults={setResults}

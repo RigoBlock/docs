@@ -2,22 +2,24 @@ import './Navigation.scss'
 import Link from 'gatsby-link'
 import React from 'react'
 
-class Navigation extends React.Component {
-  render() {
+const Navigation = ({ contents }) => {
+  const links = contents.map((obj, index) => {
+    const { title } = obj
+    const to = obj.documents[0].title
     return (
-      <div className="nav-container">
-        <Link className="nav-link" to="/">
-          HOME
-        </Link>
-        <Link className="nav-link" to="/dapp">
-          DOCS
-        </Link>
-        <Link className="nav-link" to="/reference">
-          KB
-        </Link>
-      </div>
+      <Link key={index} className="nav-link" to={`/${to}`}>
+        {title.toUpperCase()}
+      </Link>
     )
-  }
+  })
+  return (
+    <div className="nav-container">
+      <Link className="nav-link" to="/">
+        HOME
+      </Link>
+      {links}
+    </div>
+  )
 }
 
 export default Navigation
