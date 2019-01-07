@@ -57,7 +57,7 @@
     "fs-extra": "^7.0.1",
     "gatsby-plugin-sass": "1.0.26",
     "gh-pages": "^1.0.0",
-    "inquirer": "^6.2.1",
+    "minimist": "^1.2.0",
     "multispinner": "^0.2.1",
     "node-fetch": "^2.3.0",
     "node-sass": "^4.10.0",

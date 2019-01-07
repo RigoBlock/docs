@@ -3,7 +3,6 @@ const { fetchJSON, postJSON, withSpinner } = require('./utils')
 const fs = require('fs-extra')
 const changeCase = require('change-case')
 const path = require('path')
-const inquirer = require('inquirer')
 
 const getMonorepoPackageNames = async () => {
   const REST_URL = 'https://api.github.com/repos/RigoBlock/rigoblock-monorepo'
@@ -167,41 +166,13 @@ const writeTOC = async markdowns => {
     err ? console.error('ERROR 2', err) : null
   )
 }
-const normalize = str => str.trim().toLowerCase()
+const isString = str => !!str && typeof str === 'string'
 
 const fetchREADMEs = async () => {
-  const fetchSingle = 'Fetch a single Markdown.'
-  const { task } = await inquirer.prompt([
-    {
-      type: 'list',
-      name: 'task',
-      message: 'What would you like to do?',
-      choices: ['Fetch Monorepo and KB docs.', fetchSingle]
-    }
-  ])
+  const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
-  if (task === fetchSingle) {
-    const { repository, filePath } = await inquirer.prompt([
-      {
-        type: 'input',
-        name: 'repository',
-        message: 'Insert the repository name.',
-        filter: input => normalize(input)
-      },
-      {
-        type: 'input',
-        name: 'filePath',
-        message: 'Insert the file path (case sensitive).',
-        filter: input => input.trim()
-      }
-    ])
-    if (!repository) {
-      throw new Error('Repository must be specified.')
-    }
-    if (!filePath) {
-      throw new Error('File path must be specified.')
-    }
-    const response = await fetchGraphQL(repository, filePath)
+  if (isString(repo) && isString(filePath)) {
+    const response = await fetchGraphQL(repo, filePath)
     let basePath = ''
     if (filePath.indexOf('/') !== -1) {
       const pathArr = filePath.split('/')
