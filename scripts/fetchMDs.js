@@ -112,9 +112,9 @@ const writeMarkdowns = markdownArray => {
     const path = contentFolder + markdown.path
     const content = markdown.content.replace(/\.md(?=\))/gi, '')
     const data =
-      `---\ntitle: "${changeCase.title(
-        markdown.title
-      )}"\ncategory: "${markdown.category || markdown.repo}"\n---\n\n` + content
+      `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
+        markdown.category
+      }"\n---\n\n` + content
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
@@ -189,7 +189,7 @@ const fetchREADMEs = async () => {
       'api',
       'rigoblock-monorepo',
       response,
-      'API DOCS',
+      'Contracts API',
       basePath
     )
     if (!markdownContent) {
