@@ -10,7 +10,6 @@ const BaseTemplate = props => {
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
   const { contents } = props.data.allDocuments
-  console.log(contents)
   let bodyComponent = <DocumentPage {...props} />
   if (typeof window !== 'undefined') {
     const { pathname } = window.location
