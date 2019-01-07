@@ -32,9 +32,17 @@ main {
   text-align: center;
 }
 
-.body-container {
+.body-container, .body-container-single {
   max-width: 650px;
   margin: 3 * $dist-m auto;
   display: flex;
+
+}
+
+.body-container {
   justify-content: space-between;
+}
+
+.body-container-single {
+  justify-content: center;
 }

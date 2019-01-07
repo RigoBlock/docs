@@ -33,7 +33,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"master:${path}") {
+      object(expression:"feature/solidity-documentation:${path}") {
         ... on Blob {
           text
         }

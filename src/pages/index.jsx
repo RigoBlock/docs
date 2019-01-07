@@ -16,6 +16,8 @@ const Index = props => {
       </CtaButton>
     )
   })
+  const bodyContainerClass =
+    ctaButtons.length > 1 ? 'body-container' : 'body-container-single'
   return (
     <div className="index-container">
       <div className="logo-header">
@@ -29,7 +31,7 @@ const Index = props => {
             <SearchWithButton searchIndex={props.data.siteSearchIndex} />
           </div>
         </div>
-        <div className="body-container">{ctaButtons}</div>
+        <div className={bodyContainerClass}>{ctaButtons}</div>
       </main>
     </div>
   )
