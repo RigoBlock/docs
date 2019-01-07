@@ -33,9 +33,8 @@ main {
 }
 
 .body-container {
-  padding: $dist-m;
   max-width: 650px;
-  margin: 2 * $dist-m auto;
+  margin: 3 * $dist-m auto;
   display: flex;
   justify-content: space-between;
 }

@@ -12,11 +12,10 @@ const Index = props => {
     const to = obj.documents[0].title
     return (
       <CtaButton key={index} to={`/${to}`}>
-        Go to {title} documentation.
+        {title} documentation.
       </CtaButton>
     )
   })
-  console.log('contents', contents)
   return (
     <div className="index-container">
       <div className="logo-header">
