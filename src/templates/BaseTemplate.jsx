@@ -87,6 +87,7 @@ export const pageQuery = graphql`
               childMarkdownRemark {
                 fields {
                   slug
+                  folder
                 }
                 frontmatter {
                   title

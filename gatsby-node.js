@@ -11,7 +11,14 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
       basePath: 'content',
       trailingSlash: false
     })
+    let folder = ''
+    if (slug.indexOf('/') !== -1) {
+      const arr = slug.split('/')
+      folder = arr[arr.length - 2]
+    }
     createNodeField({ node, name: 'slug', value: slug })
+
+    createNodeField({ node, name: 'folder', value: folder })
   }
 }
 

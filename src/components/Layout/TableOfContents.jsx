@@ -38,6 +38,7 @@ const PackageEntry = ({ title, entry, level = 1, children }) => (
 
 const TableOfContents = ({ data: { title, documents } }) => (
   <div className="toc-wrapper">
+    {console.log('DOCUMENTS', documents)}
     <ul className="package-list">
       <h5 className="list-title">{title}</h5>
       {documents &&
