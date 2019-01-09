@@ -43,6 +43,45 @@ const fetchGraphQL = async (repo, path) => {
   return postJSON(GRAPHQL_URL, { query })
 }
 
+const getChildrenLinks = content => {
+  const linkRegexp = /(?<=\()[^\)]*\.md(?=\))/g
+  const svgRegexp = /(?<=\()[^\)]*\.svg(?=\))/g
+  const readmeLinks = content.match(linkRegexp)
+  const svgLinks = content.match(svgRegexp)
+  return [].concat(readmeLinks, svgLinks).filter(val => !!val)
+}
+
+const getBasePath = path => {
+  let basePath = ''
+  if (path.indexOf('/') !== -1) {
+    const pathArr = path.split('/')
+    basePath = pathArr.slice(0, pathArr.length - 1).join('/') + '/'
+  }
+  return basePath
+}
+
+const newFunction = async (repo, filePath, category, name = '') => {
+  const pathList = []
+  async function getAllPaths(filePath) {
+    const normPath = path.normalize(filePath)
+    if (pathList.includes(normPath)) {
+      return null
+    }
+    pathList.push(normPath)
+    const response = await fetchGraphQL(repo, filePath)
+    const data = get(response, 'data.repository.object.text', '')
+    const basePath = getBasePath(normPath)
+    let children = getChildrenLinks(data)
+    if (children.length) {
+      const promises = children.map(link => getAllPaths(basePath + link))
+      await Promise.all(promises)
+    }
+    return
+  }
+  await getAllPaths(filePath)
+  console.log('RESULTS', pathList)
+}
+
 const parseMarkdown = async (
   name,
   repo,
@@ -53,12 +92,8 @@ const parseMarkdown = async (
   if (!responseObj.data.repository.object) {
     return null
   }
-  const linkRegexp = /(?<=\().*\.md(?=\))/g
-  const svgRegexp = /(?<=\().*\.svg(?=\))/g
   const data = get(responseObj, 'data.repository.object.text', '')
-  const readmeLinks = data.match(linkRegexp)
-  const svgLinks = data.match(svgRegexp)
-  let children = [].concat(readmeLinks, svgLinks).filter(val => !!val)
+  let children = getChildrenLinks(data)
   if (children.length) {
     childrenPromises = children.map(async link => {
       const fileName = getFileName(link)
@@ -67,10 +102,11 @@ const parseMarkdown = async (
         return null
       }
       const { text } = response.data.repository.object
+      let subChildren = getChildrenLinks(response)
       return {
         title: fileName,
         content: text,
-        category: category || repo,
+        category: category,
         path: link,
         repo
       }
@@ -81,7 +117,7 @@ const parseMarkdown = async (
     title: name,
     content: data,
     path: `${name}.md`,
-    category: category || repo,
+    category: category,
     repo,
     children: children.filter(val => !!val)
   }
@@ -186,25 +222,27 @@ const fetchREADMEs = async () => {
       const pathArr = filePath.split('/')
       basePath = pathArr.slice(0, pathArr.length - 1).join('/') + '/'
     }
-    const markdownContent = await parseMarkdown(
-      'api',
-      'rigoblock-monorepo',
-      response,
-      'Contracts API',
-      basePath
-    )
-    if (!markdownContent) {
-      throw new Error(
-        'File not found. Make sure the file path was spelled correctly.'
-      )
-    }
-    markdowns.push(markdownContent)
 
-    await withSpinner(
-      writeMarkdowns(markdowns),
-      'Writing markdown files',
-      'Done!'
-    )
+    await newFunction(repo, filePath)
+    // const markdownContent = await parseMarkdown(
+    //   'api',
+    //   'rigoblock-monorepo',
+    //   response,
+    //   'Contracts API',
+    //   basePath
+    // )
+    // if (!markdownContent) {
+    //   throw new Error(
+    //     'File not found. Make sure the file path was spelled correctly.'
+    //   )
+    // }
+    // markdowns.push(markdownContent)
+
+    // await withSpinner(
+    //   writeMarkdowns(markdowns),
+    //   'Writing markdown files',
+    //   'Done!'
+    // )
   } else {
     const packageNames = await withSpinner(
       getMonorepoPackageNames(),
