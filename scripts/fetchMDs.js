@@ -23,8 +23,10 @@ const getFileName = path => {
     const newName = pathArray.pop()
     fileName = newName
   }
-  fileName = fileName.split('.').shift()
-  return fileName
+  const split = fileName.split('.')
+  return split.length > 1
+    ? split.slice(0, split.length - 1).join('.')
+    : split.pop()
 }
 
 const isMarkdown = pathStr => path.extname(pathStr) === '.md'
@@ -183,12 +185,20 @@ const isString = str => !!str && typeof str === 'string'
 const fetchREADMEs = async () => {
   const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
+  // const repo = 'rigoblock-monorepo'
+  // const filePath = 'packages/api/docs/README.md'
   if (isString(repo) && isString(filePath)) {
-    markdowns = await withSpinner(
-      fetchMarkdowns(repo, filePath, 'Contracts API', 'main'),
-      'Fetching markdown files',
-      'Done!'
+    markdowns = await fetchMarkdowns(
+      repo,
+      filePath,
+      'Contracts API',
+      'reference'
     )
+    // markdowns = await withSpinner(
+    //   fetchMarkdowns(repo, filePath, 'Contracts API', 'reference'),
+    //   'Fetching markdown files',
+    //   'Done!'
+    // )
 
     await withSpinner(
       writeMarkdowns(markdowns),

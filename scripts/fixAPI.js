@@ -12,7 +12,7 @@ const fixAPIdocs = async () => {
 
   const promises = docsList.map(async doc => {
     let content = (await readFile(doc)).toString()
-    content = content.replace('../README', '../main')
+    content = content.replace('../README', '../reference')
     return writeFile(doc, content)
   })
   await Promise.all(promises)

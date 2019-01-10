@@ -1,69 +1,85 @@
 import './TableOfContents.scss'
 import Link from 'gatsby-link'
 import React from 'react'
-import capitalize from 'lodash/capitalize'
 import changeCase from 'change-case'
 import groupBy from 'lodash/groupBy'
 
 /* eslint react/no-array-index-key: "off" */
-const TitleLink = ({ title, entry }) => (
-  <div className="chapter-list-item" key={`${title}`}>
-    <h5 className="list-entry">
-      <Link className="title-link" to={entry.childMarkdownRemark.fields.slug}>
-        {capitalize(entry.childMarkdownRemark.frontmatter.title)}
-      </Link>
-    </h5>
-  </div>
-)
+const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
+const formatEntry = str => {
+  let result = str.replace(/contracts(?=\s)|models(?=\s)/gi, '').trim()
+  if (result.indexOf('events') !== -1) {
+    result = result.split('events').join(' ')
+  }
+  return result
+}
+
+const organizeEntries = ([category, list], index) => {
+  const entries = list.map((el, index) => {
+    let { title } = el.entry.childMarkdownRemark.frontmatter
+    title = formatEntry(title)
+    return (
+      <li className="entry-list-item" key={index}>
+        <Link to={el.entry.childMarkdownRemark.fields.slug}>
+          <div className="entry-title">{title}</div>
+        </Link>
+      </li>
+    )
+  })
+  return (
+    <React.Fragment key={index}>
+      <h5>{changeCase.titleCase(category)}</h5>
+      {entries}
+    </React.Fragment>
+  )
+}
 
 const DocList = ({ data }) => {
-  const grouped = groupBy(
+  const groupBySubcategory = groupBy(
     data,
     'entry.childMarkdownRemark.frontmatter.subCategory'
   )
-  const list = Object.entries(grouped).map(([name, values], index) => {
-    name = name.replace(/docs|\/|packages/gi, '')
-    if (!name) {
-      const { title, entry } = values.pop()
-      return <TitleLink key={index} title={title} entry={entry} />
-    }
-    let h4Content = changeCase.upperCaseFirst(name)
-    let mainIndex = values
-      .map(({ title }, index) => {
-        if (title.toLowerCase() === name.toLowerCase()) {
-          return index
-        }
-        return null
-      })
-      .filter(val => val !== null)
-      .pop()
-    if (Number.isInteger(mainIndex)) {
-      const mainElement = values.splice(mainIndex, 1).pop()
-      h4Content = (
-        <Link to={mainElement.entry.childMarkdownRemark.fields.slug}>
-          <div className="entry-title">
-            {mainElement.entry.childMarkdownRemark.frontmatter.title}
-          </div>
-        </Link>
+  const byCategoryAndFolder = Object.entries(groupBySubcategory).map(
+    ([subCategory, values]) => {
+      subCategory = formatCategory(subCategory)
+      let groupByFolder = groupBy(
+        values,
+        'entry.childMarkdownRemark.fields.folder'
       )
+      let entries = []
+      if (groupByFolder[subCategory]) {
+        entries = groupByFolder[subCategory]
+        delete groupByFolder[subCategory]
+      }
+      return {
+        category: subCategory,
+        entries,
+        subCategories: Object.keys(groupByFolder).length ? groupByFolder : []
+      }
     }
-    const entries = values.map((el, index) => (
-      <li className="entry-list-item" key={index}>
-        <Link to={el.entry.childMarkdownRemark.fields.slug}>
-          <div className="entry-title">
-            {el.entry.childMarkdownRemark.frontmatter.title}
-          </div>
-        </Link>
-      </li>
-    ))
+  )
+  const lists = byCategoryAndFolder.map((el, index) => {
+    const entries = el.entries.map((el, index) => {
+      return (
+        <li className="entry-list-item" key={index}>
+          <Link to={el.entry.childMarkdownRemark.fields.slug}>
+            <div className="entry-title">
+              {el.entry.childMarkdownRemark.frontmatter.title}
+            </div>
+          </Link>
+        </li>
+      )
+    })
+    const subCategories = Object.entries(el.subCategories).map(organizeEntries)
     return (
       <React.Fragment key={index}>
-        <h4 className="folder">{h4Content}</h4>
+        <h4>{changeCase.titleCase(el.category)}</h4>
         {entries}
+        {subCategories}
       </React.Fragment>
     )
   })
-  return <div>{list}</div>
+  return <div>{lists}</div>
 }
 
 const TableOfContents = ({ data: { title, documents } }) => (
