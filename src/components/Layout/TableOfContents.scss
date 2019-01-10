@@ -15,6 +15,11 @@
   color: $base-color;
   font-size: 2rem;
   font-weight: bold;
+  .entry-title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: $base-color;
+  }
 }
 
 .list-title {

@@ -17,8 +17,36 @@ const TitleLink = ({ title, entry }) => (
 )
 
 const DocList = ({ data }) => {
-  const grouped = groupBy(data, 'entry.childMarkdownRemark.fields.folder')
+  const grouped = groupBy(
+    data,
+    'entry.childMarkdownRemark.frontmatter.subCategory'
+  )
   const list = Object.entries(grouped).map(([name, values], index) => {
+    name = name.replace(/docs|\/|packages/gi, '')
+    if (!name) {
+      const { title, entry } = values.pop()
+      return <TitleLink key={index} title={title} entry={entry} />
+    }
+    let h4Content = changeCase.upperCaseFirst(name)
+    let mainIndex = values
+      .map(({ title }, index) => {
+        if (title.toLowerCase() === name.toLowerCase()) {
+          return index
+        }
+        return null
+      })
+      .filter(val => val !== null)
+      .pop()
+    if (Number.isInteger(mainIndex)) {
+      const mainElement = values.splice(mainIndex, 1).pop()
+      h4Content = (
+        <Link to={mainElement.entry.childMarkdownRemark.fields.slug}>
+          <div className="entry-title">
+            {mainElement.entry.childMarkdownRemark.frontmatter.title}
+          </div>
+        </Link>
+      )
+    }
     const entries = values.map((el, index) => (
       <li className="entry-list-item" key={index}>
         <Link to={el.entry.childMarkdownRemark.fields.slug}>
@@ -30,7 +58,7 @@ const DocList = ({ data }) => {
     ))
     return (
       <React.Fragment key={index}>
-        <h4 className="folder">{changeCase.upperCaseFirst(name)}</h4>
+        <h4 className="folder">{h4Content}</h4>
         {entries}
       </React.Fragment>
     )
@@ -38,19 +66,11 @@ const DocList = ({ data }) => {
   return <div>{list}</div>
 }
 
-const PackageEntry = ({ title, entry, children }) => (
-  <div>
-    {title && entry && <TitleLink title={title} entry={entry} />}
-    {children && <DocList data={children} />}
-  </div>
-)
-
 const TableOfContents = ({ data: { title, documents } }) => (
   <div className="toc-wrapper">
     <ul className="package-list">
       <h5 className="list-title">{title}</h5>
-      {documents &&
-        documents.map((pkg, index) => <PackageEntry {...pkg} key={index} />)}
+      {documents && <DocList data={documents} />}
     </ul>
   </div>
 )

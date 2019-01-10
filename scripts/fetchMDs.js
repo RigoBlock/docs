@@ -33,7 +33,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/rollback-readme:${path}") {
+      object(expression:"master:${path}") {
         ... on Blob {
           text
         }
@@ -83,8 +83,9 @@ const fetchMarkdowns = async (repo, filePath, category, name = '') => {
   const markdownPromises = pathList.map(async (filePath, index) => {
     let isMain = false
     let fileName = getFileName(filePath)
+    const { dir } = path.parse(filePath)
     if (index === 0) {
-      basePath = path.parse(filePath).dir + '/'
+      basePath = dir ? dir + '/' : ''
       isMain = true
       if (name) {
         fileName = name
@@ -102,6 +103,7 @@ const fetchMarkdowns = async (repo, filePath, category, name = '') => {
       path: isMain ? `${fileName}.md` : finalPath,
       isMain,
       category,
+      subCategory: basePath || dir,
       repo
     }
   })
@@ -113,36 +115,31 @@ const getMarkdownsContent = async packagesArray => {
   const markdownPromises = await Promise.all(
     packagesArray.map(async pkg => {
       const repo = 'rigoblock-monorepo'
-      const basePath = `packages/${pkg}/`
-      const response = await fetchGraphQL(
-        'rigoblock-monorepo',
-        `${basePath}README.md`
-      )
-      return parseMarkdown(pkg, repo, response, 'Packages', basePath)
+      const filePath = `packages/${pkg}/README.md`
+      return fetchMarkdowns(repo, filePath, 'Packages', pkg)
     })
   )
-  const kbResponse = await fetchGraphQL('kb', 'README.md')
   markdownPromises.push(
-    parseMarkdown('reference', 'kb', kbResponse, 'Knowledge Base')
+    fetchMarkdowns('kb', 'README.md', 'Knowledge Base', 'reference')
   )
   const results = await Promise.all(markdownPromises)
-  return results.filter(val => !!val)
+  return results.reduce((acc, curr) => [...acc, ...curr], [])
 }
 
 const writeMarkdowns = markdownArray => {
-  const contentFolder = __dirname + '/../content/'
+  const contentFolder = __dirname + '/../content'
   const writeMarkdown = markdown => {
-    const path = contentFolder + markdown.path
+    const path = `${contentFolder}/${markdown.path}`
     const content = markdown.content.replace(/\.md/gi, '')
     const data =
       `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
         markdown.category
-      }"\n---\n\n` + content
+      }"\nsubCategory: "${markdown.subCategory}"\n---\n\n` + content
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
   const writeSVG = svg => {
-    const path = contentFolder + svg.path
+    const path = `${contentFolder}/${svg.path}`
     fs.outputFile(path, svg.content, err => (err ? console.error(err) : null))
   }
 
@@ -184,9 +181,7 @@ const writeTOC = async markdowns => {
 const isString = str => !!str && typeof str === 'string'
 
 const fetchREADMEs = async () => {
-  // const { repo, filePath } = require('minimist')(process.argv.slice(2))
-  const repo = 'rigoblock-monorepo'
-  const filePath = 'packages/api/docs/README.md'
+  const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
     markdowns = await withSpinner(
