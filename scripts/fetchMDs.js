@@ -60,7 +60,7 @@ const getBasePath = path => {
   return basePath
 }
 
-const newFunction = async (repo, filePath, category, name = '') => {
+const fetchMarkdowns = async (repo, filePath, category, name = '') => {
   const pathList = []
   async function getAllPaths(filePath) {
     const normPath = path.normalize(filePath)
@@ -68,7 +68,7 @@ const newFunction = async (repo, filePath, category, name = '') => {
       return null
     }
     pathList.push(normPath)
-    const response = await fetchGraphQL(repo, filePath)
+    const response = await fetchGraphQL(repo, normPath)
     const data = get(response, 'data.repository.object.text', '')
     const basePath = getBasePath(normPath)
     let children = getChildrenLinks(data)
@@ -79,48 +79,34 @@ const newFunction = async (repo, filePath, category, name = '') => {
     return
   }
   await getAllPaths(filePath)
-  console.log('RESULTS', pathList)
-}
-
-const parseMarkdown = async (
-  name,
-  repo,
-  responseObj,
-  category,
-  basePath = ''
-) => {
-  if (!responseObj.data.repository.object) {
-    return null
-  }
-  const data = get(responseObj, 'data.repository.object.text', '')
-  let children = getChildrenLinks(data)
-  if (children.length) {
-    childrenPromises = children.map(async link => {
-      const fileName = getFileName(link)
-      const response = await fetchGraphQL(repo, basePath + link)
-      if (!response.data.repository.object) {
-        return null
+  let basePath
+  const markdownPromises = pathList.map(async (filePath, index) => {
+    let isMain = false
+    let fileName = getFileName(filePath)
+    if (index === 0) {
+      basePath = path.parse(filePath).dir + '/'
+      isMain = true
+      if (name) {
+        fileName = name
       }
-      const { text } = response.data.repository.object
-      let subChildren = getChildrenLinks(response)
-      return {
-        title: fileName,
-        content: text,
-        category: category,
-        path: link,
-        repo
-      }
-    })
-    children = await Promise.all(childrenPromises)
-  }
-  return {
-    title: name,
-    content: data,
-    path: `${name}.md`,
-    category: category,
-    repo,
-    children: children.filter(val => !!val)
-  }
+    }
+    const response = await fetchGraphQL(repo, filePath)
+    if (!response.data.repository.object) {
+      return null
+    }
+    const data = get(response, 'data.repository.object.text', '')
+    const finalPath = filePath.replace(basePath, '')
+    return {
+      title: fileName,
+      content: data,
+      path: isMain ? `${fileName}.md` : finalPath,
+      isMain,
+      category,
+      repo
+    }
+  })
+  const results = await Promise.all(markdownPromises)
+  return results.filter(val => !!val)
 }
 
 const getMarkdownsContent = async packagesArray => {
@@ -147,7 +133,7 @@ const writeMarkdowns = markdownArray => {
   const contentFolder = __dirname + '/../content/'
   const writeMarkdown = markdown => {
     const path = contentFolder + markdown.path
-    const content = markdown.content.replace(/\.md(?=\))/gi, '')
+    const content = markdown.content.replace(/\.md/gi, '')
     const data =
       `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
         markdown.category
@@ -160,38 +146,23 @@ const writeMarkdowns = markdownArray => {
     fs.outputFile(path, svg.content, err => (err ? console.error(err) : null))
   }
 
-  const markdownPromises = markdownArray.map(markdown => {
-    const promiseArray = []
-    promiseArray.push(writeMarkdown(markdown))
-    if (markdown.children.length) {
-      markdown.children.map(child =>
-        isMarkdown(child.path)
-          ? promiseArray.push(writeMarkdown(child))
-          : promiseArray.push(writeSVG(child))
-      )
-    }
-    return Promise.all(promiseArray)
-  })
+  const markdownPromises = markdownArray.map(markdown =>
+    isMarkdown(markdown.path) ? writeMarkdown(markdown) : writeSVG(markdown)
+  )
 
   return Promise.all(markdownPromises)
 }
 
 const writeTOC = async markdowns => {
   const mapMarkdowns = markdownArr => {
-    const getMarkdownObj = markdown => ({
-      title: markdown.title,
-      entry: `./${markdown.path}`
-    })
-    return markdownArr.map(md => {
-      if (!md.children.length) {
-        return getMarkdownObj(md)
+    const onlyMarkdowns = markdownArr.filter(md => isMarkdown(md.path))
+    const getMarkdownObj = md => {
+      return {
+        title: md.title,
+        entry: `./${md.path}`
       }
-      const obj = getMarkdownObj(md)
-      const children = md.children
-        .map(child => (isMarkdown(child.path) ? getMarkdownObj(child) : null))
-        .filter(val => !!val)
-      return { ...obj, children }
-    })
+    }
+    return onlyMarkdowns.map(md => getMarkdownObj(md))
   }
   const jsonPath = __dirname + '/../content/table_of_contents.json'
   fs.ensureFileSync(jsonPath)
@@ -213,36 +184,22 @@ const writeTOC = async markdowns => {
 const isString = str => !!str && typeof str === 'string'
 
 const fetchREADMEs = async () => {
-  const { repo, filePath } = require('minimist')(process.argv.slice(2))
+  // const { repo, filePath } = require('minimist')(process.argv.slice(2))
+  const repo = 'rigoblock-monorepo'
+  const filePath = 'packages/api/docs/README.md'
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
-    const response = await fetchGraphQL(repo, filePath)
-    let basePath = ''
-    if (filePath.indexOf('/') !== -1) {
-      const pathArr = filePath.split('/')
-      basePath = pathArr.slice(0, pathArr.length - 1).join('/') + '/'
-    }
+    markdowns = await withSpinner(
+      fetchMarkdowns(repo, filePath, 'Contracts API', 'main'),
+      'Fetching markdown files',
+      'Done!'
+    )
 
-    await newFunction(repo, filePath)
-    // const markdownContent = await parseMarkdown(
-    //   'api',
-    //   'rigoblock-monorepo',
-    //   response,
-    //   'Contracts API',
-    //   basePath
-    // )
-    // if (!markdownContent) {
-    //   throw new Error(
-    //     'File not found. Make sure the file path was spelled correctly.'
-    //   )
-    // }
-    // markdowns.push(markdownContent)
-
-    // await withSpinner(
-    //   writeMarkdowns(markdowns),
-    //   'Writing markdown files',
-    //   'Done!'
-    // )
+    await withSpinner(
+      writeMarkdowns(markdowns),
+      'Writing markdown files',
+      'Done!'
+    )
   } else {
     const packageNames = await withSpinner(
       getMonorepoPackageNames(),

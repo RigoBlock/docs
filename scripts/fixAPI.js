@@ -9,11 +9,10 @@ const writeFile = promisify(fs.writeFile)
 
 const fixAPIdocs = async () => {
   const docsList = await glob('content/**/*.md')
-  console.log(docsList)
 
   const promises = docsList.map(async doc => {
     let content = (await readFile(doc)).toString()
-    content = content.replace('../README', '../api')
+    content = content.replace('../README', '../main')
     return writeFile(doc, content)
   })
   await Promise.all(promises)
