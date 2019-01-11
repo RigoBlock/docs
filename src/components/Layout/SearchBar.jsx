@@ -18,7 +18,13 @@ const SearchBar = props => {
       ignoreQueryPrefix: true
     }
   )
-  const [query, setQuery, handleChange] = useQuery(from)
+  const [query, setQuery, handleChange] = useQuery(queryParam, from)
+  let placeHolderContent = 'Search'
+  let searchIcon = query ? null : <i className="fas fa-search" />
+  if (isSearchPage() && queryParam) {
+    placeHolderContent = ''
+    searchIcon = null
+  }
 
   // only on first mount, check if we are on search page, place focus on search bar
   // and add url query value to address bar if there is one
@@ -51,28 +57,35 @@ const SearchBar = props => {
     },
     [query]
   )
-
   return (
-    <input
-      type="text"
-      className="search-bar"
-      ref={searchEl}
-      placeholder="Search"
-      value={query}
-      onChange={handleChange}
-    />
+    <div className="search-bar-container">
+      <input
+        type="text"
+        className="search-bar"
+        ref={searchEl}
+        placeholder={placeHolderContent}
+        value={query}
+        onChange={handleChange}
+      />
+      {searchIcon}
+    </div>
   )
 }
 
 const isSearchPage = () =>
   typeof window !== 'undefined' && window.location.pathname.match(SEARCH_URL)
 
-const useQuery = prevUrl => {
+const useQuery = (queryParam, prevUrl) => {
   const [query, setQuery] = useState('')
+  let previousQuery = queryParam
 
   const handleChange = e => {
     const query = e.target.value
     setQuery(query)
+    if (previousQuery && !query && prevUrl) {
+      navigateTo(prevUrl)
+    }
+    previousQuery = query
     if (query.length >= MINIMUM_QUERY_LENGTH) {
       let from
       if (prevUrl) {

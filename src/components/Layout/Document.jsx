@@ -3,15 +3,14 @@ import TableOfContents from './TableOfContents'
 
 export default class Document extends React.Component {
   render() {
-    const [packages, kb] = this.props.data.allDocuments.contents
+    const { contents } = this.props.data.allDocuments
     const { category } = this.props.pathContext
+    const toc = contents.filter(obj => obj.title === category).pop()
     const postNode = this.props.data.postBySlug
     return (
       <div className="body-grid">
         <div className="toc-container">
-          <TableOfContents
-            data={category === 'rigoblock-monorepo' ? packages : kb}
-          />
+          {toc && <TableOfContents data={toc} />}
         </div>
         <div className="document-body-container">
           <div>

@@ -1,49 +1,104 @@
 import './TableOfContents.scss'
 import Link from 'gatsby-link'
 import React from 'react'
-import capitalize from 'lodash/capitalize'
+import changeCase from 'change-case'
+import classNames from 'classnames'
+import groupBy from 'lodash/groupBy'
 
 /* eslint react/no-array-index-key: "off" */
-const TitleLink = ({ title, entry }) => (
-  <div className="chapter-list-item" key={`${title}`}>
-    <h5 className="list-entry">
-      <Link className="titleLink" to={entry.childMarkdownRemark.fields.slug}>
-        {capitalize(entry.childMarkdownRemark.frontmatter.title)}
-      </Link>
-    </h5>
-  </div>
-)
+const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
 
-const DocList = ({ entry }) => (
-  <div>
-    <li className="entry-list-item">
-      <Link to={entry.childMarkdownRemark.fields.slug}>
-        <div className="entry-title">
-          {entry.childMarkdownRemark.frontmatter.title}
-        </div>
-      </Link>
-    </li>
-  </div>
-)
+const iconTypes = {
+  interface: 'fas fa-vector-square',
+  ['external-module']: 'fas fa-cubes',
+  class: 'fas fa-cube',
+  enumeration: 'fas fa-list'
+}
 
-const PackageEntry = ({ title, entry, level = 1, children }) => (
-  <div>
-    {title && entry && <TitleLink title={title} entry={entry} />}
-    {children &&
-      children.map((doc, index) => (
-        <DocList {...doc} level={level + 1} key={`${index}`} />
-      ))}
-  </div>
-)
+const sortByTocClass = arr =>
+  arr.sort((prev, curr) => {
+    const prevClasses = prev.entry.childMarkdownRemark.frontmatter.tocClasses
+    const currClasses = curr.entry.childMarkdownRemark.frontmatter.tocClasses
+    return prevClasses.length - currClasses.length
+  })
 
-const TableOfContents = ({ data: { title, documents } }) => (
-  <div className="toc-wrapper">
-    <ul className="package-list">
-      <h5 className="list-title">{title}</h5>
-      {documents &&
-        documents.map((pkg, index) => <PackageEntry {...pkg} key={index} />)}
-    </ul>
-  </div>
-)
+const mapToLinks = arr => {
+  console.log(arr)
+  return sortByTocClass(arr).map((el, index) => {
+    const { frontmatter, fields } = el.entry.childMarkdownRemark
+    const classes = frontmatter.tocClasses.split(' ')
+    const iconType = iconTypes[classes.shift()]
+    const iconClasses = classNames(iconType, classes)
+    return (
+      <li className="entry-list-item" key={index}>
+        <i className={iconClasses} />
+        <Link to={fields.slug}>
+          <div className="entry-title">{frontmatter.title}</div>
+        </Link>
+      </li>
+    )
+  })
+}
+
+const organizeEntries = ([category, list], index) => {
+  const entries = mapToLinks(list)
+  return (
+    <React.Fragment key={index}>
+      <h3>{changeCase.titleCase(category)}</h3>
+      {entries}
+    </React.Fragment>
+  )
+}
+
+const DocList = ({ data }) => {
+  const categories = Object.entries(
+    groupBy(data, 'entry.childMarkdownRemark.frontmatter.subCategory')
+  )
+  const categoriesAndFolders = categories.map(([subCategory, values]) => {
+    subCategory = formatCategory(subCategory)
+    let groupByFolder = groupBy(
+      values,
+      'entry.childMarkdownRemark.fields.folder'
+    )
+    let entries = []
+    if (groupByFolder[subCategory]) {
+      entries = groupByFolder[subCategory]
+      delete groupByFolder[subCategory]
+    }
+    return {
+      category: subCategory,
+      entries,
+      folders: Object.keys(groupByFolder).length ? groupByFolder : []
+    }
+  })
+  const lists = categoriesAndFolders.map((el, index) => {
+    const entries = mapToLinks(el.entries)
+    const folders = Object.entries(el.folders).map(organizeEntries)
+    return (
+      <React.Fragment key={index}>
+        {categories.length !== 1 && (
+          <h4>{changeCase.titleCase(el.category)}</h4>
+        )}
+        {entries}
+        {folders}
+      </React.Fragment>
+    )
+  })
+  return <div>{lists}</div>
+}
+
+const TableOfContents = ({ data }) => {
+  if (!data) {
+    return null
+  }
+  return (
+    <div className="toc-wrapper">
+      <ul className="package-list">
+        <h3 className="list-title">{data.title}</h3>
+        {data.documents && <DocList data={data.documents} />}
+      </ul>
+    </div>
+  )
+}
 
 export default TableOfContents
