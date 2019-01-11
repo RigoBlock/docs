@@ -23,7 +23,6 @@ const sortByTocClass = arr =>
   })
 
 const mapToLinks = arr => {
-  console.log(arr)
   return sortByTocClass(arr).map((el, index) => {
     const { frontmatter, fields } = el.entry.childMarkdownRemark
     const classes = frontmatter.tocClasses.split(' ')

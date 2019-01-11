@@ -19,11 +19,7 @@ const SearchBarWithButton = () => {
         onChange={handleChange}
         onKeyPress={handleKeypress}
       />
-      <Button
-        className="search-button"
-        onClick={handleClick}
-        onKeyPress={e => console.log(e)}
-      >
+      <Button className="search-button" onClick={handleClick}>
         <i className="fas fa-search" />
       </Button>
     </div>
