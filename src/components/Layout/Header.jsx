@@ -11,7 +11,7 @@ const Header = ({ children, contents }) => (
       </a>
     </div>
     <Navigation contents={contents} />
-    {children}
+    <div className="header-children">{children}</div>
   </div>
 )
 

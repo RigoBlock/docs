@@ -72,3 +72,16 @@
     height: inherit;
   }
 }
+
+.github-link {
+  color: white;
+  border: none;
+  margin: 0 2 * $dist-m;
+  i {
+    font-size: 35px;
+    padding-top: 4px;
+  }
+  &:hover {
+    border: none;
+  }
+}

@@ -12,7 +12,7 @@ const Index = props => {
     const to = obj.documents[0].title
     return (
       <CtaButton key={index} to={`/${to}`}>
-        {title} documentation.
+        {title}
       </CtaButton>
     )
   })
