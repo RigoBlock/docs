@@ -9,6 +9,7 @@ import SiteHeader from '../components/Layout/Header'
 const BaseTemplate = props => {
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
+  const { contents } = props.data.allDocuments
   let bodyComponent = <DocumentPage {...props} />
   if (typeof window !== 'undefined') {
     const { pathname } = window.location
@@ -21,10 +22,16 @@ const BaseTemplate = props => {
 
   return (
     <div>
-      <Helmet>
-        <title>RigoBlock Documentation</title>
-      </Helmet>
-      <SiteHeader>
+      <Helmet
+        title="RigoBlock Documentation"
+        link={[
+          { rel: 'shortcut icon', type: 'image/png', href: '/favicon.ico' }
+        ]}
+      />
+      <SiteHeader contents={contents}>
+        <a className="github-link" href="https://github.com/RigoBlock/api">
+          <i className="fab fa-github" />
+        </a>
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
           setResults={setResults}
@@ -73,23 +80,12 @@ export const pageQuery = graphql`
             childMarkdownRemark {
               fields {
                 slug
+                folder
               }
               frontmatter {
                 title
-              }
-            }
-          }
-          children {
-            title
-            entry {
-              id
-              childMarkdownRemark {
-                fields {
-                  slug
-                }
-                frontmatter {
-                  title
-                }
+                subCategory
+                tocClasses
               }
             }
           }
