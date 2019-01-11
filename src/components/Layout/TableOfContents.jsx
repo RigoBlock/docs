@@ -1,5 +1,4 @@
 import './TableOfContents.scss'
-// import { groupBy } from 'lodash-es'
 import Link from 'gatsby-link'
 import React from 'react'
 import changeCase from 'change-case'

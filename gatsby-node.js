@@ -1,6 +1,5 @@
 const { createFilePath } = require('gatsby-source-filesystem')
 const path = require('path')
-const webpackLodashPlugin = require('lodash-webpack-plugin')
 
 exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
   const { createNodeField } = boundActionCreators
@@ -74,10 +73,4 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
       })
     )
   })
-}
-
-exports.modifyWebpackConfig = ({ config, stage }) => {
-  if (stage === 'build-javascript') {
-    config.plugin('Lodash', webpackLodashPlugin, null)
-  }
 }
