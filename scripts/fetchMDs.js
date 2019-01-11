@@ -134,7 +134,15 @@ const writeMarkdowns = (markdownArray = []) => {
     const path = `${contentFolder}/${markdown.path}`
     const content = markdown.content.replace(/\.md/gi, '')
     let title = (markdown.content.match(/\n\# (.+)/) || []).pop()
-    let [tag, newTitle] = title ? title.split(':') : [, markdown.title]
+    let [type, newTitle] = title ? title.split(':') : ['', markdown.title]
+    let tocClasses = [type]
+    const titleArr = newTitle.split('/')
+    if (titleArr.length > 1) {
+      tocClasses = [...tocClasses, ...titleArr.slice(0, titleArr.length - 1)]
+    }
+    tocClasses = tocClasses.map(el =>
+      changeCase.paramCase(el.replace(/\"/gi, '').trim())
+    )
     newTitle = newTitle.split('/').pop()
     newTitle = changeCase
       .title(newTitle.replace(/\"/, ''))
@@ -146,7 +154,7 @@ const writeMarkdowns = (markdownArray = []) => {
       `title: "${newTitle}"`,
       `category: "${markdown.category}"`,
       `subCategory: "${markdown.subCategory}"`,
-      `tag: "${tag}"`,
+      `tocClasses: "${tocClasses.join(' ')}"`,
       '---',
       '',
       '',
@@ -199,7 +207,9 @@ const writeTOC = async markdowns => {
 const isString = str => !!str && typeof str === 'string'
 
 const fetchREADMEs = async () => {
-  const { repo, filePath } = require('minimist')(process.argv.slice(2))
+  // const { repo, filePath } = require('minimist')(process.argv.slice(2))
+  const repo = 'rigoblock-monorepo'
+  const filePath = 'packages/api/docs/README.md'
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
     markdowns = await withSpinner(
