@@ -187,7 +187,7 @@ const fetchREADMEs = async () => {
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
     markdowns = await withSpinner(
-      fetchMarkdowns(repo, filePath, 'API reference', 'quick start'),
+      fetchMarkdowns(repo, filePath, 'API Reference', 'quick_start'),
       'Fetching markdown files',
       'Done!'
     )
