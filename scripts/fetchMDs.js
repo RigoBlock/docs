@@ -35,7 +35,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"master:${path}") {
+      object(expression:"feature/rollback-readme:${path}") {
         ... on Blob {
           text
         }
@@ -185,8 +185,6 @@ const isString = str => !!str && typeof str === 'string'
 const fetchREADMEs = async () => {
   const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
-  // const repo = 'rigoblock-monorepo'
-  // const filePath = 'packages/api/docs/README.md'
   if (isString(repo) && isString(filePath)) {
     markdowns = await fetchMarkdowns(
       repo,
@@ -194,11 +192,11 @@ const fetchREADMEs = async () => {
       'Contracts API',
       'reference'
     )
-    // markdowns = await withSpinner(
-    //   fetchMarkdowns(repo, filePath, 'Contracts API', 'reference'),
-    //   'Fetching markdown files',
-    //   'Done!'
-    // )
+    markdowns = await withSpinner(
+      fetchMarkdowns(repo, filePath, 'Contracts API', 'reference'),
+      'Fetching markdown files',
+      'Done!'
+    )
 
     await withSpinner(
       writeMarkdowns(markdowns),

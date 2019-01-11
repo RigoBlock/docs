@@ -1,4 +1,5 @@
 import './TableOfContents.scss'
+// import { groupBy } from 'lodash-es'
 import Link from 'gatsby-link'
 import React from 'react'
 import changeCase from 'change-case'
@@ -82,13 +83,18 @@ const DocList = ({ data }) => {
   return <div>{lists}</div>
 }
 
-const TableOfContents = ({ data: { title, documents } }) => (
-  <div className="toc-wrapper">
-    <ul className="package-list">
-      <h5 className="list-title">{title}</h5>
-      {documents && <DocList data={documents} />}
-    </ul>
-  </div>
-)
+const TableOfContents = ({ data }) => {
+  if (!data) {
+    return null
+  }
+  return (
+    <div className="toc-wrapper">
+      <ul className="package-list">
+        <h5 className="list-title">{data.title}</h5>
+        {data.documents && <DocList data={data.documents} />}
+      </ul>
+    </div>
+  )
+}
 
 export default TableOfContents

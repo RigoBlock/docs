@@ -10,7 +10,7 @@ export default class Document extends React.Component {
     return (
       <div className="body-grid">
         <div className="toc-container">
-          <TableOfContents data={toc} />
+          {toc && <TableOfContents data={toc} />}
         </div>
         <div className="document-body-container">
           <div>
