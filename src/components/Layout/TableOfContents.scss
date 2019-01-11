@@ -52,16 +52,19 @@
   text-decoration: none;
 }
 
-.entry-list-item {
-  font-size: 1.4rem;
-  margin: 0;
-  a:hover {
-    border-bottom: 1px solid black;
-  }
-}
-
 .package-list {
   list-style: none;
   list-style-type: none;
   margin: 0;
+  h5 {
+    margin: 15px 0;
+  }
+  .entry-list-item {
+    font-size: 1.4rem;
+    padding-left: 10px;
+    margin: 0;
+    a:hover {
+      border-bottom: 1px solid black;
+    }
+  }
 }
