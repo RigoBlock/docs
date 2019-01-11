@@ -35,30 +35,30 @@ const organizeEntries = ([category, list], index) => {
 }
 
 const DocList = ({ data }) => {
-  const groupBySubcategory = groupBy(
-    data,
-    'entry.childMarkdownRemark.frontmatter.subCategory'
+  const categories = Object.entries(
+    groupBy(data, 'entry.childMarkdownRemark.frontmatter.subCategory')
   )
-  const byCategoryAndFolder = Object.entries(groupBySubcategory).map(
-    ([subCategory, values]) => {
-      subCategory = formatCategory(subCategory)
-      let groupByFolder = groupBy(
-        values,
-        'entry.childMarkdownRemark.fields.folder'
-      )
-      let entries = []
-      if (groupByFolder[subCategory]) {
-        entries = groupByFolder[subCategory]
-        delete groupByFolder[subCategory]
-      }
-      return {
-        category: subCategory,
-        entries,
-        subCategories: Object.keys(groupByFolder).length ? groupByFolder : []
-      }
+  const categoriesAndFolders = categories.map(([subCategory, values]) => {
+    subCategory = formatCategory(subCategory)
+    let groupByFolder = groupBy(
+      values,
+      'entry.childMarkdownRemark.fields.folder'
+    )
+    let entries = []
+    if (groupByFolder[subCategory]) {
+      entries = groupByFolder[subCategory]
+      delete groupByFolder[subCategory]
     }
-  )
-  const lists = byCategoryAndFolder.map((el, index) => {
+    return {
+      category: subCategory,
+      entries,
+      folders: Object.keys(groupByFolder).length ? groupByFolder : []
+    }
+  })
+  let lists
+  if (categoriesAndFolders.length === 1) {
+    const el = categoriesAndFolders.pop()
+    const folders = Object.entries(el.folders).map(organizeEntries)
     const entries = el.entries.map((el, index) => {
       return (
         <li className="entry-list-item" key={index}>
@@ -70,15 +70,35 @@ const DocList = ({ data }) => {
         </li>
       )
     })
-    const subCategories = Object.entries(el.subCategories).map(organizeEntries)
-    return (
-      <React.Fragment key={index}>
-        <h4>{changeCase.titleCase(el.category)}</h4>
+    lists = (
+      <React.Fragment>
         {entries}
-        {subCategories}
+        {folders}
       </React.Fragment>
     )
-  })
+  } else {
+    lists = categoriesAndFolders.map((el, index) => {
+      const entries = el.entries.map((el, index) => {
+        return (
+          <li className="entry-list-item" key={index}>
+            <Link to={el.entry.childMarkdownRemark.fields.slug}>
+              <div className="entry-title">
+                {el.entry.childMarkdownRemark.frontmatter.title}
+              </div>
+            </Link>
+          </li>
+        )
+      })
+      const folders = Object.entries(el.folders).map(organizeEntries)
+      return (
+        <React.Fragment key={index}>
+          <h4>{changeCase.titleCase(el.category)}</h4>
+          {entries}
+          {folders}
+        </React.Fragment>
+      )
+    })
+  }
   return <div>{lists}</div>
 }
 
@@ -90,6 +110,7 @@ const TableOfContents = ({ data }) => {
     <div className="toc-wrapper">
       <ul className="package-list">
         <h5 className="list-title">{data.title}</h5>
+        {console.log(data.documents)}
         {data.documents && <DocList data={data.documents} />}
       </ul>
     </div>
