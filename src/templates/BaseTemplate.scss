@@ -49,7 +49,7 @@
 }
 
 .body-grid {
-  height: 100vh;
+  height: calc(100vh - 90px);
   display: grid;
   grid-template-columns: 300px 1fr;
 

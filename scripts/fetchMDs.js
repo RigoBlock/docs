@@ -128,15 +128,31 @@ const getMarkdownsContent = async packagesArray => {
   return results.reduce((acc, curr) => [...acc, ...curr], [])
 }
 
-const writeMarkdowns = markdownArray => {
+const writeMarkdowns = (markdownArray = []) => {
   const contentFolder = __dirname + '/../content'
   const writeMarkdown = markdown => {
     const path = `${contentFolder}/${markdown.path}`
     const content = markdown.content.replace(/\.md/gi, '')
-    const data =
-      `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
-        markdown.category
-      }"\nsubCategory: "${markdown.subCategory}"\n---\n\n` + content
+    let title = (markdown.content.match(/\n\# (.+)/) || []).pop()
+    let [tag, newTitle] = title ? title.split(':') : [, markdown.title]
+    newTitle = newTitle.split('/').pop()
+    newTitle = changeCase
+      .title(newTitle.replace(/\"/, ''))
+      .replace(/ /g, '')
+      .trim()
+
+    const data = [
+      '---',
+      `title: "${newTitle}"`,
+      `category: "${markdown.category}"`,
+      `subCategory: "${markdown.subCategory}"`,
+      `tag: "${tag}"`,
+      '---',
+      '',
+      '',
+      content
+    ].join('\n')
+
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
