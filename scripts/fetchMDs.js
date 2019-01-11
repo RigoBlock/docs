@@ -35,7 +35,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/api-documentation:${path}") {
+      object(expression:"master:${path}") {
         ... on Blob {
           text
         }
@@ -207,9 +207,7 @@ const writeTOC = async markdowns => {
 const isString = str => !!str && typeof str === 'string'
 
 const fetchREADMEs = async () => {
-  // const { repo, filePath } = require('minimist')(process.argv.slice(2))
-  const repo = 'rigoblock-monorepo'
-  const filePath = 'packages/api/docs/README.md'
+  const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
     markdowns = await withSpinner(
