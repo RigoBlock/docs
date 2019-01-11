@@ -29,6 +29,9 @@ const BaseTemplate = props => {
         ]}
       />
       <SiteHeader contents={contents}>
+        <a className="github-link" href="https://github.com/RigoBlock/api">
+          <i className="fab fa-github" />
+        </a>
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
           setResults={setResults}
@@ -82,6 +85,7 @@ export const pageQuery = graphql`
               frontmatter {
                 title
                 subCategory
+                tocClasses
               }
             }
           }

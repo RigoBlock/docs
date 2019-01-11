@@ -45,6 +45,7 @@
     "babel-eslint": "^10.0.1",
     "chalk": "^2.4.1",
     "change-case": "^3.0.2",
+    "classnames": "^2.2.6",
     "cli-glob": "^0.1.0",
     "dotenv": "^6.2.0",
     "eslint": "^5.9.0",

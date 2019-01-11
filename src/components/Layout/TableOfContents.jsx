@@ -2,21 +2,43 @@ import './TableOfContents.scss'
 import Link from 'gatsby-link'
 import React from 'react'
 import changeCase from 'change-case'
+import classNames from 'classnames'
 import groupBy from 'lodash/groupBy'
 
 /* eslint react/no-array-index-key: "off" */
 const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
 
-const mapToLinks = arr =>
-  arr.map((el, index) => (
-    <li className="entry-list-item" key={index}>
-      <Link to={el.entry.childMarkdownRemark.fields.slug}>
-        <div className="entry-title">
-          {el.entry.childMarkdownRemark.frontmatter.title}
-        </div>
-      </Link>
-    </li>
-  ))
+const iconTypes = {
+  interface: 'fas fa-vector-square',
+  ['external-module']: 'fas fa-cubes',
+  class: 'fas fa-cube',
+  enumeration: 'fas fa-list'
+}
+
+const sortByTocClass = arr =>
+  arr.sort((prev, curr) => {
+    const prevClasses = prev.entry.childMarkdownRemark.frontmatter.tocClasses
+    const currClasses = curr.entry.childMarkdownRemark.frontmatter.tocClasses
+    return prevClasses.length - currClasses.length
+  })
+
+const mapToLinks = arr => {
+  console.log(arr)
+  return sortByTocClass(arr).map((el, index) => {
+    const { frontmatter, fields } = el.entry.childMarkdownRemark
+    const classes = frontmatter.tocClasses.split(' ')
+    const iconType = iconTypes[classes.shift()]
+    const iconClasses = classNames(iconType, classes)
+    return (
+      <li className="entry-list-item" key={index}>
+        <i className={iconClasses} />
+        <Link to={fields.slug}>
+          <div className="entry-title">{frontmatter.title}</div>
+        </Link>
+      </li>
+    )
+  })
+}
 
 const organizeEntries = ([category, list], index) => {
   const entries = mapToLinks(list)
