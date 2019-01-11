@@ -12,7 +12,7 @@ const Index = props => {
     const to = obj.documents[0].title
     return (
       <CtaButton key={index} to={`/${to}`}>
-        {title} documentation.
+        {title}
       </CtaButton>
     )
   })
@@ -23,7 +23,12 @@ const Index = props => {
       <div className="logo-header">
         <img src={config.siteLogo} className="main-logo" alt="" />
       </div>
-      <Helmet title={config.siteTitle} />
+      <Helmet
+        title={config.siteTitle}
+        link={[
+          { rel: 'shortcut icon', type: 'image/png', href: '/favicon.ico' }
+        ]}
+      />
       <main>
         <div className="index-head-container">
           <div className="hero">

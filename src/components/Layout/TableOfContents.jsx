@@ -2,80 +2,85 @@ import './TableOfContents.scss'
 import Link from 'gatsby-link'
 import React from 'react'
 import changeCase from 'change-case'
+import classNames from 'classnames'
 import groupBy from 'lodash/groupBy'
 
 /* eslint react/no-array-index-key: "off" */
 const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
-const formatEntry = str => {
-  let result = str.replace(/contracts(?=\s)|models(?=\s)/gi, '').trim()
-  if (result.indexOf('events') !== -1) {
-    result = result.split('events').join(' ')
-  }
-  return result
+
+const iconTypes = {
+  interface: 'fas fa-vector-square',
+  ['external-module']: 'fas fa-cubes',
+  class: 'fas fa-cube',
+  enumeration: 'fas fa-list'
 }
 
-const organizeEntries = ([category, list], index) => {
-  const entries = list.map((el, index) => {
-    let { title } = el.entry.childMarkdownRemark.frontmatter
-    title = formatEntry(title)
+const sortByTocClass = arr =>
+  arr.sort((prev, curr) => {
+    const prevClasses = prev.entry.childMarkdownRemark.frontmatter.tocClasses
+    const currClasses = curr.entry.childMarkdownRemark.frontmatter.tocClasses
+    return prevClasses.length - currClasses.length
+  })
+
+const mapToLinks = arr => {
+  console.log(arr)
+  return sortByTocClass(arr).map((el, index) => {
+    const { frontmatter, fields } = el.entry.childMarkdownRemark
+    const classes = frontmatter.tocClasses.split(' ')
+    const iconType = iconTypes[classes.shift()]
+    const iconClasses = classNames(iconType, classes)
     return (
       <li className="entry-list-item" key={index}>
-        <Link to={el.entry.childMarkdownRemark.fields.slug}>
-          <div className="entry-title">{title}</div>
+        <i className={iconClasses} />
+        <Link to={fields.slug}>
+          <div className="entry-title">{frontmatter.title}</div>
         </Link>
       </li>
     )
   })
+}
+
+const organizeEntries = ([category, list], index) => {
+  const entries = mapToLinks(list)
   return (
     <React.Fragment key={index}>
-      <h5>{changeCase.titleCase(category)}</h5>
+      <h3>{changeCase.titleCase(category)}</h3>
       {entries}
     </React.Fragment>
   )
 }
 
 const DocList = ({ data }) => {
-  const groupBySubcategory = groupBy(
-    data,
-    'entry.childMarkdownRemark.frontmatter.subCategory'
+  const categories = Object.entries(
+    groupBy(data, 'entry.childMarkdownRemark.frontmatter.subCategory')
   )
-  const byCategoryAndFolder = Object.entries(groupBySubcategory).map(
-    ([subCategory, values]) => {
-      subCategory = formatCategory(subCategory)
-      let groupByFolder = groupBy(
-        values,
-        'entry.childMarkdownRemark.fields.folder'
-      )
-      let entries = []
-      if (groupByFolder[subCategory]) {
-        entries = groupByFolder[subCategory]
-        delete groupByFolder[subCategory]
-      }
-      return {
-        category: subCategory,
-        entries,
-        subCategories: Object.keys(groupByFolder).length ? groupByFolder : []
-      }
+  const categoriesAndFolders = categories.map(([subCategory, values]) => {
+    subCategory = formatCategory(subCategory)
+    let groupByFolder = groupBy(
+      values,
+      'entry.childMarkdownRemark.fields.folder'
+    )
+    let entries = []
+    if (groupByFolder[subCategory]) {
+      entries = groupByFolder[subCategory]
+      delete groupByFolder[subCategory]
     }
-  )
-  const lists = byCategoryAndFolder.map((el, index) => {
-    const entries = el.entries.map((el, index) => {
-      return (
-        <li className="entry-list-item" key={index}>
-          <Link to={el.entry.childMarkdownRemark.fields.slug}>
-            <div className="entry-title">
-              {el.entry.childMarkdownRemark.frontmatter.title}
-            </div>
-          </Link>
-        </li>
-      )
-    })
-    const subCategories = Object.entries(el.subCategories).map(organizeEntries)
+    return {
+      category: subCategory,
+      entries,
+      folders: Object.keys(groupByFolder).length ? groupByFolder : []
+    }
+  })
+  const lists = categoriesAndFolders.map((el, index) => {
+    const entries = mapToLinks(el.entries)
+    const folders = Object.entries(el.folders).map(organizeEntries)
     return (
       <React.Fragment key={index}>
-        <h4>{changeCase.titleCase(el.category)}</h4>
+        {categories.length !== 1 && (
+          <h4>{changeCase.titleCase(el.category)}</h4>
+        )}
         {entries}
-        {subCategories}
+        {folders}
       </React.Fragment>
     )
   })
@@ -89,7 +94,7 @@ const TableOfContents = ({ data }) => {
   return (
     <div className="toc-wrapper">
       <ul className="package-list">
-        <h5 className="list-title">{data.title}</h5>
+        <h3 className="list-title">{data.title}</h3>
         {data.documents && <DocList data={data.documents} />}
       </ul>
     </div>

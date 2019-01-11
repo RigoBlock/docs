@@ -22,10 +22,16 @@ const BaseTemplate = props => {
 
   return (
     <div>
-      <Helmet>
-        <title>RigoBlock Documentation</title>
-      </Helmet>
+      <Helmet
+        title="RigoBlock Documentation"
+        link={[
+          { rel: 'shortcut icon', type: 'image/png', href: '/favicon.ico' }
+        ]}
+      />
       <SiteHeader contents={contents}>
+        <a className="github-link" href="https://github.com/RigoBlock/api">
+          <i className="fab fa-github" />
+        </a>
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
           setResults={setResults}
@@ -79,6 +85,7 @@ export const pageQuery = graphql`
               frontmatter {
                 title
                 subCategory
+                tocClasses
               }
             }
           }

@@ -1,7 +1,7 @@
 @import "../_settings/variables.scss";
 
 .toc-wrapper {
-  padding: $dist-m;
+  padding: 15px;
   margin: 0
 }
 
@@ -24,7 +24,7 @@
 
 .list-title {
   font-weight: 600;
-  font-size: 2.8rem;
+  font-size: 2.4rem;
   color: $base-color;
 }
 
@@ -52,16 +52,44 @@
   text-decoration: none;
 }
 
-.entry-list-item {
-  font-size: 1.4rem;
-  margin: 0;
-  a:hover {
-    border-bottom: 1px solid black;
-  }
-}
-
 .package-list {
   list-style: none;
   list-style-type: none;
   margin: 0;
+  h3 {
+    margin: 15px 0;
+  }
+  .entry-list-item {
+    a {
+      font-size: 1.5rem;
+    }
+    padding-left: 10px;
+    margin: 0;
+    i {
+      padding: 0 5px;
+      margin: 0;
+      font-size: 1.2rem;
+    }
+    a:hover {
+      border-bottom: 1px solid black;
+    }
+    .fa-cubes {
+      color: #9600FF
+    }
+    .fa-cube {
+      color: #4DA6FF;
+    }
+    .fa-vector-square {
+      color: #81A226;
+    }
+    .fa-list {
+      color: #CC9900;
+    }
+    .contracts {
+      color: #FC2F00;
+    }
+    .models {
+      color: #FCBF49;
+    }
+  }
 }
