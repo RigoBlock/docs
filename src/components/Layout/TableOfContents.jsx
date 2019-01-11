@@ -15,10 +15,17 @@ const iconTypes = {
   enumeration: 'fas fa-list'
 }
 
-const mapToLinks = arr =>
-  arr.map((el, index) => {
+const sortByTocClass = arr =>
+  arr.sort((prev, curr) => {
+    const prevClasses = prev.entry.childMarkdownRemark.frontmatter.tocClasses
+    const currClasses = curr.entry.childMarkdownRemark.frontmatter.tocClasses
+    return prevClasses.length - currClasses.length
+  })
+
+const mapToLinks = arr => {
+  console.log(arr)
+  return sortByTocClass(arr).map((el, index) => {
     const { frontmatter, fields } = el.entry.childMarkdownRemark
-    console.log(frontmatter)
     const classes = frontmatter.tocClasses.split(' ')
     const iconType = iconTypes[classes.shift()]
     const iconClasses = classNames(iconType, classes)
@@ -31,6 +38,7 @@ const mapToLinks = arr =>
       </li>
     )
   })
+}
 
 const organizeEntries = ([category, list], index) => {
   const entries = mapToLinks(list)
