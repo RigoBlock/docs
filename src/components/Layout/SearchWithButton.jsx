@@ -10,7 +10,7 @@ const SearchBarWithButton = () => {
   const [query, handleChange, handleClick, handleKeypress] = useQuery()
 
   return (
-    <div className="search-bar-container">
+    <div className="search-bar-button-container">
       <input
         type="text"
         className="search-bar-button"

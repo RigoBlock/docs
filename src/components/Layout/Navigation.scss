@@ -3,9 +3,9 @@
   width: 100%;
 
   a {
+    border-bottom: 1px solid rgba(0, 0, 0, 0);
     &:hover {
-      text-decoration: none;
-      border: none;
+      border-color: white;
     }
   }
   .nav-link {

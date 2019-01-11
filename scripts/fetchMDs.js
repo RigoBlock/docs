@@ -35,7 +35,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/rollback-readme:${path}") {
+      object(expression:"feature/api-documentation:${path}") {
         ... on Blob {
           text
         }

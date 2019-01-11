@@ -1,3 +1,5 @@
+@import "../_settings/variables.scss";
+
 .search-bar {
   width: 300px;
   height: 40px;
@@ -6,4 +8,15 @@
   border-radius: 5px;
   outline: none;
   font-size: 1.8rem;
+}
+
+.search-bar-container {
+  display: flex;
+  align-items: center;
+  i {
+    position: absolute;
+    right: 40px;
+    color: black;
+    font-size: 1.8rem;
+  }
 }
