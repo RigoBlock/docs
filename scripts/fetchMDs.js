@@ -35,7 +35,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/rollback-readme:${path}") {
+      object(expression:"feature/api-documentation:${path}") {
         ... on Blob {
           text
         }
@@ -128,15 +128,31 @@ const getMarkdownsContent = async packagesArray => {
   return results.reduce((acc, curr) => [...acc, ...curr], [])
 }
 
-const writeMarkdowns = markdownArray => {
+const writeMarkdowns = (markdownArray = []) => {
   const contentFolder = __dirname + '/../content'
   const writeMarkdown = markdown => {
     const path = `${contentFolder}/${markdown.path}`
     const content = markdown.content.replace(/\.md/gi, '')
-    const data =
-      `---\ntitle: "${changeCase.title(markdown.title)}"\ncategory: "${
-        markdown.category
-      }"\nsubCategory: "${markdown.subCategory}"\n---\n\n` + content
+    let title = (markdown.content.match(/\n\# (.+)/) || []).pop()
+    let [tag, newTitle] = title ? title.split(':') : [, markdown.title]
+    newTitle = newTitle.split('/').pop()
+    newTitle = changeCase
+      .title(newTitle.replace(/\"/, ''))
+      .replace(/ /g, '')
+      .trim()
+
+    const data = [
+      '---',
+      `title: "${newTitle}"`,
+      `category: "${markdown.category}"`,
+      `subCategory: "${markdown.subCategory}"`,
+      `tag: "${tag}"`,
+      '---',
+      '',
+      '',
+      content
+    ].join('\n')
+
     return fs.outputFile(path, data, err => (err ? console.error(err) : null))
   }
 
@@ -186,14 +202,8 @@ const fetchREADMEs = async () => {
   const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
-    markdowns = await fetchMarkdowns(
-      repo,
-      filePath,
-      'Contracts API',
-      'reference'
-    )
     markdowns = await withSpinner(
-      fetchMarkdowns(repo, filePath, 'Contracts API', 'reference'),
+      fetchMarkdowns(repo, filePath, 'API reference', 'Quick start'),
       'Fetching markdown files',
       'Done!'
     )
