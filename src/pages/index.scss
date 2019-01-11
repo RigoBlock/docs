@@ -16,6 +16,7 @@ main {
   padding: (2 * $dist-m) 0;
   & > h1 {
     font-weight: 600;
+    font-size: 4rem;
     margin-bottom: 50px;
   }
   background: $base-color;
@@ -46,3 +47,10 @@ main {
 .body-container-single {
   justify-content: center;
 }
+
+h1 {font-size: 3rem;}
+h2 {font-size: 2.5rem;}
+h3 {font-size: 2rem;}
+h4 {font-size: 1.4rem;}
+h5 {font-size: 1rem;}
+h6 {font-size: .6rem;}

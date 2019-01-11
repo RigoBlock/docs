@@ -4,7 +4,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: $base-color;
+  background: linear-gradient(135deg, $base-color, black);
   padding: $dist-m;
 
   @media screen and (max-width: 600px) {
@@ -19,6 +19,28 @@
       font-size: 1.8rem;
       font-weight: 200;
       border-bottom: 1px solid $base-color;
+    }
+  }
+
+  .side-logo {
+    background: white;
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    left: 0;
+    border-bottom-right-radius: 85%;
+    -webkit-box-shadow: 0 2px 5px rgba(0,0,0,.26);
+    box-shadow: 0 2px 5px rgba(0,0,0,.26);
+
+    a {
+      &:hover {
+        border-bottom: 0;
+      }
+    }
+    img {
+      padding: 15px;
+      height: 80%;
+      width: 80%;
     }
   }
 }
