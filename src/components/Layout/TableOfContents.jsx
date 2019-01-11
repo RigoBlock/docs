@@ -9,7 +9,7 @@ import groupBy from 'lodash/groupBy'
 const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
 
 const iconTypes = {
-  interface: 'far fa-square',
+  interface: 'fas fa-vector-square',
   ['external-module']: 'fas fa-cubes',
   class: 'fas fa-cube',
   enumeration: 'fas fa-list'

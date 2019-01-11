@@ -1,7 +1,7 @@
 @import "../_settings/variables.scss";
 
 .toc-wrapper {
-  padding: $dist-m;
+  padding: 15px;
   margin: 0
 }
 
@@ -66,8 +66,9 @@
     padding-left: 10px;
     margin: 0;
     i {
-      position: relative;
       padding: 0 5px;
+      margin: 0;
+      font-size: 1.2rem;
     }
     a:hover {
       border-bottom: 1px solid black;
@@ -78,11 +79,17 @@
     .fa-cube {
       color: #4DA6FF;
     }
-    .fa-square {
+    .fa-vector-square {
       color: #81A226;
     }
     .fa-list {
       color: #CC9900;
+    }
+    .contracts {
+      color: #FC2F00;
+    }
+    .models {
+      color: #FF006E;
     }
   }
 }
