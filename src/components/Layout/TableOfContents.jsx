@@ -36,7 +36,7 @@ const organizeEntries = ([category, list], index) => {
   const entries = mapToLinks(list)
   return (
     <React.Fragment key={index}>
-      <h5>{changeCase.titleCase(category)}</h5>
+      <h3>{changeCase.titleCase(category)}</h3>
       {entries}
     </React.Fragment>
   )
@@ -86,7 +86,7 @@ const TableOfContents = ({ data }) => {
   return (
     <div className="toc-wrapper">
       <ul className="package-list">
-        <h5 className="list-title">{data.title}</h5>
+        <h3 className="list-title">{data.title}</h3>
         {data.documents && <DocList data={data.documents} />}
       </ul>
     </div>

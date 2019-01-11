@@ -2,6 +2,7 @@ module.exports = {
   siteTitle: 'Rigoblock documentation', // Site title.
   siteTitleAlt: 'Rigoblock documentation', // Alternative site title for SEO.
   siteLogo: '/logos/rigoblock-logo-full.png', // Logo used for SEO and manifest.
+  siteLogoSmall: '/logos/rigoblock-logo.png', // Smaller logo version
   siteUrl: 'https://docs.rigoblock.com', // Domain of your website without pathPrefix.
   pathPrefix: '/', // Prefixes all links. For cases when deployed to example.github.io/gatsby-advanced-starter/.
   siteDescription: 'Rigoblock documentation website', // Website description used for RSS feeds/meta description tag.
