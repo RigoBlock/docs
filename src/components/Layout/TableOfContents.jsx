@@ -73,7 +73,6 @@ const TableOfContents = ({ data }) => {
     <div className="toc-wrapper">
       <ul className="package-list">
         <h5 className="list-title">{data.title}</h5>
-        {console.log(data.documents)}
         {data.documents && <DocList data={data.documents} />}
       </ul>
     </div>

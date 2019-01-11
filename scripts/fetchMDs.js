@@ -186,14 +186,8 @@ const fetchREADMEs = async () => {
   const { repo, filePath } = require('minimist')(process.argv.slice(2))
   let markdowns = []
   if (isString(repo) && isString(filePath)) {
-    markdowns = await fetchMarkdowns(
-      repo,
-      filePath,
-      'Contracts API',
-      'reference'
-    )
     markdowns = await withSpinner(
-      fetchMarkdowns(repo, filePath, 'Contracts API', 'reference'),
+      fetchMarkdowns(repo, filePath, 'API reference', 'quick start'),
       'Fetching markdown files',
       'Done!'
     )
