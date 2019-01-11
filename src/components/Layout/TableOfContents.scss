@@ -63,8 +63,24 @@
     font-size: 1.4rem;
     padding-left: 10px;
     margin: 0;
+    i {
+      position: relative;
+      padding: 0 5px;
+    }
     a:hover {
       border-bottom: 1px solid black;
+    }
+    .fa-cubes {
+      color: #9600FF
+    }
+    .fa-cube {
+      color: #4DA6FF;
+    }
+    .fa-square {
+      color: #81A226;
+    }
+    .fa-list {
+      color: #CC9900;
     }
   }
 }

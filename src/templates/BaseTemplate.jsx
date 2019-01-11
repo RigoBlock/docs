@@ -79,6 +79,7 @@ export const pageQuery = graphql`
               frontmatter {
                 title
                 subCategory
+                tocClasses
               }
             }
           }

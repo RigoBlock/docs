@@ -2,21 +2,35 @@ import './TableOfContents.scss'
 import Link from 'gatsby-link'
 import React from 'react'
 import changeCase from 'change-case'
+import classNames from 'classnames'
 import groupBy from 'lodash/groupBy'
 
 /* eslint react/no-array-index-key: "off" */
 const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
 
+const iconTypes = {
+  interface: 'far fa-square',
+  ['external-module']: 'fas fa-cubes',
+  class: 'fas fa-cube',
+  enumeration: 'fas fa-list'
+}
+
 const mapToLinks = arr =>
-  arr.map((el, index) => (
-    <li className="entry-list-item" key={index}>
-      <Link to={el.entry.childMarkdownRemark.fields.slug}>
-        <div className="entry-title">
-          {el.entry.childMarkdownRemark.frontmatter.title}
-        </div>
-      </Link>
-    </li>
-  ))
+  arr.map((el, index) => {
+    const { frontmatter, fields } = el.entry.childMarkdownRemark
+    console.log(frontmatter)
+    const classes = frontmatter.tocClasses.split(' ')
+    const iconType = iconTypes[classes.shift()]
+    const iconClasses = classNames(iconType, classes)
+    return (
+      <li className="entry-list-item" key={index}>
+        <i className={iconClasses} />
+        <Link to={fields.slug}>
+          <div className="entry-title">{frontmatter.title}</div>
+        </Link>
+      </li>
+    )
+  })
 
 const organizeEntries = ([category, list], index) => {
   const entries = mapToLinks(list)
