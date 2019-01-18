@@ -35,7 +35,7 @@ const fetchGraphQL = async (repo, path) => {
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/api-guides:${path}") {
+      object(expression:"master:${path}") {
         ... on Blob {
           text
         }
@@ -144,10 +144,7 @@ const writeMarkdowns = (markdownArray = []) => {
       changeCase.paramCase(el.replace(/\"/gi, '').trim())
     )
     newTitle = newTitle.split('/').pop()
-    newTitle = changeCase
-      .title(newTitle.replace(/\"/, ''))
-      // .replace(/ /g, '')
-      .trim()
+    newTitle = changeCase.title(newTitle.replace(/\"/, '')).trim()
 
     const data = [
       '---',
