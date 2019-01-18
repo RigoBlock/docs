@@ -25,14 +25,18 @@ const sortByTocClass = arr =>
 const mapToLinks = arr => {
   return sortByTocClass(arr).map((el, index) => {
     const { frontmatter, fields } = el.entry.childMarkdownRemark
-    const classes = frontmatter.tocClasses.split(' ')
+    let { title, tocClasses } = frontmatter
+    if (tocClasses.length) {
+      title = title.replace(/ /g, '')
+    }
+    const classes = tocClasses.split(' ')
     const iconType = iconTypes[classes.shift()]
     const iconClasses = classNames(iconType, classes)
     return (
       <li className="entry-list-item" key={index}>
-        <i className={iconClasses} />
+        {!!tocClasses.length && <i className={iconClasses} />}
         <Link to={fields.slug}>
-          <div className="entry-title">{frontmatter.title}</div>
+          <div className="entry-title">{title}</div>
         </Link>
       </li>
     )

@@ -176,7 +176,14 @@ module.exports = {
           // For any node of type MarkdownRemark, list how to resolve the fields' values
           MarkdownRemark: {
             title: node => node.frontmatter.title,
-            content: node => removeMd(node.internal.content)
+            content: node => {
+              if (node.frontmatter.tocClasses.includes('external-module')) {
+                return
+              }
+              return removeMd(node.internal.content)
+                .replace(/ /g, '')
+                .substring(0, 300)
+            }
           }
         }
       }
