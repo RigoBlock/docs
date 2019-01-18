@@ -35,9 +35,7 @@ const mapToLinks = arr => {
     return (
       <li className="entry-list-item" key={index}>
         {!!tocClasses.length && <i className={iconClasses} />}
-        <Link to={fields.slug}>
-          <div className="entry-title">{title}</div>
-        </Link>
+        <Link to={fields.slug}>{title}</Link>
       </li>
     )
   })
@@ -47,7 +45,7 @@ const organizeEntries = ([category, list], index) => {
   const entries = mapToLinks(list)
   return (
     <React.Fragment key={index}>
-      <h3>{changeCase.titleCase(category)}</h3>
+      <div className="folder-title">{changeCase.titleCase(category)}</div>
       {entries}
     </React.Fragment>
   )
@@ -80,7 +78,9 @@ const DocList = ({ data }) => {
     return (
       <React.Fragment key={index}>
         {categories.length !== 1 && (
-          <h4>{changeCase.titleCase(el.category)}</h4>
+          <div className="category-title">
+            {changeCase.titleCase(el.category)}
+          </div>
         )}
         {entries}
         {folders}
@@ -97,7 +97,7 @@ const TableOfContents = ({ data }) => {
   return (
     <div className="toc-wrapper">
       <ul className="package-list">
-        <h3 className="list-title">{data.title}</h3>
+        <div className="list-title">{data.title}</div>
         {data.documents && <DocList data={data.documents} />}
       </ul>
     </div>

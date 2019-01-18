@@ -64,7 +64,7 @@
 .body-grid {
   height: calc(100vh - 90px);
   display: grid;
-  grid-template-columns: 300px 1fr;
+  grid-template-columns: 330px 1fr;
 
   @media screen and (max-width: 600px) {
     display: flex;
