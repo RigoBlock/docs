@@ -144,10 +144,7 @@ const writeMarkdowns = (markdownArray = []) => {
       changeCase.paramCase(el.replace(/\"/gi, '').trim())
     )
     newTitle = newTitle.split('/').pop()
-    newTitle = changeCase
-      .title(newTitle.replace(/\"/, ''))
-      .replace(/ /g, '')
-      .trim()
+    newTitle = changeCase.title(newTitle.replace(/\"/, '')).trim()
 
     const data = [
       '---',

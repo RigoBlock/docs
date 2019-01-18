@@ -12,14 +12,7 @@ const Navigation = ({ contents }) => {
       </Link>
     )
   })
-  return (
-    <div className="nav-container">
-      <Link className="nav-link" to="/">
-        HOME
-      </Link>
-      {links}
-    </div>
-  )
+  return <div className="nav-container">{links}</div>
 }
 
 export default Navigation

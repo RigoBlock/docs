@@ -6,7 +6,7 @@ import config from '../../../data/SiteConfig'
 const Header = ({ children, contents }) => (
   <div className="site-container">
     <div className="side-logo">
-      <a href="https://beta.rigoblock.com">
+      <a href="https://rigoblock.com/">
         <img src={config.siteLogoSmall} className="small-logo" alt="" />
       </a>
     </div>

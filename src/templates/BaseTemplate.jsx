@@ -29,7 +29,10 @@ const BaseTemplate = props => {
         ]}
       />
       <SiteHeader contents={contents}>
-        <a className="github-link" href="https://github.com/RigoBlock/api">
+        <a
+          className="github-link"
+          href="https://github.com/RigoBlock/rigoblock-monorepo"
+        >
           <i className="fab fa-github" />
         </a>
         <SearchBar
