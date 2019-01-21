@@ -62,7 +62,7 @@ const getBasePath = path => {
   return basePath
 }
 
-const fetchMarkdowns = async (repo, filePath, category, name = '') => {
+const fetchMarkdowns = async (repo, filePath, type, name = '') => {
   const pathList = []
   async function getAllPaths(filePath) {
     const normPath = path.normalize(filePath)
@@ -94,7 +94,7 @@ const fetchMarkdowns = async (repo, filePath, category, name = '') => {
       }
     }
     const response = await fetchGraphQL(repo, filePath)
-    if (!response.data.repository.object) {
+    if (!response.data || !response.data.repository.object) {
       return null
     }
     const data = get(response, 'data.repository.object.text', '')
@@ -104,8 +104,8 @@ const fetchMarkdowns = async (repo, filePath, category, name = '') => {
       content: data,
       path: isMain ? `${fileName}.md` : finalPath,
       isMain,
-      category,
-      subCategory: basePath || dir,
+      type,
+      package: basePath || dir,
       repo
     }
   })
@@ -132,7 +132,7 @@ const writeMarkdowns = (markdownArray = []) => {
   const contentFolder = __dirname + '/../content'
   const writeMarkdown = markdown => {
     const path = `${contentFolder}/${markdown.path}`
-    const content = markdown.content.replace(/\.md/gi, '')
+    let content = markdown.content.replace(/\.md/gi, '')
     let title = (markdown.content.match(/\n\# (.+)/) || []).pop()
     let tocClasses = []
     if (title && title.includes(':')) {
@@ -151,20 +151,36 @@ const writeMarkdowns = (markdownArray = []) => {
     tocClasses = tocClasses.map(el =>
       changeCase.paramCase(el.replace(/\"/gi, '').trim())
     )
+    const frontmatterRegexp = /^((---)$([\s\S]*?)^(?:\2|\.\.\.)\s*$(?:\n)?)/m
+    const matches = content.match(frontmatterRegexp)
+    const frontmatter = matches ? matches[3] : null
+    if (!frontmatter) {
+      const data = [
+        '---',
+        `title: "${title}"`,
+        `type: "${markdown.type}"`,
+        `package: "${markdown.package}"`,
+        `tocClasses: "${tocClasses.join(' ')}"`,
+        '---',
+        '',
+        '',
+        content
+      ].join('\n')
 
-    const data = [
-      '---',
-      `title: "${title}"`,
-      `category: "${markdown.category}"`,
-      `subCategory: "${markdown.subCategory}"`,
-      `tocClasses: "${tocClasses.join(' ')}"`,
-      '---',
-      '',
-      '',
-      content
-    ].join('\n')
-
-    return fs.outputFile(path, data, err => (err ? console.error(err) : null))
+      return fs.outputFile(path, data, err => (err ? console.error(err) : null))
+    }
+    const newFrontmatter =
+      [
+        '',
+        `title: "${title}"`,
+        `type: "${markdown.type}"`,
+        `package: "${markdown.package}"`,
+        `tocClasses: "${tocClasses.join(' ')}"`
+      ].join('\n') + frontmatter
+    content = content.replace(frontmatter, newFrontmatter)
+    return fs.outputFile(path, content, err =>
+      err ? console.error(err) : null
+    )
   }
 
   const writeSVG = svg => {
@@ -193,7 +209,7 @@ const writeTOC = async markdowns => {
   const jsonPath = __dirname + '/../content/table_of_contents.json'
   fs.ensureFileSync(jsonPath)
 
-  const grouped = groupBy(markdowns, 'category')
+  const grouped = groupBy(markdowns, 'type')
   const contents = Object.entries(grouped).map(([key, value]) => ({
     title: key,
     documents: mapMarkdowns(value)
