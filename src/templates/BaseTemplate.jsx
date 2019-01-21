@@ -9,6 +9,7 @@ import SiteHeader from '../components/Layout/Header'
 const BaseTemplate = props => {
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
+  console.log('PROPS', props)
   const { contents } = props.data.allDocuments
   let bodyComponent = <DocumentPage {...props} />
   if (typeof window !== 'undefined') {
@@ -87,8 +88,9 @@ export const pageQuery = graphql`
               }
               frontmatter {
                 title
-                subCategory
                 tocClasses
+                folder
+                category
               }
             }
           }
