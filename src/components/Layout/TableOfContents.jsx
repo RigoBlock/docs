@@ -51,58 +51,50 @@ const organizeEntries = ([category, list], index) => {
   )
 }
 
-const DocList = ({ data }) => {
-  console.log('DATA', data)
-  const categories = Object.entries(
-    groupBy(data, 'entry.childMarkdownRemark.frontmatter.subCategory')
+const DocList = ({ data = { title, documents } }) => {
+  const packages = Object.entries(
+    groupBy(data.documents, 'entry.childMarkdownRemark.frontmatter.package')
   )
-  const categoriesAndFolders = categories.map(([subCategory, values]) => {
-    subCategory = formatCategory(subCategory)
+  console.log('PACKAGES', packages)
+  const packagesAndFolders = packages.map(([packageName, values]) => {
     let groupByFolder = groupBy(
       values,
       'entry.childMarkdownRemark.fields.folder'
     )
-    let entries = []
-    if (groupByFolder[subCategory]) {
-      entries = groupByFolder[subCategory]
-      delete groupByFolder[subCategory]
-    }
     return {
-      category: subCategory,
-      entries,
+      package: packageName,
       folders: Object.keys(groupByFolder).length ? groupByFolder : []
     }
   })
-  const lists = categoriesAndFolders.map((el, index) => {
-    const entries = mapToLinks(el.entries)
+  console.log('folders', packagesAndFolders)
+
+  const lists = packagesAndFolders.map((el, index) => {
     const folders = Object.entries(el.folders).map(organizeEntries)
     return (
       <React.Fragment key={index}>
-        {categories.length !== 1 && (
+        {packages.length !== 1 && (
           <div className="category-title">
             {changeCase.titleCase(el.category)}
           </div>
         )}
-        {entries}
         {folders}
       </React.Fragment>
     )
   })
-  return <div>{lists}</div>
+
+  return (
+    <React.Fragment>
+      <div className="list-title">{data.title}</div>
+      <ul className="package-list">{lists}</ul>
+    </React.Fragment>
+  )
 }
 
 const TableOfContents = ({ data }) => {
   if (!data) {
     return null
   }
-  return (
-    <div className="toc-wrapper">
-      <ul className="package-list">
-        <div className="list-title">{data.title}</div>
-        {data.documents && <DocList data={data.documents} />}
-      </ul>
-    </div>
-  )
+  return <div className="toc-wrapper">{data && <DocList data={data} />}</div>
 }
 
 export default TableOfContents

@@ -90,6 +90,7 @@ export const pageQuery = graphql`
                 tocClasses
                 folder
                 category
+                package
               }
             }
           }
