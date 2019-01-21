@@ -52,6 +52,7 @@ const organizeEntries = ([category, list], index) => {
 }
 
 const DocList = ({ data }) => {
+  console.log('DATA', data)
   const categories = Object.entries(
     groupBy(data, 'entry.childMarkdownRemark.frontmatter.subCategory')
   )

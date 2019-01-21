@@ -47,7 +47,7 @@ const fetchFileContent = async (repo, path) => {
   return postJSON(GRAPHQL_URL, { query })
 }
 
-const fetchAllMarkdowns = async (repo, folderPath, type = 'uncategorized') => {
+const fetchAllMarkdowns = async (repo, folderPath, package = '') => {
   const REST_URL = 'https://api.github.com/repos/RigoBlock'
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
@@ -82,11 +82,17 @@ const fetchAllMarkdowns = async (repo, folderPath, type = 'uncategorized') => {
       .pop()
       .trim()
       .replace(/\"/g, '')
+    if (!package && folderPath.includes('packages')) {
+      const folderArr = folderPath.split('/')
+      package = folderArr[folderArr.indexOf('packages') + 1]
+    }
+
     return {
       title: getFileName(obj.path),
       content: data,
       path: obj.path.replace('docs', ''),
-      category: category || type,
+      category: category || '',
+      package,
       folder
     }
   })
@@ -153,6 +159,7 @@ const writeMarkdowns = (markdownArray = []) => {
         '---',
         `title: "${title}"`,
         `folder: "${markdown.folder}"`,
+        `package: "${markdown.package}"`,
         `tocClasses: "${tocClasses.join(' ')}"`,
         '---',
         '',
@@ -167,6 +174,7 @@ const writeMarkdowns = (markdownArray = []) => {
         '',
         `title: "${title}"`,
         `folder: "${markdown.folder}"`,
+        `package: "${markdown.package}"`,
         `tocClasses: "${tocClasses.join(' ')}"`
       ].join('\n') + frontmatter
     content = content.replace(frontmatter, newFrontmatter)
