@@ -47,7 +47,7 @@ const fetchFileContent = async (repo, path) => {
   return postJSON(GRAPHQL_URL, { query })
 }
 
-const fetchAllMarkdowns = async (repo, folderPath, package = '') => {
+const fetchAllMarkdowns = async (repo, folderPath, packageName = '') => {
   const REST_URL = 'https://api.github.com/repos/RigoBlock'
   const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
@@ -66,7 +66,7 @@ const fetchAllMarkdowns = async (repo, folderPath, package = '') => {
   response = await fetchJSON(treeUrl)
   const markdowns = response.tree.filter(
     obj =>
-      !obj.path.includes('examples') &&
+      !obj.path.includes('examples/') &&
       (obj.path.includes('.md') || obj.path.includes('.svg'))
   )
 
@@ -82,9 +82,9 @@ const fetchAllMarkdowns = async (repo, folderPath, package = '') => {
       .pop()
       .trim()
       .replace(/\"/g, '')
-    if (!package && folderPath.includes('packages')) {
+    if (!packageName && folderPath.includes('packages')) {
       const folderArr = folderPath.split('/')
-      package = folderArr[folderArr.indexOf('packages') + 1]
+      packageName = folderArr[folderArr.indexOf('packages') + 1]
     }
 
     return {
@@ -92,7 +92,7 @@ const fetchAllMarkdowns = async (repo, folderPath, package = '') => {
       content: data,
       path: obj.path.replace('docs', ''),
       category: category || '',
-      package,
+      package: packageName,
       folder
     }
   })
@@ -223,46 +223,69 @@ const writeTOC = async markdowns => {
     err ? console.error('ERROR 2', err) : null
   )
 }
-const isString = str => !!str && typeof str === 'string'
 
 const fetchREADMEs = async () => {
-  const { repo, folderPath } = require('minimist')(process.argv.slice(2))
-  let markdowns = []
-  if (isString(repo) && isString(folderPath)) {
-    markdowns = await withSpinner(
-      fetchAllMarkdowns(repo, folderPath),
-      'Fetching markdown files',
+  if (process.env.FETCH_REFERENCE) {
+    const referenceMarkdowns = await withSpinner(
+      fetchAllMarkdowns('rigoblock-monorepo', 'packages/api/docs'),
+      'Fetching api reference markdown files',
       'Done!'
     )
-
+    const guidesMarkdowns = await withSpinner(
+      fetchAllMarkdowns('rigoblock-monorepo', 'guides'),
+      'Fetching guides markdown files',
+      'Done!'
+    )
+    const allMarkdowns = [...referenceMarkdowns, ...guidesMarkdowns]
     await withSpinner(
-      writeMarkdowns(markdowns),
+      writeMarkdowns(allMarkdowns),
       'Writing markdown files',
+      'Done!'
+    )
+    await withSpinner(
+      writeTOC(allMarkdowns),
+      'Writing JSON table of contents',
       'Done!'
     )
   } else {
-    const packageNames = await withSpinner(
-      getMonorepoPackageNames(),
-      'Fetching monorepo package names',
-      'Done!'
-    )
-    markdowns = await withSpinner(
-      getMarkdownsContent(packageNames),
-      'Fetching markdown contents',
-      'Done!'
-    )
-    await withSpinner(
-      writeMarkdowns(markdowns),
-      'Writing markdown files',
-      'Done!'
-    )
+    return null
   }
+  // let markdowns = []
+  // if (isString(repo) && isString(folderPath)) {
+  //   markdowns = await withSpinner(
+  //     fetchAllMarkdowns(repo, folderPath),
+  //     'Fetching markdown files',
+  //     'Done!'
+  //   )
 
-  await withSpinner(
-    writeTOC(markdowns),
-    'Writing JSON table of contents',
-    'Done!'
-  )
+  //   await withSpinner(
+  //     writeMarkdowns(markdowns),
+  //     'Writing markdown files',
+  //     'Done!'
+  //   )
+  // } else {
+  //   const packageNames = await withSpinner(
+  //     getMonorepoPackageNames(),
+  //     'Fetching monorepo package names',
+  //     'Done!'
+  //   )
+  //   markdowns = await withSpinner(
+  //     getMarkdownsContent(packageNames),
+  //     'Fetching markdown contents',
+  //     'Done!'
+  //   )
+  //   await withSpinner(
+  //     writeMarkdowns(markdowns),
+  //     'Writing markdown files',
+  //     'Done!'
+  //   )
+  // }
+
+  // await withSpinner(
+  //   writeTOC(markdowns),
+  //   'Writing JSON table of contents',
+  //   'Done!'
+  // )
 }
 
 fetchREADMEs()

@@ -62,7 +62,7 @@ const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
       <div className="list-title">{listTitle}</div>
     </React.Fragment>
   ) : (
-    <React.Fragment>
+    <React.Fragment key={folderName || `folder-${index}`}>
       {folderTitleComponent}
       {entries}
     </React.Fragment>

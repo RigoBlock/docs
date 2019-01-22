@@ -53,11 +53,6 @@ export const pageQuery = graphql`
   query DocumentBySlug($slug: String!) {
     postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
       html
-      timeToRead
-      excerpt
-      frontmatter {
-        title
-      }
     }
     siteSearchIndex {
       index
