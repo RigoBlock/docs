@@ -5,9 +5,6 @@ import changeCase from 'change-case'
 import classNames from 'classnames'
 import groupBy from 'lodash/groupBy'
 
-/* eslint react/no-array-index-key: "off" */
-const formatCategory = str => str.replace(/docs|\/|packages/gi, '')
-
 const iconTypes = {
   interface: 'fas fa-vector-square',
   ['external-module']: 'fas fa-cubes',
@@ -15,15 +12,27 @@ const iconTypes = {
   enumeration: 'fas fa-list'
 }
 
-const sortByTocClass = arr =>
+const sortFolders = (arr = []) =>
   arr.sort((prev, curr) => {
-    const prevClasses = prev.entry.childMarkdownRemark.frontmatter.tocClasses
-    const currClasses = curr.entry.childMarkdownRemark.frontmatter.tocClasses
-    return prevClasses.length - currClasses.length
+    const a = prev[0] === 'modules' ? 1 : prev[0].length
+    const b = curr[0] === 'modules' ? 1 : curr[0].length
+    return a - b
   })
 
-const mapToLinks = arr => {
-  return sortByTocClass(arr).map((el, index) => {
+const sortByTocClass = arr => {
+  return arr.sort((prev, curr) => {
+    const prevFrontmatter = prev.entry.childMarkdownRemark.frontmatter
+    const currFrontmatter = curr.entry.childMarkdownRemark.frontmatter
+    if (prevFrontmatter.folder && !currFrontmatter.folder) {
+      return 1
+    }
+    return prevFrontmatter.tocClasses.length - currFrontmatter.tocClasses.length
+  })
+}
+
+const mapToLinkComponents = arr => {
+  const sortedArr = sortByTocClass(arr)
+  return sortedArr.map(el => {
     const { frontmatter, fields } = el.entry.childMarkdownRemark
     let { title, tocClasses } = frontmatter
     if (tocClasses.length) {
@@ -33,75 +42,74 @@ const mapToLinks = arr => {
     const iconType = iconTypes[classes.shift()]
     const iconClasses = classNames(iconType, classes)
     return (
-      <li className="entry-list-item" key={index}>
+      <li className="entry-list-item" key={fields.slug}>
         {!!tocClasses.length && <i className={iconClasses} />}
-        <Link to={fields.slug}>
-          <div className="entry-title">{title}</div>
-        </Link>
+        <Link to={fields.slug}>{title}</Link>
       </li>
     )
   })
 }
 
-const organizeEntries = ([category, list], index) => {
-  const entries = mapToLinks(list)
-  return (
-    <React.Fragment key={index}>
-      <h3>{changeCase.titleCase(category)}</h3>
+const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
+  const entries = mapToLinkComponents(documents)
+  const folderTitleComponent =
+    folderName === 'docs' || !folderName ? null : (
+      <div className="folder-title">{changeCase.titleCase(folderName)}</div>
+    )
+  return !folderName ? (
+    <React.Fragment key={folderName || `folder-${index}`}>
+      <div className="first-folder">{entries}</div>
+      <div className="list-title">{listTitle}</div>
+    </React.Fragment>
+  ) : (
+    <React.Fragment key={folderName || `folder-${index}`}>
+      {folderTitleComponent}
       {entries}
     </React.Fragment>
   )
 }
 
 const DocList = ({ data }) => {
-  const categories = Object.entries(
-    groupBy(data, 'entry.childMarkdownRemark.frontmatter.subCategory')
+  const packages = Object.entries(
+    groupBy(data.documents, 'entry.childMarkdownRemark.frontmatter.package')
   )
-  const categoriesAndFolders = categories.map(([subCategory, values]) => {
-    subCategory = formatCategory(subCategory)
-    let groupByFolder = groupBy(
-      values,
-      'entry.childMarkdownRemark.fields.folder'
+  const packagesAndFolders = packages.map(([packageName, values]) => {
+    const folders = Object.entries(
+      groupBy(values, 'entry.childMarkdownRemark.fields.folder')
     )
-    let entries = []
-    if (groupByFolder[subCategory]) {
-      entries = groupByFolder[subCategory]
-      delete groupByFolder[subCategory]
-    }
+    const sorted = sortFolders(folders)
     return {
-      category: subCategory,
-      entries,
-      folders: Object.keys(groupByFolder).length ? groupByFolder : []
+      package: packageName,
+      folders: sorted
     }
   })
-  const lists = categoriesAndFolders.map((el, index) => {
-    const entries = mapToLinks(el.entries)
-    const folders = Object.entries(el.folders).map(organizeEntries)
+
+  const lists = packagesAndFolders.map(el => {
+    const folders = el.folders.map(el => mapFoldersToComponents(el, data.title))
     return (
-      <React.Fragment key={index}>
-        {categories.length !== 1 && (
-          <h4>{changeCase.titleCase(el.category)}</h4>
+      <React.Fragment key={el.package}>
+        {packages.length !== 1 && (
+          <div className="package-title">
+            {changeCase.titleCase(el.package)}
+          </div>
         )}
-        {entries}
         {folders}
       </React.Fragment>
     )
   })
-  return <div>{lists}</div>
+
+  return (
+    <React.Fragment>
+      <ul className="package-list">{lists}</ul>
+    </React.Fragment>
+  )
 }
 
 const TableOfContents = ({ data }) => {
   if (!data) {
     return null
   }
-  return (
-    <div className="toc-wrapper">
-      <ul className="package-list">
-        <h3 className="list-title">{data.title}</h3>
-        {data.documents && <DocList data={data.documents} />}
-      </ul>
-    </div>
-  )
+  return <div className="toc-wrapper">{data && <DocList data={data} />}</div>
 }
 
 export default TableOfContents
