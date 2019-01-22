@@ -6,17 +6,8 @@ const changeCase = require('change-case')
 const path = require('path')
 
 const FRONTMATTER_REGEXP = /^((---)$([\s\S]*?)^(?:\2|\.\.\.)\s*$(?:\n)?)/m
-
-const getMonorepoPackageNames = async () => {
-  const REST_URL = 'https://api.github.com/repos/RigoBlock/rigoblock-monorepo'
-  const packagesTreeUrl = await fetchJSON(`${REST_URL}/git/trees/HEAD`).then(
-    res => res.tree.filter(obj => obj.path === 'packages').pop().url
-  )
-  const packageNames = await fetchJSON(packagesTreeUrl).then(res =>
-    res.tree.map(pkg => pkg.path)
-  )
-  return packageNames
-}
+const REST_URL = 'https://api.github.com/repos/RigoBlock'
+const GRAPHQL_URL = 'https://api.github.com/graphql'
 
 const getFileName = path => {
   const pathArray = path.split('/')
@@ -34,7 +25,6 @@ const getFileName = path => {
 const isMarkdown = pathStr => path.extname(pathStr) === '.md'
 
 const fetchFileContent = async (repo, path) => {
-  const GRAPHQL_URL = 'https://api.github.com/graphql'
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
       object(expression:"feature/monorepo-guides:${path}") {
@@ -47,27 +37,42 @@ const fetchFileContent = async (repo, path) => {
   return postJSON(GRAPHQL_URL, { query })
 }
 
-const fetchAllMarkdowns = async (repo, folderPath, packageName = '') => {
-  const REST_URL = 'https://api.github.com/repos/RigoBlock'
-  const GRAPHQL_URL = 'https://api.github.com/graphql'
+const getTreeId = async (repo, path) => {
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/monorepo-guides:${folderPath}") {
+      object(expression:"feature/monorepo-guides:${path}") {
         oid
       }
     }
   }`
-  // get tree id of the folder
-  let response = await postJSON(GRAPHQL_URL, { query })
-  const tree = get(response, 'data.repository.object.oid', '')
+  const response = await postJSON(GRAPHQL_URL, { query })
+  return get(response, 'data.repository.object.oid', '')
+}
+
+// const getMonorepoPackageNames = async () => {
+//   const repo = 'rigoblock-monorepo'
+//   const tree = await getTreeId(repo, 'packages')
+//   const treeUrl = `${REST_URL}/${repo}/git/trees/${tree}`
+//   const packageNames = await fetchJSON(treeUrl).then(res =>
+//     res.tree.map(el => ({
+//       repo,
+//       path: `packages/${el.path}`
+//     }))
+//   )
+//   return packageNames
+// }
+
+const fetchAllMarkdowns = async (repo, folderPath, packageName = '') => {
+  const tree = await getTreeId(repo, folderPath)
 
   // get all markdown paths in folder recursively
   const treeUrl = `${REST_URL}/${repo}/git/trees/${tree}?recursive=1`
-  response = await fetchJSON(treeUrl)
-  const markdowns = response.tree.filter(
-    obj =>
-      !obj.path.includes('examples/') &&
-      (obj.path.includes('.md') || obj.path.includes('.svg'))
+  const markdowns = await fetchJSON(treeUrl).then(res =>
+    res.tree.filter(
+      obj =>
+        !obj.path.includes('examples/') &&
+        (obj.path.includes('.md') || obj.path.includes('.svg'))
+    )
   )
 
   const markdownsContentPromises = markdowns.map(async obj => {
@@ -97,21 +102,6 @@ const fetchAllMarkdowns = async (repo, folderPath, packageName = '') => {
     }
   })
   return Promise.all(markdownsContentPromises)
-}
-
-const getMarkdownsContent = async packagesArray => {
-  const markdownPromises = await Promise.all(
-    packagesArray.map(async pkg => {
-      const repo = 'rigoblock-monorepo'
-      const filePath = `packages/${pkg}/README.md`
-      return fetchMarkdowns(repo, filePath, 'Packages', pkg)
-    })
-  )
-  markdownPromises.push(
-    fetchMarkdowns('kb', 'README.md', 'Knowledge Base', 'reference')
-  )
-  const results = await Promise.all(markdownPromises)
-  return results.reduce((acc, curr) => [...acc, ...curr], [])
 }
 
 const getTitle = markdown => {
@@ -250,42 +240,6 @@ const fetchREADMEs = async () => {
   } else {
     return null
   }
-  // let markdowns = []
-  // if (isString(repo) && isString(folderPath)) {
-  //   markdowns = await withSpinner(
-  //     fetchAllMarkdowns(repo, folderPath),
-  //     'Fetching markdown files',
-  //     'Done!'
-  //   )
-
-  //   await withSpinner(
-  //     writeMarkdowns(markdowns),
-  //     'Writing markdown files',
-  //     'Done!'
-  //   )
-  // } else {
-  //   const packageNames = await withSpinner(
-  //     getMonorepoPackageNames(),
-  //     'Fetching monorepo package names',
-  //     'Done!'
-  //   )
-  //   markdowns = await withSpinner(
-  //     getMarkdownsContent(packageNames),
-  //     'Fetching markdown contents',
-  //     'Done!'
-  //   )
-  //   await withSpinner(
-  //     writeMarkdowns(markdowns),
-  //     'Writing markdown files',
-  //     'Done!'
-  //   )
-  // }
-
-  // await withSpinner(
-  //   writeTOC(markdowns),
-  //   'Writing JSON table of contents',
-  //   'Done!'
-  // )
 }
 
 fetchREADMEs()

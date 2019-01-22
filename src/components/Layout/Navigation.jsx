@@ -9,8 +9,13 @@ const Navigation = ({ contents }) => {
     return val1 - val2
   })
   const links = sorted.map((obj, index) => {
-    const { title } = obj
-    const sorted = obj.documents.sort()
+    const { title, documents } = obj
+    const sorted = documents.sort((a, b) => {
+      if (a.title.startsWith('_') && b.title.startsWith('_')) {
+        return 1
+      }
+      return 0
+    })
     const to = sorted[0].entry.childMarkdownRemark.fields.slug
     return (
       <Link key={index} className="nav-link" to={to}>
