@@ -12,7 +12,7 @@
     "dev": "rm -rf .cache && npm run clean && npm run develop",
     "serve": "gatsby serve",
     "fetch-docs": "rm -rf content && node scripts/fetchMDs",
-    "fetch-api": "rm -rf content && node scripts/fetchMDs --repo rigoblock-monorepo --folderPath packages/api/docs && node scripts/fixLinks",
+    "fetch-api": "rm -rf content && node scripts/fetchMDs --repo rigoblock-monorepo --folderPath packages/api/docs",
     "build:gh": "npm run clean && npm run build:pp && gh-pages -d public",
     "clean": "rm -rf public",
     "lint:js": "eslint --ext .js,.jsx --ignore-pattern public,static . && npm run prettier -- --list-different",

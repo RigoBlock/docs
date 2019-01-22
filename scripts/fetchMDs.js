@@ -116,7 +116,7 @@ const getMarkdownsContent = async packagesArray => {
 
 const getTitle = markdown => {
   const titleRegexp = /\n\# (.+)/
-  const typedocTitleRegexp = /[^=]*(?=\n===)/
+  const typedocTitleRegexp = /[^=\n]*(?=\n===)/
   let title
   const normalTitle = (markdown.content.match(titleRegexp) || []).pop()
   const typedocTitle = (markdown.content.match(typedocTitleRegexp) || [])
