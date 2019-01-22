@@ -5,7 +5,7 @@ export default class Document extends React.Component {
   render() {
     const { contents } = this.props.data.allDocuments
     const { category } = this.props.pathContext
-    const toc = contents.filter(obj => obj.title === category).pop()
+    const toc = contents.find(obj => obj.title === category)
     const postNode = this.props.data.postBySlug
     return (
       <div className="body-grid">

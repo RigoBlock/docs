@@ -11,7 +11,7 @@ const SearchPage = props => {
     resultList = results
       .map(page => {
         const { id, title } = page
-        const doc = markdowns.filter(md => id.match(md.node.id)).pop()
+        const doc = markdowns.find(md => id.match(md.node.id))
         if (doc) {
           return {
             title,
