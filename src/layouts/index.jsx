@@ -2,25 +2,44 @@ import './css/index.css'
 import './css/prism-okaidia.css'
 import './index.scss'
 import Helmet from 'react-helmet'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import SearchBar from '../components/Layout/SearchBar'
 import SiteHeader from '../components/Layout/Header'
 import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
+import qs from 'qs'
 
 const MainLayout = props => {
   const { children, location, match, history } = props
   const { contents } = props.data.allDocuments
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
+  const trailingSlashRegexp = /\/$/
+  const { from } = qs.parse(location.search, {
+    ignoreQueryPrefix: true
+  })
   const toc = contents
     .filter(
       obj =>
         !!obj.documents.find(
-          doc => doc.entry.childMarkdownRemark.fields.slug === location.pathname
+          doc =>
+            location.pathname.replace(trailingSlashRegexp, '') ===
+            doc.entry.childMarkdownRemark.fields.slug
         )
     )
     .pop()
+
+  useEffect(
+    () => {
+      if (location.pathname === '/search') {
+        if (from) {
+          setPrevUrl(from)
+        }
+      }
+    },
+    [location.pathname]
+  )
+
   return (
     <div>
       <Helmet
@@ -28,9 +47,13 @@ const MainLayout = props => {
         link={[
           { rel: 'shortcut icon', type: 'image/png', href: '/favicon.ico' }
         ]}
-      >
-        <meta name="description" content={config.siteDescription} />
-      </Helmet>
+        meta={[
+          {
+            name: 'description',
+            content: config.siteDescription
+          }
+        ]}
+      />
       <SiteHeader contents={contents}>
         <a
           className="github-link"
@@ -41,11 +64,12 @@ const MainLayout = props => {
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
           location={location}
+          prevUrl={prevUrl}
           setResults={setResults}
           setPrevUrl={setPrevUrl}
         />
       </SiteHeader>
-      <div className="body-grid">
+      <div className="body-container">
         <TableOfContents data={toc} location={location} prevUrl={prevUrl} />
         {children({ prevUrl, results, location, match, history })}
       </div>

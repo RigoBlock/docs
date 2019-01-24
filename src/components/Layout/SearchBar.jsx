@@ -9,26 +9,28 @@ export const MINIMUM_QUERY_LENGTH = 3
 
 let index
 
-const SearchBar = props => {
-  const useQuery = (queryParam, prevUrl) => {
+const SearchBar = ({ location, searchIndex, prevUrl, setResults }) => {
+  const index = getOrCreateIndex(searchIndex)
+  const isSearchPage = () => !!location.pathname.match(SEARCH_URL)
+  const useQuery = (queryParam, previousUrl) => {
     const [query, setQuery] = useState('')
     let previousQuery = queryParam
 
     const handleChange = e => {
       const query = e.target.value
       setQuery(query)
-      if (previousQuery && !query && prevUrl) {
-        navigateTo(prevUrl)
+      if (previousQuery && !query && previousUrl) {
+        navigateTo(previousUrl)
       }
       previousQuery = query
       if (query.length >= MINIMUM_QUERY_LENGTH) {
         let from
-        if (prevUrl) {
-          from = prevUrl
-        } else if (isSearchPage() && !prevUrl) {
+        if (previousUrl) {
+          from = previousUrl
+        } else if (isSearchPage() && !previousUrl) {
           from = ''
         } else {
-          from = typeof window !== 'undefined' && window.location.pathname
+          from = location.pathname
         }
         const params = qs.stringify({ q: query, from })
         navigateTo(`${SEARCH_URL}?${params}`)
@@ -37,16 +39,12 @@ const SearchBar = props => {
 
     return [query, setQuery, handleChange]
   }
-  const isSearchPage = () => !!props.location.pathname.match(SEARCH_URL)
-  const index = getOrCreateIndex(props)
+
   const searchEl = useRef(null)
-  const { q: queryParam, from } = qs.parse(
-    typeof window !== 'undefined' && window.location.search,
-    {
-      ignoreQueryPrefix: true
-    }
-  )
-  const [query, setQuery, handleChange] = useQuery(queryParam, from)
+  const { q: queryParam } = qs.parse(location.search, {
+    ignoreQueryPrefix: true
+  })
+  const [query, setQuery, handleChange] = useQuery(queryParam, prevUrl)
   let placeHolderContent = 'Search'
   let searchIcon = query ? null : <i className="fas fa-search" />
   if (isSearchPage() && queryParam) {
@@ -59,9 +57,6 @@ const SearchBar = props => {
   useEffect(() => {
     if (isSearchPage()) {
       searchEl.current.focus()
-      if (from) {
-        props.setPrevUrl(from)
-      }
       if (queryParam && !query) {
         setQuery(queryParam)
       }
@@ -80,7 +75,7 @@ const SearchBar = props => {
             expand: true
           })
           .map(({ ref }) => index.documentStore.getDoc(ref))
-        props.setResults(results)
+        setResults(results)
       }
     },
     [query]
@@ -100,10 +95,10 @@ const SearchBar = props => {
   )
 }
 
-const getOrCreateIndex = props => {
+const getOrCreateIndex = searchIndex => {
   if (!index) {
     // Create an elastic lunr index and hydrate with graphql query results
-    index = Index.load(props.searchIndex.index)
+    index = Index.load(searchIndex.index)
   }
   return index
 }

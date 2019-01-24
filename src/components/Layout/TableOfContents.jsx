@@ -108,6 +108,9 @@ const DocList = ({ data }) => {
 }
 
 const TableOfContents = ({ data, location, prevUrl }) => {
+  if (!data && !prevUrl) {
+    return null
+  }
   const tableOfContentsComponent =
     location.pathname === '/search' ? (
       <div className="toc-search-wrapper">

@@ -1,6 +1,6 @@
 import './search.scss'
 import List from '../components/Layout/List'
-import React, { Fragment } from 'react'
+import React from 'react'
 
 const SearchPage = props => {
   const { results, data } = props
@@ -22,17 +22,17 @@ const SearchPage = props => {
       })
       .filter(val => !!val)
   }
-
-  return (
-    <div className="search-body-container">
-      {results.length !== 0 && (
-        <Fragment>
-          <h4>Found {results.length} page(s) matching your search:</h4>
-          <List data={resultList} />
-        </Fragment>
-      )}
-    </div>
+  const searchComponent = results.length ? (
+    <React.Fragment>
+      <div className="search-title">
+        Found {results.length} page(s) matching your search:
+      </div>
+      <List data={resultList} />
+    </React.Fragment>
+  ) : (
+    <div className="search-title">No results.</div>
   )
+  return <div className="search-container">{searchComponent}</div>
 }
 
 export default SearchPage

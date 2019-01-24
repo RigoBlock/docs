@@ -25,13 +25,13 @@
   margin-top: 5px;
 }
 
-.search-body-container {
+.search-container {
   grid-column: 2 / 3;
   overflow: scroll;
   padding: $dist-m;
 }
 
-.document-body-container {
+.document-container {
   grid-column: 2 / 3;
   overflow: scroll;
   justify-self: center;
@@ -51,10 +51,9 @@
   }
 }
 
-.body-grid {
+.body-container {
   height: calc(100vh - 92px);
-  display: grid;
-  grid-template-columns: 330px 1fr;
+  display: flex;
 
   @media screen and (max-width: 600px) {
     display: flex;

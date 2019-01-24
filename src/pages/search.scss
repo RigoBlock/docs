@@ -3,3 +3,12 @@
 .toc-search-wrapper {
   padding: $dist-m;
 }
+
+.search-container {
+  flex-grow: 1;
+}
+
+.search-title {
+  font-size: 2.5rem;
+  padding: 25px 0;
+}
