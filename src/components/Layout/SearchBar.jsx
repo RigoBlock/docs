@@ -30,6 +30,7 @@ const SearchBar = props => {
   // and add url query value to address bar if there is one
   useEffect(() => {
     if (isSearchPage()) {
+      console.log('ELEMENT', searchEl)
       searchEl.current.focus()
       if (from) {
         props.setPrevUrl(from)

@@ -9,6 +9,7 @@ const Container = styled.div`
 
 class Body extends React.Component {
   render() {
+    console.log('RENDERING BODY')
     return (
       <Container>
         <h1>Body</h1>

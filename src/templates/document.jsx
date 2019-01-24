@@ -1,9 +1,9 @@
 import React from 'react'
-import TableOfContents from './TableOfContents'
+import TableOfContents from '../components/Layout/TableOfContents'
 
 export default class Document extends React.Component {
   render() {
-    const { contents } = this.props.data.allDocuments
+    const { contents } = this.props
     const { category } = this.props.pathContext
     const toc = contents.find(obj => obj.title === category)
     const postNode = this.props.data.postBySlug
@@ -21,3 +21,11 @@ export default class Document extends React.Component {
     )
   }
 }
+
+export const pageQuery = graphql`
+  query DocumentBySlug($slug: String!) {
+    postBySlug: markdownRemark(fields: { slug: { eq: $slug } }) {
+      html
+    }
+  }
+`

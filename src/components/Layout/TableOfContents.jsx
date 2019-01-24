@@ -1,6 +1,6 @@
 import './TableOfContents.scss'
 import Link from 'gatsby-link'
-import React, { useEffect, useRef, useState } from 'react'
+import React, { useEffect, useRef } from 'react'
 import changeCase from 'change-case'
 import classNames from 'classnames'
 import groupBy from 'lodash/groupBy'
@@ -32,31 +32,43 @@ const sortByTocClass = arr => {
 
 const mapToLinkComponents = arr => {
   const sortedArr = sortByTocClass(arr)
-  return sortedArr.map(el => {
-    const { frontmatter, fields } = el.entry.childMarkdownRemark
-    let { title, tocClasses } = frontmatter
-    if (tocClasses.length) {
-      title = title.replace(/ /g, '')
-    }
-    const classes = tocClasses.split(' ')
-    const iconType = iconTypes[classes.shift()]
-    const iconClasses = classNames(iconType, classes)
-    return (
-      <li className="entry-list-item" key={fields.slug}>
-        {!!tocClasses.length && <i className={iconClasses} />}
-        <Link to={fields.slug}>{title}</Link>
-      </li>
+  return sortedArr
+    .map(el => {
+      const { frontmatter, fields } = el.entry.childMarkdownRemark
+      let { title, tocClasses } = frontmatter
+      if (tocClasses.length) {
+        title = title.replace(/ /g, '')
+      }
+      const classes = tocClasses.split(' ')
+      const iconType = iconTypes[classes.shift()]
+      const iconClasses = classNames(iconType, classes)
+
+      const ref = useRef(fields.slug)
+      return [
+        ref,
+        <li ref={ref} className="entry-list-item" key={fields.slug}>
+          {!!tocClasses.length && <i className={iconClasses} />}
+          <Link to={fields.slug}>{title}</Link>
+        </li>
+      ]
+    })
+    .reduce(
+      (acc, [ref, el]) => {
+        acc[0].push(ref)
+        acc[1].push(el)
+        return acc
+      },
+      [[], []]
     )
-  })
 }
 
 const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
-  const entries = mapToLinkComponents(documents)
+  const [refs, entries] = mapToLinkComponents(documents)
   const folderTitleComponent =
     folderName === 'docs' || !folderName ? null : (
       <div className="folder-title">{changeCase.titleCase(folderName)}</div>
     )
-  return !folderName ? (
+  const component = !folderName ? (
     <React.Fragment key={folderName || `folder-${index}`}>
       <div className="first-folder">{entries}</div>
       <div className="list-title">{listTitle}</div>
@@ -67,9 +79,11 @@ const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
       {entries}
     </React.Fragment>
   )
+  return [refs, component]
 }
 
 const DocList = ({ data }) => {
+  let refs = []
   const packages = Object.entries(
     groupBy(data.documents, 'entry.childMarkdownRemark.frontmatter.package')
   )
@@ -86,6 +100,8 @@ const DocList = ({ data }) => {
 
   const lists = packagesAndFolders.map(el => {
     const folders = el.folders.map(el => mapFoldersToComponents(el, data.title))
+    refs = folders.map(f => f[0]).reduce((acc, curr) => [...acc, ...curr], [])
+    const foldersElements = folders.map(f => f[1])
     return (
       <React.Fragment key={el.package}>
         {packages.length !== 1 && (
@@ -93,23 +109,32 @@ const DocList = ({ data }) => {
             {changeCase.titleCase(el.package)}
           </div>
         )}
-        {folders}
+        {foldersElements}
       </React.Fragment>
     )
   })
 
   return (
-    <React.Fragment>
+    <div>
       <ul className="package-list">{lists}</ul>
-    </React.Fragment>
+    </div>
   )
 }
 
-const TableOfContents = ({ data }) => {
-  if (!data) {
-    return null
+const TableOfContents = React.memo(
+  props => {
+    return (
+      <div className="toc-container">
+        <div className="toc-wrapper">
+          {props.data && <DocList data={props.data} />}
+        </div>
+      </div>
+    )
+  },
+  (prevProps, newProps) => {
+    console.log('prevProps', prevProps)
+    console.log('newProps', newProps)
   }
-  return <div className="toc-wrapper">{data && <DocList data={data} />}</div>
-}
+)
 
 export default TableOfContents

@@ -23,11 +23,12 @@ exports.onCreateNode = ({ node, boundActionCreators, getNode }) => {
 
 exports.createPages = ({ graphql, boundActionCreators }) => {
   const { createPage } = boundActionCreators
-  const baseTemplate = path.resolve('src/templates/BaseTemplate.jsx')
+  const searchPage = path.resolve('src/pages/search.jsx')
+  const documentPage = path.resolve('src/templates/document.jsx')
 
   createPage({
     path: 'search',
-    component: baseTemplate,
+    component: searchPage,
     context: {
       slug: '/search'
     }
@@ -63,7 +64,7 @@ exports.createPages = ({ graphql, boundActionCreators }) => {
           const { category } = edge.node.frontmatter
           createPage({
             path: slug,
-            component: baseTemplate,
+            component: documentPage,
             context: {
               slug,
               category
