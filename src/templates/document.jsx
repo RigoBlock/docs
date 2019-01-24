@@ -5,11 +5,9 @@ export default class Document extends React.Component {
     const postNode = this.props.data.postBySlug
     return (
       <div className="document-container">
-        <div>
-          {postNode && postNode.html && (
-            <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
-          )}
-        </div>
+        {postNode && postNode.html && (
+          <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        )}
       </div>
     )
   }
