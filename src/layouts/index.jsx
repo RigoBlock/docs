@@ -40,6 +40,7 @@ const MainLayout = props => {
         </a>
         <SearchBar
           searchIndex={props.data.siteSearchIndex}
+          location={location}
           setResults={setResults}
           setPrevUrl={setPrevUrl}
         />

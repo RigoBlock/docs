@@ -112,14 +112,14 @@ const TableOfContents = ({ data, location, prevUrl }) => {
     location.pathname === '/search' ? (
       <div className="toc-search-wrapper">
         <h3>Search Results</h3>
-        {prevUrl && (
+        {!!prevUrl && (
           <h4>
             <Link to={prevUrl}>Back</Link>
           </h4>
         )}
       </div>
     ) : (
-      <div className="toc-wrapper">{data && <DocList data={data} />}</div>
+      <div className="toc-wrapper">{!!data && <DocList data={data} />}</div>
     )
   return <div className="toc-container">{tableOfContentsComponent}</div>
 }

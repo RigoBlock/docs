@@ -10,6 +10,34 @@ export const MINIMUM_QUERY_LENGTH = 3
 let index
 
 const SearchBar = props => {
+  const useQuery = (queryParam, prevUrl) => {
+    const [query, setQuery] = useState('')
+    let previousQuery = queryParam
+
+    const handleChange = e => {
+      const query = e.target.value
+      setQuery(query)
+      if (previousQuery && !query && prevUrl) {
+        navigateTo(prevUrl)
+      }
+      previousQuery = query
+      if (query.length >= MINIMUM_QUERY_LENGTH) {
+        let from
+        if (prevUrl) {
+          from = prevUrl
+        } else if (isSearchPage() && !prevUrl) {
+          from = ''
+        } else {
+          from = typeof window !== 'undefined' && window.location.pathname
+        }
+        const params = qs.stringify({ q: query, from })
+        navigateTo(`${SEARCH_URL}?${params}`)
+      }
+    }
+
+    return [query, setQuery, handleChange]
+  }
+  const isSearchPage = () => !!props.location.pathname.match(SEARCH_URL)
   const index = getOrCreateIndex(props)
   const searchEl = useRef(null)
   const { q: queryParam, from } = qs.parse(
@@ -30,7 +58,6 @@ const SearchBar = props => {
   // and add url query value to address bar if there is one
   useEffect(() => {
     if (isSearchPage()) {
-      console.log('ELEMENT', searchEl)
       searchEl.current.focus()
       if (from) {
         props.setPrevUrl(from)
@@ -71,37 +98,6 @@ const SearchBar = props => {
       {searchIcon}
     </div>
   )
-}
-
-const isSearchPage = () =>
-  typeof window !== 'undefined' && window.location.pathname.match(SEARCH_URL)
-
-const useQuery = (queryParam, prevUrl) => {
-  const [query, setQuery] = useState('')
-  let previousQuery = queryParam
-
-  const handleChange = e => {
-    const query = e.target.value
-    setQuery(query)
-    if (previousQuery && !query && prevUrl) {
-      navigateTo(prevUrl)
-    }
-    previousQuery = query
-    if (query.length >= MINIMUM_QUERY_LENGTH) {
-      let from
-      if (prevUrl) {
-        from = prevUrl
-      } else if (isSearchPage() && !prevUrl) {
-        from = ''
-      } else {
-        from = typeof window !== 'undefined' && window.location.pathname
-      }
-      const params = qs.stringify({ q: query, from })
-      navigateTo(`${SEARCH_URL}?${params}`)
-    }
-  }
-
-  return [query, setQuery, handleChange]
 }
 
 const getOrCreateIndex = props => {
