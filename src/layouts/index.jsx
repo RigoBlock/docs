@@ -5,14 +5,22 @@ import Helmet from 'react-helmet'
 import React, { useState } from 'react'
 import SearchBar from '../components/Layout/SearchBar'
 import SiteHeader from '../components/Layout/Header'
+import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
 
 const MainLayout = props => {
-  console.log(props)
   const { children, location, match, history } = props
   const { contents } = props.data.allDocuments
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
+  const toc = contents
+    .filter(
+      obj =>
+        !!obj.documents.find(
+          doc => doc.entry.childMarkdownRemark.fields.slug === location.pathname
+        )
+    )
+    .pop()
   return (
     <div>
       <Helmet
@@ -36,7 +44,10 @@ const MainLayout = props => {
           setPrevUrl={setPrevUrl}
         />
       </SiteHeader>
-      {children({ contents, prevUrl, results, location, match, history })}
+      <div className="body-grid">
+        <TableOfContents data={toc} location={location} prevUrl={prevUrl} />
+        {children({ prevUrl, results, location, match, history })}
+      </div>
     </div>
   )
 }
