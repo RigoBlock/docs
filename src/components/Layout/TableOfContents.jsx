@@ -1,6 +1,6 @@
 import './TableOfContents.scss'
 import Link from 'gatsby-link'
-import React, { useEffect, useRef } from 'react'
+import React, { useRef } from 'react'
 import changeCase from 'change-case'
 import classNames from 'classnames'
 import groupBy from 'lodash/groupBy'
@@ -121,20 +121,14 @@ const DocList = ({ data }) => {
   )
 }
 
-const TableOfContents = React.memo(
-  props => {
-    return (
-      <div className="toc-container">
-        <div className="toc-wrapper">
-          {props.data && <DocList data={props.data} />}
-        </div>
+const TableOfContents = props => {
+  return (
+    <div className="toc-container">
+      <div className="toc-wrapper">
+        {props.data && <DocList data={props.data} />}
       </div>
-    )
-  },
-  (prevProps, newProps) => {
-    console.log('prevProps', prevProps)
-    console.log('newProps', newProps)
-  }
-)
+    </div>
+  )
+}
 
 export default TableOfContents
