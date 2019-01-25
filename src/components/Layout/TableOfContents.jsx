@@ -57,17 +57,18 @@ const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
     folderName === 'docs' || !folderName ? null : (
       <div className="folder-title">{changeCase.titleCase(folderName)}</div>
     )
-  const component = !folderName ? (
-    <React.Fragment key={folderName || `folder-${index}`}>
-      <div className="first-folder">{entries}</div>
-      <div className="list-title">{listTitle}</div>
-    </React.Fragment>
-  ) : (
-    <React.Fragment key={folderName || `folder-${index}`}>
-      {folderTitleComponent}
-      {entries}
-    </React.Fragment>
-  )
+  const component =
+    !folderName && listTitle === 'API reference' ? (
+      <React.Fragment key={folderName || `folder-${index}`}>
+        <div className="first-folder">{entries}</div>
+        <div className="list-title">{listTitle}</div>
+      </React.Fragment>
+    ) : (
+      <React.Fragment key={folderName || `folder-${index}`}>
+        {folderTitleComponent}
+        {entries}
+      </React.Fragment>
+    )
   return component
 }
 
@@ -88,8 +89,12 @@ const DocList = ({ data }) => {
 
   const lists = packagesAndFolders.map(el => {
     const folders = el.folders.map(el => mapFoldersToComponents(el, data.title))
+    // TODO: fix the following lines
     return (
       <React.Fragment key={el.package}>
+        {data.title !== 'API reference' && (
+          <div className="list-title">{changeCase.titleCase(data.title)}</div>
+        )}
         {packages.length !== 1 && (
           <div className="package-title">
             {changeCase.titleCase(el.package)}
