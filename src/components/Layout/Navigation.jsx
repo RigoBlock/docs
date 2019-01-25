@@ -14,6 +14,9 @@ const Navigation = ({ contents }) => {
       if (a.title.startsWith('_') && b.title.startsWith('_')) {
         return 1
       }
+      if (b.title.startsWith('_') && !a.title.startsWith('_')) {
+        return -1
+      }
       return 0
     })
     const to = sorted[0].entry.childMarkdownRemark.fields.slug

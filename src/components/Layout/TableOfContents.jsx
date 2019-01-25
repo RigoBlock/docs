@@ -41,6 +41,7 @@ const mapToLinkComponents = arr => {
     const classes = tocClasses.split(' ')
     const iconType = iconTypes[classes.shift()]
     const iconClasses = classNames(iconType, classes)
+
     return (
       <li className="entry-list-item" key={fields.slug}>
         {!!tocClasses.length && <i className={iconClasses} />}
@@ -56,7 +57,7 @@ const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
     folderName === 'docs' || !folderName ? null : (
       <div className="folder-title">{changeCase.titleCase(folderName)}</div>
     )
-  return !folderName ? (
+  const component = !folderName ? (
     <React.Fragment key={folderName || `folder-${index}`}>
       <div className="first-folder">{entries}</div>
       <div className="list-title">{listTitle}</div>
@@ -67,6 +68,7 @@ const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
       {entries}
     </React.Fragment>
   )
+  return component
 }
 
 const DocList = ({ data }) => {
@@ -98,18 +100,30 @@ const DocList = ({ data }) => {
     )
   })
 
-  return (
-    <React.Fragment>
-      <ul className="package-list">{lists}</ul>
-    </React.Fragment>
-  )
+  return <ul className="package-list">{lists}</ul>
 }
 
-const TableOfContents = ({ data }) => {
-  if (!data) {
+const TableOfContents = ({ data, location, prevUrl }) => {
+  if (location.pathname.replace(/\/$/, '') === '/search') {
+    return (
+      <div className="toc-container">
+        <div className="toc-search-wrapper">
+          <h3>Search Results</h3>
+          <h4>
+            <Link to={prevUrl || '/'}>Back</Link>
+          </h4>
+        </div>
+      </div>
+    )
+  } else if (data) {
+    return (
+      <div className="toc-container">
+        <div className="toc-wrapper">{!!data && <DocList data={data} />}</div>
+      </div>
+    )
+  } else {
     return null
   }
-  return <div className="toc-wrapper">{data && <DocList data={data} />}</div>
 }
 
 export default TableOfContents

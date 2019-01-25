@@ -182,7 +182,7 @@ module.exports = {
               }
               return removeMd(node.internal.content)
                 .replace(/ /g, '')
-                .substring(0, 300)
+                .substring(0, 500)
             }
           }
         }

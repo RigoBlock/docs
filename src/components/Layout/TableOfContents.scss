@@ -1,5 +1,20 @@
 @import "../_settings/variables.scss";
 
+.toc-container {
+  grid-column: 1 / 2;
+  background: $white;
+  overflow-y: scroll;
+  min-width: 330px;
+  @media screen and (max-width: 600px) {
+    order: 3;
+    overflow: inherit;
+  }
+}
+
+.toc-search-wrapper {
+  padding: $dist-m;
+}
+
 .toc-wrapper {
   padding: 15px;
   margin: 0;
