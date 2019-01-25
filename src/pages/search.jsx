@@ -32,7 +32,7 @@ const SearchPage = props => {
   ) : (
     <div className="search-title no-results">
       Search did not match any content.
-      <ul>
+      <ul className="search-suggestions">
         <li>Make sure all words are spelled correctly</li>
         <li>Try with different keywords</li>
         <li>Try using more general keywords</li>

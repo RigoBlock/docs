@@ -54,14 +54,19 @@ const SearchBar = ({ location, searchIndex, prevUrl, setResults }) => {
 
   // only on first mount, check if we are on search page, place focus on search bar
   // and add url query value to address bar if there is one
-  useEffect(() => {
-    if (isSearchPage()) {
-      searchEl.current.focus()
-      if (queryParam && !query) {
-        setQuery(queryParam)
+  useEffect(
+    () => {
+      if (isSearchPage()) {
+        searchEl.current.focus()
+        if (queryParam && !query) {
+          setQuery(queryParam)
+        }
+      } else {
+        setQuery('')
       }
-    }
-  }, [])
+    },
+    [location.pathname]
+  )
 
   useEffect(
     () => {
