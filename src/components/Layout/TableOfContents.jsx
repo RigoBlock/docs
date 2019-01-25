@@ -100,26 +100,17 @@ const DocList = ({ data }) => {
     )
   })
 
-  return (
-    <div>
-      <ul className="package-list">{lists}</ul>
-    </div>
-  )
+  return <ul className="package-list">{lists}</ul>
 }
 
 const TableOfContents = ({ data, location, prevUrl }) => {
-  if (!data && !prevUrl) {
-    return null
-  }
   const tableOfContentsComponent =
-    location.pathname === '/search' ? (
+    location.pathname.replace(/\/$/, '') === '/search' ? (
       <div className="toc-search-wrapper">
         <h3>Search Results</h3>
-        {!!prevUrl && (
-          <h4>
-            <Link to={prevUrl}>Back</Link>
-          </h4>
-        )}
+        <h4>
+          <Link to={prevUrl || '/'}>Back</Link>
+        </h4>
       </div>
     ) : (
       <div className="toc-wrapper">{!!data && <DocList data={data} />}</div>

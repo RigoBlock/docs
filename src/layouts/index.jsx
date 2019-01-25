@@ -14,7 +14,6 @@ const MainLayout = props => {
   const { contents } = props.data.allDocuments
   const [results, setResults] = useState([])
   const [prevUrl, setPrevUrl] = useState('')
-  const trailingSlashRegexp = /\/$/
   const { from } = qs.parse(location.search, {
     ignoreQueryPrefix: true
   })
@@ -23,7 +22,7 @@ const MainLayout = props => {
       obj =>
         !!obj.documents.find(
           doc =>
-            location.pathname.replace(trailingSlashRegexp, '') ===
+            location.pathname.replace(/\/$/, '') ===
             doc.entry.childMarkdownRemark.fields.slug
         )
     )
@@ -31,7 +30,7 @@ const MainLayout = props => {
 
   useEffect(
     () => {
-      if (location.pathname === '/search') {
+      if (location.pathname.replace(/\/$/, '') === '/search') {
         if (from) {
           setPrevUrl(from)
         }

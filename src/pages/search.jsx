@@ -32,7 +32,8 @@ const SearchPage = props => {
   ) : (
     <div className="search-title">No results.</div>
   )
-  return <div className="search-container">{searchComponent}</div>
+
+  return <div className="search-page-container">{searchComponent}</div>
 }
 
 export default SearchPage

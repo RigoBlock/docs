@@ -1,11 +1,9 @@
 @import "../components/_settings/variables";
 
-.toc-search-wrapper {
-  padding: $dist-m;
-}
-
-.search-container {
+.search-page-container {
   flex-grow: 1;
+  overflow: scroll;
+  padding: $dist-m;
 }
 
 .search-title {

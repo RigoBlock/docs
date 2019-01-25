@@ -25,31 +25,6 @@
   margin-top: 5px;
 }
 
-.search-container {
-  grid-column: 2 / 3;
-  overflow: scroll;
-  padding: $dist-m;
-}
-
-.document-container {
-  overflow: scroll;
-  justify-self: center;
-  width: 100%;
-  padding: $dist-m;
-  @media screen and (max-width: 600px) {
-    order: 2;
-  }
-
-  & > div {
-    max-width: 850px;
-    margin: auto;
-  }
-
-  & > h1 {
-    color: $base-color;
-  }
-}
-
 .body-container {
   height: calc(100vh - 92px);
   display: flex;
