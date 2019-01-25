@@ -109,9 +109,12 @@ const TableOfContents = ({ data, location, prevUrl }) => {
       <div className="toc-container">
         <div className="toc-search-wrapper">
           <h3>Search Results</h3>
-          <h4>
-            <Link to={prevUrl || '/'}>Back</Link>
-          </h4>
+          <div className="go-back-link">
+            <Link to={prevUrl || '/'}>
+              <i className="fas fa-undo-alt" />
+              Go back
+            </Link>
+          </div>
         </div>
       </div>
     )

@@ -12,7 +12,7 @@ class NotFoundPage extends React.Component {
           <img src={config.siteLogo} className="main-logo" alt="" />
         </div>
         <h1>Oops, page not found!</h1>
-        <CtaButton to="/">Back to the Home Page</CtaButton>
+        <CtaButton to="/">Go back</CtaButton>
       </div>
     )
   }
