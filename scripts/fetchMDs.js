@@ -27,7 +27,7 @@ const isMarkdown = pathStr => path.extname(pathStr) === '.md'
 const fetchFileContent = async (repo, path) => {
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/monorepo-guides:${path}") {
+      object(expression:"master:${path}") {
         ... on Blob {
           text
         }
@@ -40,7 +40,7 @@ const fetchFileContent = async (repo, path) => {
 const getTreeId = async (repo, path) => {
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/monorepo-guides:${path}") {
+      object(expression:"master:${path}") {
         oid
       }
     }
