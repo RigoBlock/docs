@@ -56,9 +56,6 @@ const SearchBar = ({ location, searchIndex, prevUrl, setResults }) => {
   // and add url query value to address bar if there is one
   useEffect(() => {
     if (isSearchPage()) {
-      console.log('IS THE SEARCH PAGE')
-      console.log('USE EFFECT QUERY PARAM', queryParam)
-      console.log('INDEX', index)
       searchEl.current.focus()
       if (queryParam && !query) {
         setQuery(queryParam)
@@ -68,10 +65,9 @@ const SearchBar = ({ location, searchIndex, prevUrl, setResults }) => {
 
   useEffect(
     () => {
-      if (queryParam && queryParam.length >= MINIMUM_QUERY_LENGTH) {
-        console.log('inside the if statement')
+      if (isSearchPage() && query && query.length >= MINIMUM_QUERY_LENGTH) {
         const results = index
-          .search(queryParam, {
+          .search(query, {
             fields: {
               title: { boost: 2 },
               content: { boost: 1 }
@@ -79,11 +75,10 @@ const SearchBar = ({ location, searchIndex, prevUrl, setResults }) => {
             expand: true
           })
           .map(({ ref }) => index.documentStore.getDoc(ref))
-        console.log('RESULTS', results)
         setResults(results)
       }
     },
-    [query]
+    [query, location.pathname]
   )
   return (
     <div className="search-bar-container">

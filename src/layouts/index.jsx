@@ -66,7 +66,6 @@ const MainLayout = props => {
           location={location}
           prevUrl={prevUrl}
           setResults={setResults}
-          setPrevUrl={setPrevUrl}
         />
       </SiteHeader>
       <div className="body-container">
