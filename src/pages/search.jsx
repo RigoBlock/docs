@@ -30,7 +30,15 @@ const SearchPage = props => {
       <List data={resultList} />
     </React.Fragment>
   ) : (
-    <div className="search-title">No results.</div>
+    <div className="search-title no-results">
+      Search did not match any content.
+      <ul>
+        <li>Make sure all words are spelled correctly</li>
+        <li>Try with different keywords</li>
+        <li>Try using more general keywords</li>
+        <li>Try fewer keywords</li>
+      </ul>
+    </div>
   )
 
   return <div className="search-page-container">{searchComponent}</div>
