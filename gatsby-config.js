@@ -70,6 +70,7 @@ module.exports = {
         color: config.themeColor
       }
     },
+    'gatsby-plugin-remove-serviceworker',
     'gatsby-plugin-sharp',
     'gatsby-plugin-catch-links',
     'gatsby-plugin-twitter',
@@ -99,7 +100,6 @@ module.exports = {
         ]
       }
     },
-    'gatsby-plugin-offline',
     {
       resolve: 'gatsby-plugin-feed',
       options: {
@@ -182,7 +182,7 @@ module.exports = {
               }
               return removeMd(node.internal.content)
                 .replace(/ /g, '')
-                .substring(0, 300)
+                .substring(0, 500)
             }
           }
         }

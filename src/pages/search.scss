@@ -1,0 +1,16 @@
+@import "../components/_settings/variables";
+
+.search-page-container {
+  flex-grow: 1;
+  overflow-y: scroll;
+  padding: $dist-m;
+}
+
+.search-title {
+  font-size: 2.5rem;
+  padding: 25px 0;
+}
+
+.search-suggestions {
+  padding: 0 40px;
+}

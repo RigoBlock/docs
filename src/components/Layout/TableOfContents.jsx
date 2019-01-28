@@ -41,6 +41,7 @@ const mapToLinkComponents = arr => {
     const classes = tocClasses.split(' ')
     const iconType = iconTypes[classes.shift()]
     const iconClasses = classNames(iconType, classes)
+
     return (
       <li className="entry-list-item" key={fields.slug}>
         {!!tocClasses.length && <i className={iconClasses} />}
@@ -56,17 +57,19 @@ const mapFoldersToComponents = ([folderName, documents], listTitle, index) => {
     folderName === 'docs' || !folderName ? null : (
       <div className="folder-title">{changeCase.titleCase(folderName)}</div>
     )
-  return !folderName ? (
-    <React.Fragment key={folderName || `folder-${index}`}>
-      <div className="first-folder">{entries}</div>
-      <div className="list-title">{listTitle}</div>
-    </React.Fragment>
-  ) : (
-    <React.Fragment key={folderName || `folder-${index}`}>
-      {folderTitleComponent}
-      {entries}
-    </React.Fragment>
-  )
+  const component =
+    !folderName && listTitle === 'API reference' ? (
+      <React.Fragment key={folderName || `folder-${index}`}>
+        <div className="first-folder">{entries}</div>
+        <div className="list-title">{listTitle}</div>
+      </React.Fragment>
+    ) : (
+      <React.Fragment key={folderName || `folder-${index}`}>
+        {folderTitleComponent}
+        {entries}
+      </React.Fragment>
+    )
+  return component
 }
 
 const DocList = ({ data }) => {
@@ -86,8 +89,12 @@ const DocList = ({ data }) => {
 
   const lists = packagesAndFolders.map(el => {
     const folders = el.folders.map(el => mapFoldersToComponents(el, data.title))
+    // TODO: fix the following lines
     return (
       <React.Fragment key={el.package}>
+        {data.title !== 'API reference' && (
+          <div className="list-title">{changeCase.titleCase(data.title)}</div>
+        )}
         {packages.length !== 1 && (
           <div className="package-title">
             {changeCase.titleCase(el.package)}
@@ -98,18 +105,33 @@ const DocList = ({ data }) => {
     )
   })
 
-  return (
-    <React.Fragment>
-      <ul className="package-list">{lists}</ul>
-    </React.Fragment>
-  )
+  return <ul className="package-list">{lists}</ul>
 }
 
-const TableOfContents = ({ data }) => {
-  if (!data) {
+const TableOfContents = ({ data, location, prevUrl }) => {
+  if (location.pathname.replace(/\/$/, '') === '/search') {
+    return (
+      <div className="toc-container">
+        <div className="toc-search-wrapper">
+          <h3>Search Results</h3>
+          <div className="go-back-link">
+            <Link to={prevUrl || '/'}>
+              <i className="fas fa-undo-alt" />
+              Go back
+            </Link>
+          </div>
+        </div>
+      </div>
+    )
+  } else if (data) {
+    return (
+      <div className="toc-container">
+        <div className="toc-wrapper">{!!data && <DocList data={data} />}</div>
+      </div>
+    )
+  } else {
     return null
   }
-  return <div className="toc-wrapper">{data && <DocList data={data} />}</div>
 }
 
 export default TableOfContents

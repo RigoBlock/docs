@@ -12,11 +12,14 @@ const GRAPHQL_URL = 'https://api.github.com/graphql'
 const getFileName = path => {
   const pathArray = path.split('/')
   let fileName = pathArray.pop()
+
   if (fileName === 'README.md' && pathArray.length) {
     const newName = pathArray.pop()
     fileName = newName
   }
+
   const split = fileName.split('.')
+
   return split.length > 1
     ? split.slice(0, split.length - 1).join('.')
     : split.pop()
@@ -27,25 +30,27 @@ const isMarkdown = pathStr => path.extname(pathStr) === '.md'
 const fetchFileContent = async (repo, path) => {
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/monorepo-guides:${path}") {
+      object(expression:"master:${path}") {
         ... on Blob {
           text
         }
       }
     }
   }`
+
   return postJSON(GRAPHQL_URL, { query })
 }
 
 const getTreeId = async (repo, path) => {
   const query = `{
     repository(owner: "RigoBlock", name: "${repo}") {
-      object(expression:"feature/monorepo-guides:${path}") {
+      object(expression:"master:${path}") {
         oid
       }
     }
   }`
   const response = await postJSON(GRAPHQL_URL, { query })
+
   return get(response, 'data.repository.object.oid', '')
 }
 
@@ -87,6 +92,7 @@ const fetchAllMarkdowns = async (repo, folderPath, packageName = '') => {
       .pop()
       .trim()
       .replace(/\"/g, '')
+
     if (!packageName && folderPath.includes('packages')) {
       const folderArr = folderPath.split('/')
       packageName = folderArr[folderArr.indexOf('packages') + 1]
@@ -107,16 +113,15 @@ const fetchAllMarkdowns = async (repo, folderPath, packageName = '') => {
 const getTitle = markdown => {
   const titleRegexp = /\n\# (.+)/
   const typedocTitleRegexp = /[^=\n]*(?=\n===)/
-  let title
   const normalTitle = (markdown.content.match(titleRegexp) || []).pop()
   const typedocTitle = (markdown.content.match(typedocTitleRegexp) || [])
     .filter(val => !!val)
     .pop()
-
-  title =
+  const title =
     normalTitle ||
     typedocTitle ||
     changeCase.titleCase(getFileName(markdown.path))
+
   return title.trim()
 }
 
@@ -127,6 +132,7 @@ const writeMarkdowns = (markdownArray = []) => {
     let content = markdown.content.replace(/\.md/gi, '')
     let title = getTitle(markdown)
     let tocClasses = []
+
     if (title.includes(':')) {
       let [type, newTitle] = title ? title.split(':') : ['', markdown.title]
       tocClasses = [type]
@@ -144,6 +150,7 @@ const writeMarkdowns = (markdownArray = []) => {
 
     const matches = content.match(FRONTMATTER_REGEXP)
     const frontmatter = matches ? matches[3] : null
+
     if (!frontmatter) {
       const data = [
         '---',
@@ -159,6 +166,7 @@ const writeMarkdowns = (markdownArray = []) => {
 
       return fs.outputFile(path, data, err => (err ? console.error(err) : null))
     }
+
     const newFrontmatter =
       [
         '',
@@ -167,7 +175,9 @@ const writeMarkdowns = (markdownArray = []) => {
         `package: "${markdown.package}"`,
         `tocClasses: "${tocClasses.join(' ')}"`
       ].join('\n') + frontmatter
+
     content = content.replace(frontmatter, newFrontmatter)
+
     return fs.outputFile(path, content, err =>
       err ? console.error(err) : null
     )

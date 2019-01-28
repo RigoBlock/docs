@@ -11,8 +11,11 @@ const Navigation = ({ contents }) => {
   const links = sorted.map((obj, index) => {
     const { title, documents } = obj
     const sorted = documents.sort((a, b) => {
-      if (a.title.startsWith('_') && b.title.startsWith('_')) {
+      if (a.title.startsWith('_') && !b.title.startsWith('_')) {
         return 1
+      }
+      if (b.title.startsWith('_') && !a.title.startsWith('_')) {
+        return -1
       }
       return 0
     })

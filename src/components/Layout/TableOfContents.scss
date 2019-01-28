@@ -1,5 +1,25 @@
 @import "../_settings/variables.scss";
 
+.toc-container {
+  background: $white;
+  overflow-y: scroll;
+  min-width: 330px;
+}
+
+.toc-search-wrapper {
+  padding: $dist-m;
+}
+
+.go-back-link {
+  .fas {
+    color: $link-color;
+    padding: 0 10px;
+  }
+  a:hover {
+    border-bottom: none;
+  }
+}
+
 .toc-wrapper {
   padding: 15px;
   margin: 0;
