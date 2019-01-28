@@ -1,8 +1,8 @@
 @import "../components/_settings/variables";
 
 .document-container {
-  overflow: scroll;
   justify-self: center;
+  overflow-y: scroll;
   width: 100%;
   padding: $dist-m;
   @media screen and (max-width: 600px) {

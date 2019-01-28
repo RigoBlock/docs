@@ -24,13 +24,12 @@ const SearchBar = ({ location, searchIndex, prevUrl, setResults }) => {
       }
       previousQuery = query
       if (query.length >= MINIMUM_QUERY_LENGTH) {
-        let from
+        let from = location.pathname
         if (previousUrl) {
           from = previousUrl
-        } else if (isSearchPage() && !previousUrl) {
+        }
+        if (isSearchPage() && !previousUrl) {
           from = ''
-        } else {
-          from = location.pathname
         }
         const params = qs.stringify({ q: query, from })
         navigateTo(`${SEARCH_URL}?${params}`)
