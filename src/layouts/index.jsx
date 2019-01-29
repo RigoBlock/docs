@@ -28,6 +28,16 @@ const MainLayout = props => {
     )
     .pop()
 
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.navigator.serviceWorker.getRegistrations().then(registrations => {
+        for (let reg of registrations) {
+          reg.unregister()
+        }
+      })
+    }
+  }, [])
+
   useEffect(
     () => {
       if (location.pathname.replace(/\/$/, '') === '/search') {

@@ -13,18 +13,23 @@ const iconTypes = {
 }
 
 const sortFolders = (arr = []) =>
-  arr.sort((prev, curr) => {
+  arr.slice().sort((prev, curr) => {
     const a = prev[0] === 'modules' ? 1 : prev[0].length
     const b = curr[0] === 'modules' ? 1 : curr[0].length
     return a - b
   })
 
 const sortByTocClass = arr => {
-  return arr.sort((prev, curr) => {
+  return arr.slice().sort((prev, curr) => {
     const prevFrontmatter = prev.entry.childMarkdownRemark.frontmatter
     const currFrontmatter = curr.entry.childMarkdownRemark.frontmatter
     if (prevFrontmatter.folder && !currFrontmatter.folder) {
       return 1
+    }
+    if (
+      prevFrontmatter.tocClasses.length === currFrontmatter.tocClasses.length
+    ) {
+      return prevFrontmatter.title.localeCompare(currFrontmatter.title)
     }
     return prevFrontmatter.tocClasses.length - currFrontmatter.tocClasses.length
   })

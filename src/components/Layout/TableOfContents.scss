@@ -6,8 +6,55 @@
   min-width: 330px;
 }
 
+.toc-wrapper {
+  padding: 15px;
+  margin: 0;
+}
+
 .toc-search-wrapper {
   padding: $dist-m;
+}
+
+.package-list {
+  list-style: none;
+  list-style-type: none;
+  margin: 0;
+}
+
+.list-title {
+  font-weight: 600;
+  font-size: 2.5rem;
+  color: $base-color;
+  margin: 20px 0;
+}
+
+.package-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: $base-color;
+}
+
+.folder-title {
+  font-size: 1.8rem;
+  font-weight: 500;
+  padding-left: 10px;
+  margin: 15px 0;
+}
+
+.folder {
+  color: $base-color;
+  font-size: 2rem;
+  font-weight: bold;
+}
+
+.first-folder {
+  margin-top: 20px;
+  .entry-list-item {
+    padding-left: 10px;
+    a {
+      font-size: 1.8rem;
+    }
+  }
 }
 
 .go-back-link {
@@ -20,117 +67,39 @@
   }
 }
 
-.toc-wrapper {
-  padding: 15px;
+.entry-list-item {
+  a {
+    font-size: 1.5rem;
+    color: black;
+  }
+  padding-left: 20px;
   margin: 0;
-
-  .title-link {
-    color: black;
-    font-weight: bold;
-    font-size: 2.3rem;
-  }
-
-  .folder {
-    color: $base-color;
-    font-size: 2rem;
-    font-weight: bold;
-  }
-
-
-  .list-title {
-    font-weight: 600;
-    font-size: 2.5rem;
-    color: $base-color;
-    margin: 20px 0;
-  }
-
-  .list-entry {
-    font-weight: 600;
-    font-size: 2.2rem;
-  }
-
-  .list-sub-entry {
-    font-weight: 400;
-    font-size: 1.8rem;
-  }
-
-  .chapter-list-item {
+  i {
+    padding: 0 5px;
     margin: 0;
+    font-size: 1.2rem;
   }
-
-  .entry-title {
-    display: inline-block;
-    font-weight: 200;
-    color: black;
-    margin: 0;
-    line-height: 1.5;
-    border-bottom: 1px solid transparent;
-    text-decoration: none;
+  a:hover {
+    border-bottom: 1px solid black;
   }
-
-  .package-list {
-    list-style: none;
-    list-style-type: none;
-    margin: 0;
-    .package-title {
-      font-size: 2rem;
-      font-weight: 700;
-      color: $base-color;
-    }
-    .folder-title {
-      font-size: 1.8rem;
-      font-weight: 500;
-      padding-left: 10px;
-      margin: 15px 0;
-    }
-
-    .first-folder {
-      margin-top: 20px;
-      .entry-list-item {
-        padding-left: 10px;
-        a {
-          font-size: 1.8rem;
-        }
-      }
-    }
-
-    .entry-list-item {
-      a {
-        font-size: 1.5rem;
-        color: black;
-      }
-      padding-left: 20px;
-      margin: 0;
-      i {
-        padding: 0 5px;
-        margin: 0;
-        font-size: 1.2rem;
-      }
-      a:hover {
-        border-bottom: 1px solid black;
-      }
-      .fa-cubes {
-        color: #9600FF;
-      }
-      .fa-cube {
-        color: #4DA6FF;
-      }
-      .fa-vector-square {
-        color: #81A226;
-      }
-      .fa-list {
-        color: #CC9900;
-      }
-      .contracts {
-        color: #FC2F00;
-      }
-      .models {
-        color: #FCBF49;
-      }
-    }
+  .fa-cubes {
+    color: #9600FF;
   }
-
-  .category-title {
-    font-size: '';
+  .fa-cube {
+    color: #4DA6FF;
+  }
+  .fa-vector-square {
+    color: #81A226;
+  }
+  .fa-list {
+    color: #CC9900;
+  }
+  .contracts {
+    color: #FC2F00;
+  }
+  .models {
+    color: #FCBF49;
   }
 }
+
+
