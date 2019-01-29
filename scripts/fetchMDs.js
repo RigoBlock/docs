@@ -130,6 +130,7 @@ const writeMarkdowns = (markdownArray = []) => {
   const writeMarkdown = markdown => {
     const path = `${contentFolder}/${markdown.path}`
     let content = markdown.content.replace(/\.md/gi, '')
+    content = content.replace(/\.\.(?=\/)/gm, '')
     let title = getTitle(markdown)
     let tocClasses = []
 

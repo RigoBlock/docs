@@ -29,7 +29,7 @@ const MainLayout = props => {
     .pop()
 
   useEffect(() => {
-    if (typeof window !== 'undefined') {
+    if (typeof window !== 'undefined' && window.navigator.serviceWorker) {
       window.navigator.serviceWorker.getRegistrations().then(registrations => {
         for (let reg of registrations) {
           reg.unregister()
