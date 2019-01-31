@@ -5,7 +5,6 @@ import Helmet from 'react-helmet'
 import React, { useEffect, useState } from 'react'
 import SearchBar from '../components/Layout/SearchBar'
 import SiteHeader from '../components/Layout/Header'
-import TableOfContents from '../components/Layout/TableOfContents'
 import config from '../../data/SiteConfig'
 import qs from 'qs'
 
@@ -78,8 +77,7 @@ const MainLayout = props => {
         />
       </SiteHeader>
       <div className="body-container">
-        <TableOfContents data={toc} location={location} prevUrl={prevUrl} />
-        {children({ prevUrl, results, location, match, history })}
+        {children({ prevUrl, results, location, match, history, toc })}
       </div>
     </div>
   )

@@ -11,10 +11,6 @@
   margin: 0;
 }
 
-.toc-search-wrapper {
-  padding: $dist-m;
-}
-
 .package-list {
   list-style: none;
   list-style-type: none;
@@ -54,16 +50,6 @@
     a {
       font-size: 1.8rem;
     }
-  }
-}
-
-.go-back-link {
-  .fas {
-    color: $link-color;
-    padding: 0 10px;
-  }
-  a:hover {
-    border-bottom: none;
   }
 }
 

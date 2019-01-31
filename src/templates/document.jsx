@@ -1,18 +1,22 @@
 import './document.scss'
-import React from 'react'
+import React, { Fragment } from 'react'
+import TableOfContents from '../components/Layout/TableOfContents'
 
-export default class Document extends React.Component {
-  render() {
-    const postNode = this.props.data.postBySlug
-    return (
+const Document = props => {
+  const { data, toc } = props
+  return (
+    <Fragment>
+      {toc && <TableOfContents data={toc} />}
       <div className="document-container">
-        {postNode && postNode.html && (
-          <div dangerouslySetInnerHTML={{ __html: postNode.html }} />
+        {data.postBySlug && data.postBySlug.html && (
+          <div dangerouslySetInnerHTML={{ __html: data.postBySlug.html }} />
         )}
       </div>
-    )
-  }
+    </Fragment>
+  )
 }
+
+export default Document
 
 export const pageQuery = graphql`
   query DocumentBySlug($slug: String!) {

@@ -14,3 +14,23 @@
 .search-suggestions {
   padding: 0 40px;
 }
+
+.toc-search-container {
+  background: $white;
+  overflow-y: scroll;
+  min-width: 330px;
+}
+
+.toc-search-wrapper {
+  padding: $dist-m;
+}
+
+.go-back-link {
+  .fas {
+    color: $link-color;
+    padding: 0 10px;
+  }
+  a:hover {
+    border-bottom: none;
+  }
+}

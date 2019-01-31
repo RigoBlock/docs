@@ -1,5 +1,6 @@
-import './404.scss'
 import './index.scss'
+// eslint-disable-next-line
+import './404.scss'
 import CtaButton from '../components/Layout/CtaButton'
 import React from 'react'
 import config from '../../data/SiteConfig'

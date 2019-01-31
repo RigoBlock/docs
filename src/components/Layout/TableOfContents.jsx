@@ -113,30 +113,14 @@ const DocList = ({ data }) => {
   return <ul className="package-list">{lists}</ul>
 }
 
-const TableOfContents = ({ data, location, prevUrl }) => {
-  if (location.pathname.replace(/\/$/, '') === '/search') {
-    return (
-      <div className="toc-container">
-        <div className="toc-search-wrapper">
-          <h3>Search Results</h3>
-          <div className="go-back-link">
-            <Link to={prevUrl || '/'}>
-              <i className="fas fa-undo-alt" />
-              Go back
-            </Link>
-          </div>
-        </div>
+const TableOfContents = ({ data }) => {
+  return (
+    <div className="toc-container">
+      <div className="toc-wrapper">
+        <DocList data={data} />
       </div>
-    )
-  } else if (data) {
-    return (
-      <div className="toc-container">
-        <div className="toc-wrapper">{!!data && <DocList data={data} />}</div>
-      </div>
-    )
-  } else {
-    return null
-  }
+    </div>
+  )
 }
 
 export default TableOfContents
