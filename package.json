@@ -50,7 +50,7 @@
     "lodash": "4.17.21",
     "lodash-es": "4.17.14",
     "lodash-webpack-plugin": "0.11.4",
-    "node-sass": "4.13.1",
+    "node-sass": "7.0.0",
     "qs": "6.6.0",
     "react": "16.7.0-alpha.2",
     "react-dom": "16.7.0-alpha.2",
